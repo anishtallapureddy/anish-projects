@@ -85,7 +85,7 @@ export function runCoveredCallAgent(input: CoveredCallInput, config: AppConfig):
 
   opportunities.sort((a, b) => b.score - a.score);
   return {
-    opportunities: opportunities.slice(0, 8),
-    orderDrafts: orderDrafts.slice(0, 4),
+    opportunities: opportunities.slice(0, 15),
+    orderDrafts: orderDrafts.slice(0, 8),
   };
 }

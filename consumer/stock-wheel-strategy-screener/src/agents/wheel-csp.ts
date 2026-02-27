@@ -101,11 +101,11 @@ export function runWheelCspAgent(input: CspInput, config: AppConfig): CspOutput 
 
   // Sort by score descending, take top opportunities
   opportunities.sort((a, b) => b.score - a.score);
-  const topIds = new Set(opportunities.slice(0, 10).map((o) => o.id));
+  const topIds = new Set(opportunities.slice(0, 25).map((o) => o.id));
   const filteredDrafts = orderDrafts.filter((d) => topIds.has(d.order_id.replace('ord-', '')));
 
   return {
-    opportunities: opportunities.slice(0, 10),
-    orderDrafts: filteredDrafts.slice(0, 5),
+    opportunities: opportunities.slice(0, 25),
+    orderDrafts: filteredDrafts.slice(0, 10),
   };
 }

@@ -1,27 +1,184 @@
 universes:
+  # ── Wheel-eligible: liquid large-caps with active options markets ──
   wheel_universe:
+    # Technology
     - AAPL
     - MSFT
-    - GOOGL
-    - AMZN
-    - META
     - NVDA
+    - AVGO
+    - CRM
+    - AMD
+    - ADBE
+    - INTC
+    - CSCO
+    - ORCL
+    # Communication Services
+    - GOOGL
+    - META
+    - NFLX
+    - DIS
+    - CMCSA
+    # Consumer Discretionary
+    - AMZN
+    - TSLA
+    - HD
+    - MCD
+    - NKE
+    - SBUX
+    - LOW
+    # Financials
+    - JPM
+    - V
+    - MA
+    - BAC
+    - GS
+    - MS
+    - BLK
+    - AXP
+    # Healthcare
+    - UNH
+    - JNJ
+    - LLY
+    - ABBV
+    - PFE
+    - MRK
+    - TMO
+    # Industrials
+    - CAT
+    - BA
+    - UPS
+    - HON
+    - GE
+    - RTX
+    # Energy
+    - XOM
+    - CVX
+    - COP
+    # Consumer Staples
+    - PG
+    - KO
+    - PEP
+    - COST
+    - WMT
+
+  # ── Value candidates: broader screen for undervalued quality ──
+  value_universe:
+    - MSFT
+    - GOOGL
+    - META
+    - AMZN
+    - INTC
+    - CSCO
+    - CMCSA
+    - DIS
+    - PFE
+    - BAC
+    - GS
+    - JPM
+    - JNJ
+    - ABBV
+    - MRK
+    - CAT
+    - BA
+    - NKE
+    - HD
+    - LOW
+    - XOM
+    - CVX
+    - COP
+    - PG
+    - KO
+
+  # ── ETF core + satellite ──
   etf_universe:
-    - VTI
-    - QQQ
-    - SCHD
-    - IEF
-    - GLD
+    # Core index
+    - VTI    # Total US market
+    - VOO    # S&P 500
+    - QQQ    # Nasdaq 100
+    # Dividend / income
+    - SCHD   # US dividend equity
+    - VYM    # High dividend yield
+    - JEPI   # JPM equity premium income
+    # Bonds / fixed income
+    - IEF    # 7-10yr Treasury
+    - BND    # Total bond market
+    - TLT    # 20+ yr Treasury
+    # Alternatives
+    - GLD    # Gold
+    - IAU    # Gold (lower ER)
+    # International
+    - VXUS   # Total international
+
 sectors:
-  # Optional mapping for risk controls; expand later
+  # Technology
   AAPL: Technology
   MSFT: Technology
-  GOOGL: Communication Services
-  AMZN: Consumer Discretionary
-  META: Communication Services
   NVDA: Technology
+  AVGO: Technology
+  CRM: Technology
+  AMD: Technology
+  ADBE: Technology
+  INTC: Technology
+  CSCO: Technology
+  ORCL: Technology
+  # Communication Services
+  GOOGL: Communication Services
+  META: Communication Services
+  NFLX: Communication Services
+  DIS: Communication Services
+  CMCSA: Communication Services
+  # Consumer Discretionary
+  AMZN: Consumer Discretionary
+  TSLA: Consumer Discretionary
+  HD: Consumer Discretionary
+  MCD: Consumer Discretionary
+  NKE: Consumer Discretionary
+  SBUX: Consumer Discretionary
+  LOW: Consumer Discretionary
+  # Financials
+  JPM: Financials
+  V: Financials
+  MA: Financials
+  BAC: Financials
+  GS: Financials
+  MS: Financials
+  BLK: Financials
+  AXP: Financials
+  # Healthcare
+  UNH: Healthcare
+  JNJ: Healthcare
+  LLY: Healthcare
+  ABBV: Healthcare
+  PFE: Healthcare
+  MRK: Healthcare
+  TMO: Healthcare
+  # Industrials
+  CAT: Industrials
+  BA: Industrials
+  UPS: Industrials
+  HON: Industrials
+  GE: Industrials
+  RTX: Industrials
+  # Energy
+  XOM: Energy
+  CVX: Energy
+  COP: Energy
+  # Consumer Staples
+  PG: Consumer Staples
+  KO: Consumer Staples
+  PEP: Consumer Staples
+  COST: Consumer Staples
+  WMT: Consumer Staples
+  # ETFs
   VTI: ETF
+  VOO: ETF
   QQQ: ETF
   SCHD: ETF
+  VYM: ETF
+  JEPI: ETF
   IEF: ETF
+  BND: ETF
+  TLT: ETF
   GLD: ETF
+  IAU: ETF
+  VXUS: ETF

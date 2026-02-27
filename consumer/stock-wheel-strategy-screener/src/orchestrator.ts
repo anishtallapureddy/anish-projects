@@ -95,13 +95,15 @@ export async function runDailyPipeline(mode: DataMode = 'mock'): Promise<{ repor
 
   // ── Step 4: Value Agent ──
   console.log('\n🏦 [4/7] Value Agent...');
-  const valueCandidates = config.userPreferences.watchlists.value_candidates;
+  // Use value_universe from config, falling back to value_candidates watchlist
+  const valueSymbols = config.universe.universes.value_universe
+    || config.userPreferences.watchlists.value_candidates;
   let fundamentals;
   if (mode === 'live') {
-    fundamentals = await getLiveFundamentals(valueCandidates);
+    fundamentals = await getLiveFundamentals(valueSymbols);
   } else {
     const allFundamentals = getMockFundamentals();
-    fundamentals = allFundamentals.filter((f) => valueCandidates.includes(f.symbol));
+    fundamentals = allFundamentals.filter((f) => valueSymbols.includes(f.symbol));
   }
   const valueResult = runValueAgent({ candidates: fundamentals }, config);
   console.log(`   → ${valueResult.opportunities.length} value picks`);

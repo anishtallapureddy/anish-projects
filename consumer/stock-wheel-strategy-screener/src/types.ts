@@ -137,6 +137,7 @@ export interface RiskLimits {
 export interface UniverseConfig {
   universes: {
     wheel_universe: string[];
+    value_universe?: string[];
     etf_universe: string[];
   };
   sectors: Record<string, string>;

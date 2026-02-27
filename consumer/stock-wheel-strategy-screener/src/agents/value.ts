@@ -54,5 +54,5 @@ export function runValueAgent(input: ValueInput, config: AppConfig): ValueOutput
   }
 
   opportunities.sort((a, b) => b.score - a.score);
-  return { opportunities: opportunities.slice(0, 5) };
+  return { opportunities: opportunities.slice(0, 15) };
 }

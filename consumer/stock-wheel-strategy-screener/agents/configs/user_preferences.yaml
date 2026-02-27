@@ -4,9 +4,9 @@ allocation_targets:
   etf_core: 0.20
 
 watchlists:
-  wheel_universe: ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "NVDA"]
-  value_candidates: ["MSFT", "GOOGL", "META", "AMZN"]
-  etf_core: ["VTI", "QQQ", "SCHD"]
+  wheel_universe: ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "NVDA", "TSLA", "JPM", "V", "UNH", "HD", "XOM"]
+  value_candidates: ["MSFT", "GOOGL", "META", "AMZN", "INTC", "PFE", "BAC", "DIS", "NKE", "XOM", "JNJ"]
+  etf_core: ["VTI", "QQQ", "SCHD", "JEPI", "BND"]
 
 style:
   wheel_mode: conservative   # conservative | balanced | aggressive
