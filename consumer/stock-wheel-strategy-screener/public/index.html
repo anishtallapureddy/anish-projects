@@ -152,22 +152,73 @@
         </div>
       </div>
 
-      <!-- Tabs -->
-      <div class="tabs">
-        <div class="tab active" data-tab="opportunities" onclick="switchTab(this)">Opportunities</div>
-        <div class="tab" data-tab="drafts" onclick="switchTab(this)">Draft Orders</div>
-        <div class="tab" data-tab="blocked" onclick="switchTab(this)">Blocked</div>
-        <div class="tab" data-tab="email" onclick="switchTab(this)">Email Preview</div>
-        <div class="tab" data-tab="feedback" onclick="switchTab(this)">Feedback</div>
-        <div class="tab" data-tab="log" onclick="switchTab(this)">Pipeline Log</div>
+      <!-- Market regime note -->
+      <div class="card" style="margin-bottom:16px;padding:14px 20px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="font-size:20px" id="regime-icon">📊</span>
+          <div>
+            <strong id="regime-title">—</strong>
+            <div style="color:var(--muted);font-size:13px;margin-top:2px" id="regime-notes">Run the pipeline to see market regime</div>
+          </div>
+        </div>
       </div>
 
-      <!-- Opportunities -->
+      <!-- Tabs -->
+      <div class="tabs">
+        <div class="tab active" data-tab="opportunities" onclick="switchTab(this)">🏆 Top Returns</div>
+        <div class="tab" data-tab="csp" onclick="switchTab(this)">💰 CSP</div>
+        <div class="tab" data-tab="value" onclick="switchTab(this)">🏦 Value</div>
+        <div class="tab" data-tab="etf" onclick="switchTab(this)">🌐 ETF</div>
+        <div class="tab" data-tab="drafts" onclick="switchTab(this)">Draft Orders</div>
+        <div class="tab" data-tab="blocked" onclick="switchTab(this)">Blocked</div>
+        <div class="tab" data-tab="email" onclick="switchTab(this)">Email</div>
+        <div class="tab" data-tab="feedback" onclick="switchTab(this)">Feedback</div>
+        <div class="tab" data-tab="log" onclick="switchTab(this)">Log</div>
+      </div>
+
+      <!-- Top Returns (all categories sorted by score) -->
       <div class="tab-content active" id="tab-opportunities">
         <div class="card">
+          <h2 style="margin-bottom:8px">🏆 Top Opportunities by Return — All Categories</h2>
           <table>
-            <thead><tr><th>Category</th><th>Symbol</th><th>Score</th><th>Rationale</th><th>Flags</th></tr></thead>
+            <thead><tr><th>#</th><th>Category</th><th>Symbol</th><th>Score</th><th>Key Metric</th><th>Rationale</th><th>Flags</th></tr></thead>
             <tbody id="opp-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CSP Opportunities -->
+      <div class="tab-content" id="tab-csp">
+        <div class="card">
+          <h2 style="margin-bottom:8px">💰 Cash-Secured Put Opportunities</h2>
+          <p style="color:var(--muted);font-size:12px;margin-bottom:12px">Sorted by annualized yield. Filtered by DTE, delta, premium, and earnings blackout.</p>
+          <table>
+            <thead><tr><th>#</th><th>Symbol</th><th>Strike</th><th>Expiry</th><th>DTE</th><th>Delta</th><th>Premium</th><th>Ann. Yield</th><th>Score</th><th>Flags</th></tr></thead>
+            <tbody id="csp-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Value Opportunities -->
+      <div class="tab-content" id="tab-value">
+        <div class="card">
+          <h2 style="margin-bottom:8px">🏦 Long-Term Value Picks</h2>
+          <p style="color:var(--muted);font-size:12px;margin-bottom:12px">Fundamentals screen: ROIC, revenue CAGR, FCF, P/E valuation discount.</p>
+          <table>
+            <thead><tr><th>#</th><th>Symbol</th><th>P/E</th><th>5yr Avg P/E</th><th>Discount</th><th>ROIC</th><th>Rev CAGR</th><th>Score</th><th>Flags</th></tr></thead>
+            <tbody id="value-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ETF Opportunities -->
+      <div class="tab-content" id="tab-etf">
+        <div class="card">
+          <h2 style="margin-bottom:8px">🌐 ETF Allocation & Rebalancing</h2>
+          <p style="color:var(--muted);font-size:12px;margin-bottom:12px">Drift detection vs target allocation. Includes rebalance suggestions.</p>
+          <table>
+            <thead><tr><th>#</th><th>Symbol</th><th>Name / Detail</th><th>Score</th><th>Rationale</th><th>Flags</th></tr></thead>
+            <tbody id="etf-table"></tbody>
           </table>
         </div>
       </div>
@@ -286,27 +337,107 @@
     function renderDashboard(data) {
       const r = data.report;
 
-      // Regime badge
+      // Regime badge + notes
       const badge = document.getElementById('regime-badge');
       badge.textContent = `${r.market_regime.regime} — ${r.market_regime.risk_posture}`;
       badge.className = `status-badge ${r.market_regime.regime.toLowerCase()}`;
+      document.getElementById('regime-title').textContent = `${r.market_regime.regime} Market — ${r.market_regime.risk_posture}`;
+      document.getElementById('regime-notes').textContent = r.market_regime.notes;
+      document.getElementById('regime-icon').textContent = r.market_regime.regime === 'Bull' ? '🟢' : r.market_regime.regime === 'Bear' ? '🔴' : '🟡';
 
       // Stats
       document.getElementById('stat-approved').textContent = r.approved_opportunities.length;
       document.getElementById('stat-blocked').textContent = r.blocked_opportunities.length;
       document.getElementById('stat-drafts').textContent = r.order_drafts.length;
 
-      // Opportunities table
+      // All opportunities (approved + blocked) sorted by score for Top Returns
+      const allOpps = [
+        ...r.approved_opportunities.map(o => ({...o, status: 'approved'})),
+        ...r.blocked_opportunities.map(b => ({...b.opportunity, status: 'blocked', block_reason: b.reason})),
+      ].sort((a, b) => b.score - a.score);
+
+      // ── Top Returns tab (all categories, ranked) ──
       const oppBody = document.getElementById('opp-table');
-      oppBody.innerHTML = r.approved_opportunities.map(o => `
-        <tr>
-          <td><span class="tag tag-${o.category.toLowerCase()}">${o.category}</span></td>
-          <td><strong>${o.symbol}</strong></td>
-          <td>${o.score}</td>
-          <td style="max-width:500px">${o.rationale}</td>
-          <td>${o.risk_flags.map(f => `<span class="tag tag-flag">${f}</span>`).join('') || '—'}</td>
-        </tr>
-      `).join('');
+      oppBody.innerHTML = allOpps.slice(0, 30).map((o, i) => {
+        const d = o.details || {};
+        let keyMetric = '';
+        if (o.category === 'CSP') keyMetric = d.annualized_yield ? `${d.annualized_yield}% ann.` : '';
+        else if (o.category === 'CC') keyMetric = d.if_called_return_pct ? `${d.if_called_return_pct}% if called` : '';
+        else if (o.category === 'VALUE') keyMetric = d.valuation_discount ? `${d.valuation_discount}% discount` : '';
+        else if (o.category === 'ETF') keyMetric = d.drift_pct ? `${Math.abs(d.drift_pct)}% drift` : (d.ytd_return ? `${d.ytd_return}% YTD` : '');
+        const statusIcon = o.status === 'approved' ? '✅' : '🚫';
+        const rowStyle = o.status === 'blocked' ? 'opacity:0.5' : '';
+        return `
+          <tr style="${rowStyle}" title="${o.status === 'blocked' ? o.block_reason : 'Approved'}">
+            <td>${i+1}</td>
+            <td><span class="tag tag-${o.category.toLowerCase()}">${o.category}</span> ${statusIcon}</td>
+            <td><strong>${o.symbol}</strong></td>
+            <td>${o.score}</td>
+            <td><strong>${keyMetric}</strong></td>
+            <td style="max-width:400px;font-size:12px">${o.rationale}</td>
+            <td>${o.risk_flags.map(f => '<span class="tag tag-flag">'+f+'</span>').join('') || '—'}</td>
+          </tr>`;
+      }).join('');
+
+      // ── CSP tab ──
+      const cspOpps = allOpps.filter(o => o.category === 'CSP');
+      const cspBody = document.getElementById('csp-table');
+      cspBody.innerHTML = cspOpps.map((o, i) => {
+        const d = o.details || {};
+        const statusIcon = o.status === 'approved' ? '✅' : '🚫';
+        const rowStyle = o.status === 'blocked' ? 'opacity:0.5' : '';
+        return `
+          <tr style="${rowStyle}" title="${o.status === 'blocked' ? (o.block_reason||'') : 'Approved'}">
+            <td>${i+1} ${statusIcon}</td>
+            <td><strong>${o.symbol}</strong></td>
+            <td>$${d.strike || '—'}</td>
+            <td>${d.expiry || '—'}</td>
+            <td>${d.dte || '—'}d</td>
+            <td>${d.delta ? d.delta.toFixed(2) : '—'}</td>
+            <td>$${d.premium ? d.premium.toFixed(2) : '—'}</td>
+            <td><strong>${d.annualized_yield || '—'}%</strong></td>
+            <td>${o.score}</td>
+            <td>${o.risk_flags.map(f => '<span class="tag tag-flag">'+f+'</span>').join('') || '—'}</td>
+          </tr>`;
+      }).join('') || '<tr><td colspan="10" style="text-align:center;color:var(--muted);padding:30px">No CSP opportunities in current run</td></tr>';
+
+      // ── Value tab ──
+      const valOpps = allOpps.filter(o => o.category === 'VALUE');
+      const valBody = document.getElementById('value-table');
+      valBody.innerHTML = valOpps.map((o, i) => {
+        const d = o.details || {};
+        const statusIcon = o.status === 'approved' ? '✅' : '🚫';
+        const rowStyle = o.status === 'blocked' ? 'opacity:0.5' : '';
+        return `
+          <tr style="${rowStyle}">
+            <td>${i+1} ${statusIcon}</td>
+            <td><strong>${o.symbol}</strong></td>
+            <td>${d.pe_ratio || '—'}</td>
+            <td>${d.pe_5y_avg || '—'}</td>
+            <td><strong>${d.valuation_discount || '—'}%</strong></td>
+            <td>${d.roic || '—'}%</td>
+            <td>${d.rev_cagr_5y || '—'}%</td>
+            <td>${o.score}</td>
+            <td>${o.risk_flags.map(f => '<span class="tag tag-flag">'+f+'</span>').join('') || '—'}</td>
+          </tr>`;
+      }).join('') || '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:30px">No value opportunities — filters may be too strict</td></tr>';
+
+      // ── ETF tab ──
+      const etfOpps = allOpps.filter(o => o.category === 'ETF');
+      const etfBody = document.getElementById('etf-table');
+      etfBody.innerHTML = etfOpps.map((o, i) => {
+        const statusIcon = o.status === 'approved' ? '✅' : '🚫';
+        const rowStyle = o.status === 'blocked' ? 'opacity:0.5' : '';
+        return `
+          <tr style="${rowStyle}">
+            <td>${i+1} ${statusIcon}</td>
+            <td><strong>${o.symbol}</strong></td>
+            <td style="font-size:12px">${o.rationale.split('.')[0]}</td>
+            <td>${o.score}</td>
+            <td style="font-size:12px">${o.rationale}</td>
+            <td>${o.risk_flags.map(f => '<span class="tag tag-flag">'+f+'</span>').join('') || '—'}</td>
+          </tr>`;
+      }).join('') || '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:30px">No ETF insights</td></tr>';
 
       // Draft orders
       const draftsBody = document.getElementById('drafts-table');
