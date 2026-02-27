@@ -96,6 +96,16 @@
     /* Quick commands */
     .quick-cmds { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
     .quick-cmd { font-size: 11px; padding: 4px 10px; border-radius: 4px; background: var(--bg); border: 1px solid var(--border); color: var(--muted); cursor: pointer; }
+    /* Toggle switch */
+    .toggle-wrap { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .toggle-label { color: var(--muted); }
+    .toggle-label.active { color: var(--green); font-weight: 600; }
+    .toggle { position: relative; width: 44px; height: 24px; cursor: pointer; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle .slider { position: absolute; inset: 0; background: var(--border); border-radius: 12px; transition: 0.2s; }
+    .toggle .slider::before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; bottom: 3px; background: var(--text); border-radius: 50%; transition: 0.2s; }
+    .toggle input:checked + .slider { background: var(--green); }
+    .toggle input:checked + .slider::before { transform: translateX(20px); }
     .quick-cmd:hover { color: var(--accent); border-color: var(--accent); }
   </style>
 </head>
@@ -103,6 +113,14 @@
   <header>
     <h1>📊 <span>WheelAlpha</span> Dashboard</h1>
     <div class="header-right">
+      <div class="toggle-wrap">
+        <span class="toggle-label" id="label-mock">Mock</span>
+        <label class="toggle">
+          <input type="checkbox" id="live-toggle" onchange="updateModeLabel()">
+          <span class="slider"></span>
+        </label>
+        <span class="toggle-label" id="label-live">Live</span>
+      </div>
       <span class="status-badge" id="regime-badge">No data</span>
       <button class="btn btn-primary" id="run-btn" onclick="runPipeline()">▶ Run Pipeline</button>
     </div>
@@ -204,10 +222,21 @@
   <script>
     let currentReport = null;
 
+    function getMode() {
+      return document.getElementById('live-toggle').checked ? 'live' : 'mock';
+    }
+
+    function updateModeLabel() {
+      const isLive = document.getElementById('live-toggle').checked;
+      document.getElementById('label-mock').className = 'toggle-label' + (isLive ? '' : ' active');
+      document.getElementById('label-live').className = 'toggle-label' + (isLive ? ' active' : '');
+    }
+
     async function runPipeline() {
       const btn = document.getElementById('run-btn');
+      const mode = getMode();
       btn.disabled = true;
-      btn.textContent = '⏳ Running...';
+      btn.textContent = mode === 'live' ? '🔴 Fetching live data...' : '⏳ Running...';
 
       document.getElementById('empty-state').style.display = 'none';
       document.getElementById('dashboard').style.display = 'block';
@@ -218,7 +247,11 @@
       log.innerHTML = '<span class="info">🚀 Starting daily pipeline...</span>\n';
 
       try {
-        const res = await fetch('/api/run', { method: 'POST' });
+        const res = await fetch('/api/run', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mode }),
+        });
         const data = await res.json();
 
         if (!res.ok) throw new Error(data.error);
