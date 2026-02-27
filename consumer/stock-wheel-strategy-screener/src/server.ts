@@ -86,6 +86,7 @@ app.get('/api/runs/:date', (req, res) => {
 });
 
 const PORT = process.env.PORT || 4001;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`\n🎯 WheelAlpha Dashboard → http://localhost:${PORT}\n`);
 });
+server.timeout = 300_000; // 5 min for large S&P 500 live scans

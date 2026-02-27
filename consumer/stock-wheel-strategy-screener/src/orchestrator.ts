@@ -22,6 +22,7 @@ import {
   getLiveQuotes, getLiveVix, getLiveOptionsChain,
   getLiveFundamentals, getLiveEtfData, getDefaultPortfolio,
   enrichPortfolioWithLivePrices, getLiveEarnings,
+  preScreenWheelCandidates, getLiveBatchOptionsChains,
 } from './data/live-provider';
 
 export type DataMode = 'mock' | 'live';
@@ -40,8 +41,7 @@ export async function runDailyPipeline(mode: DataMode = 'mock'): Promise<{ repor
   console.log('\n📊 [1/7] Market Regime Agent...');
   let spyQuote, vix;
   if (mode === 'live') {
-    const allSymbols = [...config.universe.universes.wheel_universe, 'SPY'];
-    const quotes = await getLiveQuotes(allSymbols);
+    const quotes = await getLiveQuotes(['SPY']);
     spyQuote = quotes.find((q) => q.symbol === 'SPY')!;
     vix = await getLiveVix();
   } else {
@@ -57,10 +57,14 @@ export async function runDailyPipeline(mode: DataMode = 'mock'): Promise<{ repor
   const wheelTickers = config.universe.universes.wheel_universe;
   const optionsChains: Record<string, OptionContract[]> = {};
   if (mode === 'live') {
-    for (const t of wheelTickers) {
-      console.log(`   Fetching options for ${t}...`);
-      optionsChains[t] = await getLiveOptionsChain(t);
-    }
+    // Phase 1: pre-screen all S&P 500 tickers by liquidity
+    console.log(`   Scanning ${wheelTickers.length} S&P 500 stocks...`);
+    const { candidates } = await preScreenWheelCandidates(wheelTickers, 80);
+
+    // Phase 2: fetch options chains in parallel for top candidates
+    console.log(`   Fetching options for ${candidates.length} top candidates (8 parallel)...`);
+    const batchChains = await getLiveBatchOptionsChains(candidates, 8);
+    Object.assign(optionsChains, batchChains);
   } else {
     for (const t of wheelTickers) {
       optionsChains[t] = getMockOptionsChain(t);

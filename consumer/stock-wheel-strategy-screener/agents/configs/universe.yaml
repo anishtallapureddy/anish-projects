@@ -1,24 +1,49 @@
 universes:
-  # ── Wheel-eligible: liquid large-caps with active options markets ──
+  # ── Wheel-eligible: S&P 500 stocks with liquid options ──
   wheel_universe:
-    # Technology
+    # Technology (~30 stocks)
     - AAPL
     - MSFT
     - NVDA
     - AVGO
+    - ORCL
     - CRM
     - AMD
     - ADBE
-    - INTC
     - CSCO
-    - ORCL
-    # Communication Services
+    - INTC
+    - TXN
+    - QCOM
+    - AMAT
+    - NOW
+    - INTU
+    - LRCX
+    - MU
+    - KLAC
+    - SNPS
+    - CDNS
+    - MRVL
+    - ADI
+    - FTNT
+    - PANW
+    - NXPI
+    - ON
+    - GEN
+    - MPWR
+    - ANSS
+    - KEYS
+    # Communication Services (~10)
     - GOOGL
     - META
     - NFLX
     - DIS
     - CMCSA
-    # Consumer Discretionary
+    - T
+    - VZ
+    - TMUS
+    - CHTR
+    - EA
+    # Consumer Discretionary (~20)
     - AMZN
     - TSLA
     - HD
@@ -26,7 +51,20 @@ universes:
     - NKE
     - SBUX
     - LOW
-    # Financials
+    - TJX
+    - BKNG
+    - CMG
+    - ORLY
+    - AZO
+    - ROST
+    - DHI
+    - LEN
+    - F
+    - GM
+    - ABNB
+    - MAR
+    - HLT
+    # Financials (~25)
     - JPM
     - V
     - MA
@@ -35,7 +73,24 @@ universes:
     - MS
     - BLK
     - AXP
-    # Healthcare
+    - C
+    - WFC
+    - SCHW
+    - PNC
+    - USB
+    - TFC
+    - ICE
+    - CME
+    - CB
+    - AON
+    - MMC
+    - MCO
+    - SPGI
+    - MSCI
+    - AIG
+    - MET
+    - PRU
+    # Healthcare (~25)
     - UNH
     - JNJ
     - LLY
@@ -43,71 +98,342 @@ universes:
     - PFE
     - MRK
     - TMO
-    # Industrials
+    - ABT
+    - MDT
+    - AMGN
+    - GILD
+    - BMY
+    - ISRG
+    - SYK
+    - BSX
+    - CI
+    - ELV
+    - CVS
+    - HCA
+    - ZTS
+    - VRTX
+    - REGN
+    - DXCM
+    - IDXX
+    - BDX
+    # Industrials (~25)
     - CAT
     - BA
     - UPS
     - HON
     - GE
     - RTX
-    # Energy
+    - DE
+    - LMT
+    - NOC
+    - GD
+    - WM
+    - RSG
+    - CSX
+    - UNP
+    - NSC
+    - FDX
+    - EMR
+    - ITW
+    - ETN
+    - PH
+    - PCAR
+    - TT
+    - CTAS
+    - FAST
+    - ROK
+    # Energy (~15)
     - XOM
     - CVX
     - COP
-    # Consumer Staples
+    - EOG
+    - SLB
+    - MPC
+    - PSX
+    - VLO
+    - OXY
+    - PXD
+    - DVN
+    - HAL
+    - FANG
+    - HES
+    - KMI
+    # Consumer Staples (~15)
     - PG
     - KO
     - PEP
     - COST
     - WMT
+    - PM
+    - MO
+    - CL
+    - MDLZ
+    - GIS
+    - K
+    - SJM
+    - STZ
+    - HSY
+    - KHC
+    # Materials (~10)
+    - LIN
+    - APD
+    - SHW
+    - ECL
+    - FCX
+    - NEM
+    - NUE
+    - DOW
+    - DD
+    - VMC
+    # Utilities (~8)
+    - NEE
+    - DUK
+    - SO
+    - D
+    - SRE
+    - AEP
+    - EXC
+    - XEL
+    # Real Estate (~8)
+    - PLD
+    - AMT
+    - CCI
+    - EQIX
+    - PSA
+    - SPG
+    - O
+    - WELL
 
-  # ── Value candidates: broader screen for undervalued quality ──
+  # ── Value candidates ──
   value_universe:
+    # Technology (~30 stocks)
+    - AAPL
     - MSFT
+    - NVDA
+    - AVGO
+    - ORCL
+    - CRM
+    - AMD
+    - ADBE
+    - CSCO
+    - INTC
+    - TXN
+    - QCOM
+    - AMAT
+    - NOW
+    - INTU
+    - LRCX
+    - MU
+    - KLAC
+    - SNPS
+    - CDNS
+    - MRVL
+    - ADI
+    - FTNT
+    - PANW
+    - NXPI
+    - ON
+    - GEN
+    - MPWR
+    - ANSS
+    - KEYS
+    # Communication Services (~10)
     - GOOGL
     - META
-    - AMZN
-    - INTC
-    - CSCO
-    - CMCSA
+    - NFLX
     - DIS
-    - PFE
+    - CMCSA
+    - T
+    - VZ
+    - TMUS
+    - CHTR
+    - EA
+    # Consumer Discretionary (~20)
+    - AMZN
+    - TSLA
+    - HD
+    - MCD
+    - NKE
+    - SBUX
+    - LOW
+    - TJX
+    - BKNG
+    - CMG
+    - ORLY
+    - AZO
+    - ROST
+    - DHI
+    - LEN
+    - F
+    - GM
+    - ABNB
+    - MAR
+    - HLT
+    # Financials (~25)
+    - JPM
+    - V
+    - MA
     - BAC
     - GS
-    - JPM
+    - MS
+    - BLK
+    - AXP
+    - C
+    - WFC
+    - SCHW
+    - PNC
+    - USB
+    - TFC
+    - ICE
+    - CME
+    - CB
+    - AON
+    - MMC
+    - MCO
+    - SPGI
+    - MSCI
+    - AIG
+    - MET
+    - PRU
+    # Healthcare (~25)
+    - UNH
     - JNJ
+    - LLY
     - ABBV
+    - PFE
     - MRK
+    - TMO
+    - ABT
+    - MDT
+    - AMGN
+    - GILD
+    - BMY
+    - ISRG
+    - SYK
+    - BSX
+    - CI
+    - ELV
+    - CVS
+    - HCA
+    - ZTS
+    - VRTX
+    - REGN
+    - DXCM
+    - IDXX
+    - BDX
+    # Industrials (~25)
     - CAT
     - BA
-    - NKE
-    - HD
-    - LOW
+    - UPS
+    - HON
+    - GE
+    - RTX
+    - DE
+    - LMT
+    - NOC
+    - GD
+    - WM
+    - RSG
+    - CSX
+    - UNP
+    - NSC
+    - FDX
+    - EMR
+    - ITW
+    - ETN
+    - PH
+    - PCAR
+    - TT
+    - CTAS
+    - FAST
+    - ROK
+    # Energy (~15)
     - XOM
     - CVX
     - COP
+    - EOG
+    - SLB
+    - MPC
+    - PSX
+    - VLO
+    - OXY
+    - PXD
+    - DVN
+    - HAL
+    - FANG
+    - HES
+    - KMI
+    # Consumer Staples (~15)
     - PG
     - KO
+    - PEP
+    - COST
+    - WMT
+    - PM
+    - MO
+    - CL
+    - MDLZ
+    - GIS
+    - K
+    - SJM
+    - STZ
+    - HSY
+    - KHC
+    # Materials (~10)
+    - LIN
+    - APD
+    - SHW
+    - ECL
+    - FCX
+    - NEM
+    - NUE
+    - DOW
+    - DD
+    - VMC
+    # Utilities (~8)
+    - NEE
+    - DUK
+    - SO
+    - D
+    - SRE
+    - AEP
+    - EXC
+    - XEL
+    # Real Estate (~8)
+    - PLD
+    - AMT
+    - CCI
+    - EQIX
+    - PSA
+    - SPG
+    - O
+    - WELL
 
   # ── ETF core + satellite ──
   etf_universe:
-    # Core index
-    - VTI    # Total US market
-    - VOO    # S&P 500
-    - QQQ    # Nasdaq 100
-    # Dividend / income
-    - SCHD   # US dividend equity
-    - VYM    # High dividend yield
-    - JEPI   # JPM equity premium income
-    # Bonds / fixed income
-    - IEF    # 7-10yr Treasury
-    - BND    # Total bond market
-    - TLT    # 20+ yr Treasury
-    # Alternatives
-    - GLD    # Gold
-    - IAU    # Gold (lower ER)
-    # International
-    - VXUS   # Total international
+    - VTI
+    - VOO
+    - QQQ
+    - SCHD
+    - VYM
+    - JEPI
+    - IEF
+    - BND
+    - TLT
+    - GLD
+    - IAU
+    - VXUS
+    - XLK
+    - XLF
+    - XLE
+    - XLV
+    - XLI
+    - XLRE
+    - XLU
+    - XLP
+    - XLY
+    - XLB
+    - XLC
 
 sectors:
   # Technology
@@ -115,18 +441,43 @@ sectors:
   MSFT: Technology
   NVDA: Technology
   AVGO: Technology
+  ORCL: Technology
   CRM: Technology
   AMD: Technology
   ADBE: Technology
-  INTC: Technology
   CSCO: Technology
-  ORCL: Technology
+  INTC: Technology
+  TXN: Technology
+  QCOM: Technology
+  AMAT: Technology
+  NOW: Technology
+  INTU: Technology
+  LRCX: Technology
+  MU: Technology
+  KLAC: Technology
+  SNPS: Technology
+  CDNS: Technology
+  MRVL: Technology
+  ADI: Technology
+  FTNT: Technology
+  PANW: Technology
+  NXPI: Technology
+  ON: Technology
+  GEN: Technology
+  MPWR: Technology
+  ANSS: Technology
+  KEYS: Technology
   # Communication Services
   GOOGL: Communication Services
   META: Communication Services
   NFLX: Communication Services
   DIS: Communication Services
   CMCSA: Communication Services
+  T: Communication Services
+  VZ: Communication Services
+  TMUS: Communication Services
+  CHTR: Communication Services
+  EA: Communication Services
   # Consumer Discretionary
   AMZN: Consumer Discretionary
   TSLA: Consumer Discretionary
@@ -135,6 +486,19 @@ sectors:
   NKE: Consumer Discretionary
   SBUX: Consumer Discretionary
   LOW: Consumer Discretionary
+  TJX: Consumer Discretionary
+  BKNG: Consumer Discretionary
+  CMG: Consumer Discretionary
+  ORLY: Consumer Discretionary
+  AZO: Consumer Discretionary
+  ROST: Consumer Discretionary
+  DHI: Consumer Discretionary
+  LEN: Consumer Discretionary
+  F: Consumer Discretionary
+  GM: Consumer Discretionary
+  ABNB: Consumer Discretionary
+  MAR: Consumer Discretionary
+  HLT: Consumer Discretionary
   # Financials
   JPM: Financials
   V: Financials
@@ -144,6 +508,23 @@ sectors:
   MS: Financials
   BLK: Financials
   AXP: Financials
+  C: Financials
+  WFC: Financials
+  SCHW: Financials
+  PNC: Financials
+  USB: Financials
+  TFC: Financials
+  ICE: Financials
+  CME: Financials
+  CB: Financials
+  AON: Financials
+  MMC: Financials
+  MCO: Financials
+  SPGI: Financials
+  MSCI: Financials
+  AIG: Financials
+  MET: Financials
+  PRU: Financials
   # Healthcare
   UNH: Healthcare
   JNJ: Healthcare
@@ -152,6 +533,24 @@ sectors:
   PFE: Healthcare
   MRK: Healthcare
   TMO: Healthcare
+  ABT: Healthcare
+  MDT: Healthcare
+  AMGN: Healthcare
+  GILD: Healthcare
+  BMY: Healthcare
+  ISRG: Healthcare
+  SYK: Healthcare
+  BSX: Healthcare
+  CI: Healthcare
+  ELV: Healthcare
+  CVS: Healthcare
+  HCA: Healthcare
+  ZTS: Healthcare
+  VRTX: Healthcare
+  REGN: Healthcare
+  DXCM: Healthcare
+  IDXX: Healthcare
+  BDX: Healthcare
   # Industrials
   CAT: Industrials
   BA: Industrials
@@ -159,16 +558,86 @@ sectors:
   HON: Industrials
   GE: Industrials
   RTX: Industrials
+  DE: Industrials
+  LMT: Industrials
+  NOC: Industrials
+  GD: Industrials
+  WM: Industrials
+  RSG: Industrials
+  CSX: Industrials
+  UNP: Industrials
+  NSC: Industrials
+  FDX: Industrials
+  EMR: Industrials
+  ITW: Industrials
+  ETN: Industrials
+  PH: Industrials
+  PCAR: Industrials
+  TT: Industrials
+  CTAS: Industrials
+  FAST: Industrials
+  ROK: Industrials
   # Energy
   XOM: Energy
   CVX: Energy
   COP: Energy
+  EOG: Energy
+  SLB: Energy
+  MPC: Energy
+  PSX: Energy
+  VLO: Energy
+  OXY: Energy
+  PXD: Energy
+  DVN: Energy
+  HAL: Energy
+  FANG: Energy
+  HES: Energy
+  KMI: Energy
   # Consumer Staples
   PG: Consumer Staples
   KO: Consumer Staples
   PEP: Consumer Staples
   COST: Consumer Staples
   WMT: Consumer Staples
+  PM: Consumer Staples
+  MO: Consumer Staples
+  CL: Consumer Staples
+  MDLZ: Consumer Staples
+  GIS: Consumer Staples
+  K: Consumer Staples
+  SJM: Consumer Staples
+  STZ: Consumer Staples
+  HSY: Consumer Staples
+  KHC: Consumer Staples
+  # Materials
+  LIN: Materials
+  APD: Materials
+  SHW: Materials
+  ECL: Materials
+  FCX: Materials
+  NEM: Materials
+  NUE: Materials
+  DOW: Materials
+  DD: Materials
+  VMC: Materials
+  # Utilities
+  NEE: Utilities
+  DUK: Utilities
+  SO: Utilities
+  D: Utilities
+  SRE: Utilities
+  AEP: Utilities
+  EXC: Utilities
+  XEL: Utilities
+  # Real Estate
+  PLD: Real Estate
+  AMT: Real Estate
+  CCI: Real Estate
+  EQIX: Real Estate
+  PSA: Real Estate
+  SPG: Real Estate
+  O: Real Estate
+  WELL: Real Estate
   # ETFs
   VTI: ETF
   VOO: ETF
@@ -182,3 +651,14 @@ sectors:
   GLD: ETF
   IAU: ETF
   VXUS: ETF
+  XLK: ETF
+  XLF: ETF
+  XLE: ETF
+  XLV: ETF
+  XLI: ETF
+  XLRE: ETF
+  XLU: ETF
+  XLP: ETF
+  XLY: ETF
+  XLB: ETF
+  XLC: ETF
