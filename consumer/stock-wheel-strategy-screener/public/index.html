@@ -137,7 +137,11 @@
     <!-- Dashboard content (hidden until first run) -->
     <div id="dashboard" style="display:none">
       <!-- Stats row -->
-      <div class="grid-3" id="stats-row">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px" id="stats-row">
+        <div class="card">
+          <h2>Stocks Scanned</h2>
+          <div class="stat blue" id="stat-scanned">0</div>
+        </div>
         <div class="card">
           <h2>Approved</h2>
           <div class="stat green" id="stat-approved">0</div>
@@ -346,6 +350,11 @@
       document.getElementById('regime-icon').textContent = r.market_regime.regime === 'Bull' ? '🟢' : r.market_regime.regime === 'Bear' ? '🔴' : '🟡';
 
       // Stats
+      const allUnique = new Set([
+        ...r.approved_opportunities.map(o => o.symbol),
+        ...r.blocked_opportunities.map(b => b.opportunity.symbol),
+      ]);
+      document.getElementById('stat-scanned').textContent = allUnique.size;
       document.getElementById('stat-approved').textContent = r.approved_opportunities.length;
       document.getElementById('stat-blocked').textContent = r.blocked_opportunities.length;
       document.getElementById('stat-drafts').textContent = r.order_drafts.length;
