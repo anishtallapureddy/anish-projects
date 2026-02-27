@@ -91,7 +91,20 @@ const policies = [
 let gatewayConfig = {
   rateLimiting: { enabled: true, requestsPerMinute: 60, tokensPerMinute: 100000 },
   semanticCaching: { enabled: true, ttlSeconds: 300 },
-  contentSafety: { enabled: true, blockedPatterns: ['harm', 'violence', 'exploit', 'illegal', 'hack someone', 'bypass security'] },
+  contentSafety: {
+    enabled: true,
+    rules: [
+      { pattern: 'harm', severity: 'block' },
+      { pattern: 'violence', severity: 'block' },
+      { pattern: 'exploit', severity: 'block' },
+      { pattern: 'illegal', severity: 'block' },
+      { pattern: 'hack someone', severity: 'block' },
+      { pattern: 'bypass security', severity: 'block' },
+      { pattern: 'competitor pricing', severity: 'warn' },
+      { pattern: 'confidential', severity: 'warn' },
+      { pattern: 'internal only', severity: 'info' },
+    ]
+  },
   piiMasking: { enabled: true, patterns: ['email', 'phone', 'ssn', 'credit_card'] },
   loadBalancing: { enabled: true, strategy: 'round-robin' },
 };
@@ -101,14 +114,27 @@ const semanticCache = new Map();
 let rrIndex = 0;
 
 function checkContentSafety(messages) {
-  if (!gatewayConfig.contentSafety.enabled) return { safe: true, patternsChecked: 0 };
+  if (!gatewayConfig.contentSafety.enabled) return { safe: true, severity: null, patternsChecked: 0 };
   const text = messages.map(m => m.content).join(' ').toLowerCase();
-  for (const pattern of gatewayConfig.contentSafety.blockedPatterns) {
-    if (text.includes(pattern.toLowerCase())) {
-      return { safe: false, reason: `Content blocked: matched pattern "${pattern}"`, patternsChecked: gatewayConfig.contentSafety.blockedPatterns.length };
+  const rules = gatewayConfig.contentSafety.rules || [];
+  let highestSeverity = null;
+  let matchedPattern = null;
+  const severityRank = { info: 1, warn: 2, block: 3 };
+
+  for (const rule of rules) {
+    if (text.includes(rule.pattern.toLowerCase())) {
+      const rank = severityRank[rule.severity] || 0;
+      if (!highestSeverity || rank > severityRank[highestSeverity]) {
+        highestSeverity = rule.severity;
+        matchedPattern = rule.pattern;
+      }
     }
   }
-  return { safe: true, patternsChecked: gatewayConfig.contentSafety.blockedPatterns.length };
+
+  if (highestSeverity === 'block') {
+    return { safe: false, severity: 'block', reason: `Content blocked: matched pattern "${matchedPattern}"`, patternsChecked: rules.length };
+  }
+  return { safe: true, severity: highestSeverity, matchedPattern, patternsChecked: rules.length };
 }
 
 function checkPII(text) {
@@ -325,7 +351,8 @@ app.post('/api/chat/completions', async (req, res) => {
       deployment: target.id,
       region: target.region,
       latencyMs: totalLatency,
-      contentSafety: 'PASSED',
+      contentSafety: safety.severity === 'warn' ? 'WARNING' : 'PASSED',
+      contentSafetyDetail: safety.severity ? { severity: safety.severity, pattern: safety.matchedPattern } : null,
       piiFields: pii.found,
       cached: false,
       model: target.model,
