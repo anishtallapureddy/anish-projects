@@ -1,0 +1,18 @@
+# CODEOWNERS — Anish Projects Monorepo
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything
+* @anishtallapureddy
+
+# AI & platform projects
+/ai/ @anishtallapureddy
+
+# Consumer & fintech projects
+/consumer/ @anishtallapureddy
+
+# PM portfolio — documentation and templates
+/pm-portfolio/ @anishtallapureddy
+
+# Infrastructure and CI
+/.github/ @anishtallapureddy
+/.gitignore @anishtallapureddy
