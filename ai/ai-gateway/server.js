@@ -131,11 +131,15 @@ function checkRateLimit(apiKey) {
     rateLimitBuckets[key] = { count: 0, tokens: 0, windowStart: now };
   }
   const bucket = rateLimitBuckets[key];
-  if (bucket.count >= gatewayConfig.rateLimiting.requestsPerMinute) {
-    return { allowed: false, reason: `Rate limit exceeded: ${gatewayConfig.rateLimiting.requestsPerMinute} RPM` };
+  const limit = gatewayConfig.rateLimiting.requestsPerMinute;
+  const remaining = Math.max(0, limit - bucket.count);
+  const resetTime = Math.ceil((bucket.windowStart + 60000) / 1000);
+
+  if (bucket.count >= limit) {
+    return { allowed: false, reason: `Rate limit exceeded: ${limit} RPM`, headers: { limit, remaining: 0, reset: resetTime } };
   }
   bucket.count++;
-  return { allowed: true, bucket };
+  return { allowed: true, bucket, headers: { limit, remaining: remaining - 1, reset: resetTime } };
 }
 
 // ═══════════════════════════════════════════════════════
@@ -247,11 +251,18 @@ app.post('/api/chat/completions', async (req, res) => {
 
   // 3. Rate Limiting
   const rateCheck = checkRateLimit(apiKey);
+  const rateLimitHeaders = rateCheck.headers || {};
+  if (rateLimitHeaders.limit) {
+    res.set('X-RateLimit-Limit', String(rateLimitHeaders.limit));
+    res.set('X-RateLimit-Remaining', String(rateLimitHeaders.remaining));
+    res.set('X-RateLimit-Reset', String(rateLimitHeaders.reset));
+  }
   if (!rateCheck.allowed) {
     const latency = Date.now() - startTime;
     recordRequest({ model: requestedModel, status: 'rate_limited', latencyMs: latency, rateLimited: true });
     const pol = policies.find(p => p.id === 'pol-rate-limit');
     if (pol) pol.violations++;
+    res.set('Retry-After', '60');
     return res.status(429).json({
       error: { message: rateCheck.reason, type: 'rate_limit_error' },
       _gateway: { latencyMs: latency, contentSafety: 'PASSED', rateLimited: true }
