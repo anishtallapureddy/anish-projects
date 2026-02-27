@@ -1,7 +1,7 @@
 import express from 'express';
 import * as path from 'path';
 import * as fs from 'fs';
-import { runDailyPipeline } from './orchestrator';
+import { runDailyPipeline, DataMode } from './orchestrator';
 import { runFeedbackAgent } from './agents/feedback';
 
 const app = express();
@@ -13,14 +13,15 @@ let latestResult: { report: any; email: string } | null = null;
 let pipelineRunning = false;
 
 // Run the daily pipeline
-app.post('/api/run', async (_req, res) => {
+app.post('/api/run', async (req, res) => {
   if (pipelineRunning) {
     return res.status(409).json({ error: 'Pipeline already running' });
   }
   pipelineRunning = true;
+  const mode: DataMode = req.body?.mode === 'live' ? 'live' : 'mock';
   try {
-    latestResult = await runDailyPipeline();
-    res.json({ success: true, report: latestResult.report, email: latestResult.email });
+    latestResult = await runDailyPipeline(mode);
+    res.json({ success: true, mode, report: latestResult.report, email: latestResult.email });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   } finally {
