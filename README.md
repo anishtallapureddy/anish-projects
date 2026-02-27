@@ -1,84 +1,62 @@
-# Anish Tallapureddy — PM Portfolio
+# anish-projects
 
-**Product Manager building governance, developer platform, and AI infrastructure products.**  
-I ship enterprise-grade systems that make complex AI safe, observable, and easy to adopt — from gateway proxies to tool catalogs to cost controls.
+A monorepo of things I'm building — AI infrastructure, fintech tools, and the product thinking behind them.
 
----
-
-## Projects
-
-| # | Project | Problem | What I Shipped | Skills Demonstrated | Link |
-|---|---------|---------|----------------|---------------------|------|
-| 1 | **[AI Gateway Governance](./pm-portfolio/projects/01-ai-gateway-governance/)** | Enterprises have no unified control plane for AI models, tools, and agents — governance is fragmented across services | PRD · 32 user stories · architecture · 50+ metrics · 4-phase rollout · 10 ADRs · demo script · [live prototype](./ai/ai-gateway/) | System design · Policy architecture · Cross-team alignment · Prototyping | [→ Docs](./pm-portfolio/projects/01-ai-gateway-governance/) |
-| 2 | **[Cost Segregation SaaS](./pm-portfolio/projects/02-cost-segregation-saas/)** | CPAs spend $5K–$15K and 4–6 weeks on cost segregation studies that could be automated | PRD · user scenarios · metrics · risk register · rollout plan · 7 ADRs · [working MVP](./consumer/cost-segregation/) | 0→1 product spec · IRS domain modeling · Full-stack shipping |  [→ Docs](./pm-portfolio/projects/02-cost-segregation-saas/) |
-| 3 | **[MCP Tool Catalog & Discovery](./pm-portfolio/projects/03-tool-catalog-discovery/)** | AI agents can't find, evaluate, or safely connect to enterprise tools — discovery is manual and ungoverned | Interview guide · 12 synthesized insights · opportunity tree · PRD · metrics · tradeoffs · decision log | Customer discovery · Search/catalog UX · Developer experience | [→ Docs](./pm-portfolio/projects/03-tool-catalog-discovery/) |
-| 4 | **[AI Observability & Cost Controls](./pm-portfolio/projects/04-observability-cost-controls/)** | Platform teams can't attribute AI costs to teams/agents or detect anomalies before budgets blow | Hypothesis · experiment design · simulated results · decision · PRD · metrics · rollout plan | Experiment-driven iteration · Data analysis · Cost optimization | [→ Docs](./pm-portfolio/projects/04-observability-cost-controls/) |
-| 5 | **[API Gateway Pricing Tiers](./pm-portfolio/projects/05-gateway-pricing-tiers/)** | Current flat pricing doesn't segment by usage pattern — small teams overpay, enterprises under-commit | Pricing model · competitive analysis · segment positioning · launch checklist · GTM plan | Pricing/packaging · GTM strategy · Business modeling | [→ Docs](./pm-portfolio/projects/05-gateway-pricing-tiers/) |
+I'm a PM at Microsoft working on Azure API Management and AI Gateway. This repo is where I prototype ideas, document product decisions, and ship side projects.
 
 ---
 
-## Strategic Vision
+## 🔧 Live Projects
 
-**[AI Governance Platform: 3-Year Strategy](./pm-portfolio/vision.md)** — My thesis on where AI governance is heading and how these five projects compound into a platform over three years. Includes investment thesis, headcount allocation, and quantified success criteria.
+### [AI Gateway](./ai/ai-gateway/)
+A working prototype of an AI governance gateway — rate limiting, content safety, semantic caching, PII detection, MCP tool routing, and load balancing across model deployments. Node.js + Express backend with a 23-page dashboard.
 
----
+```bash
+cd ai/ai-gateway && npm install && npm start
+```
 
-## Signature Strengths
+### [Cost Segregation](./consumer/cost-segregation/)
+A fintech SaaS that generates IRS-compliant cost segregation reports for residential properties. Automates what CPAs charge $5K–$15K for. Next.js + TypeScript + SQLite.
 
-- **Technical depth** — I prototype to learn. Every project above has a working demo or simulation, not just docs.
-- **Governance-first thinking** — I design for the admin and the auditor, not just the happy-path developer.
-- **Cross-functional execution** — I aligned 5 teams in 3 weeks using prototype-first alignment. [Read the case study →](./pm-portfolio/case-studies/ai-gateway-stakeholder-alignment.md)
-- **Data-driven decisions** — Hypotheses before features. Metrics before launch. Experiments before bets.
-- **Prioritization discipline** — I kill features as deliberately as I ship them. [See what I killed and why →](./pm-portfolio/projects/01-ai-gateway-governance/kill-list.md)
-
----
-
-## How I Work
-
-**Start with the problem, not the solution.** I run customer discovery before writing a single spec line. If I can't articulate the pain in one sentence, I'm not ready to build.
-
-**Prototype to align.** Decks create opinions; working demos create conviction. I build throwaway prototypes to get stakeholder alignment faster than any review cycle.
-
-**Write decisions down.** Every project has a decision log. When someone asks "why did we do it this way?" six months later, the answer is already documented.
-
-**Ship in phases with kill criteria.** Every rollout plan has go/no-go gates. If the data says stop, we stop. No sunk-cost shipping.
-
-**Principles:** [Product Principles](./pm-portfolio/about/principles.md) · [Bio](./pm-portfolio/about/bio.md) · [3-Year Vision](./pm-portfolio/vision.md)
+```bash
+cd consumer/cost-segregation && npm install && npm run dev
+```
 
 ---
 
-## Repository Structure
+## 📋 Product Work
+
+Each project has full PM documentation — PRDs, decision logs, metrics plans, rollout strategies. This is how I think through products, not just build them.
+
+| Project | What it is | Docs |
+|---------|-----------|------|
+| **AI Gateway Governance** | System design for a unified AI governance layer — models, tools (MCP), and agents | [PRD](./pm-portfolio/projects/01-ai-gateway-governance/prd.md) · [Architecture](./pm-portfolio/projects/01-ai-gateway-governance/architecture.md) · [Decisions](./pm-portfolio/projects/01-ai-gateway-governance/decision-log.md) · [What I cut](./pm-portfolio/projects/01-ai-gateway-governance/kill-list.md) |
+| **Cost Segregation SaaS** | 0→1 product spec for IRS-compliant tax automation | [PRD](./pm-portfolio/projects/02-cost-segregation-saas/README.md) · [Scenarios](./pm-portfolio/projects/02-cost-segregation-saas/user-scenarios.md) · [Rollout](./pm-portfolio/projects/02-cost-segregation-saas/rollout-plan.md) |
+| **MCP Tool Catalog** | Customer discovery for enterprise AI tool governance | [Interviews](./pm-portfolio/projects/03-tool-catalog-discovery/interview-guide.md) · [Insights](./pm-portfolio/projects/03-tool-catalog-discovery/insights.md) · [PRD](./pm-portfolio/projects/03-tool-catalog-discovery/prd.md) |
+| **AI Observability & Cost Controls** | Experiment-driven approach to AI cost attribution | [Experiment](./pm-portfolio/projects/04-observability-cost-controls/experiment-plan.md) · [Results](./pm-portfolio/projects/04-observability-cost-controls/experiment-results.md) |
+| **Gateway Pricing Tiers** | Usage-based pricing model with competitive analysis | [Pricing Model](./pm-portfolio/projects/05-gateway-pricing-tiers/pricing-model.md) · [GTM Plan](./pm-portfolio/projects/05-gateway-pricing-tiers/gtm-plan.md) |
+
+**More:** [3-Year Platform Vision](./pm-portfolio/vision.md) · [Stakeholder Alignment Case Study](./pm-portfolio/case-studies/ai-gateway-stakeholder-alignment.md) · [PM Templates](./pm-portfolio/templates/)
+
+---
+
+## 📁 Repo Structure
 
 ```
 anish-projects/
 ├── ai/                            # AI & platform projects
-│   └── ai-gateway/                # Live prototype — AI Gateway dashboard + backend
+│   └── ai-gateway/                # Live prototype — gateway + dashboard
 ├── consumer/                      # Consumer & fintech projects
-│   └── cost-segregation/          # Live MVP — Cost segregation report generator
+│   └── cost-segregation/          # Live MVP — tax report generator
 ├── pm-portfolio/
-│   ├── vision.md               # 3-year AI governance platform strategy
-│   ├── about/                  # Resume, bio, product principles
-│   ├── projects/
-│   │   ├── 01-ai-gateway-governance/    # System design + governance
-│   │   ├── 02-cost-segregation-saas/    # 0→1 product spec
-│   │   ├── 03-tool-catalog-discovery/   # Customer discovery
-│   │   ├── 04-observability-cost-controls/ # Experiment-driven iteration
-│   │   └── 05-gateway-pricing-tiers/    # Pricing/GTM (fast win)
-│   ├── case-studies/           # Cross-org alignment case study
-│   ├── templates/              # Reusable PM templates
-│   └── ops/                    # Style guide, glossary
-└── README.md                   # ← You are here
+│   ├── vision.md                  # 3-year strategy
+│   ├── about/                     # Bio, resume, principles
+│   ├── projects/                  # PM docs for each project
+│   ├── case-studies/              # Cross-org alignment
+│   └── templates/                 # Reusable PM frameworks
+└── README.md
 ```
 
 ---
 
-## Contact
-
-- **GitHub:** [anishtallapureddy](https://github.com/anishtallapureddy)
-- **LinkedIn:** [linkedin.com/in/anishtallapureddy](https://linkedin.com/in/anishtallapureddy)
-
----
-
-## License
-
-See [LICENSE](./LICENSE) for details.
+[GitHub](https://github.com/anishtallapureddy) · [LinkedIn](https://linkedin.com/in/anishtallapureddy)
