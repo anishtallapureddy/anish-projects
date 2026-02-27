@@ -4,7 +4,7 @@ I'm a Product Manager at Microsoft working on the intersection of **API infrastr
 
 My current focus is building the **AI Gateway** layer in Azure API Management — the system that sits between enterprise applications and AI models, tools, and agents. This means defining how organizations govern, observe, secure, and scale their AI workloads through a unified gateway.
 
-In parallel, I ship side products that solve real problems — like **[CostSeg Pro](https://github.com/anishtallapureddy/anish-projects/tree/main/cost-segregation)**, a fintech SaaS that generates IRS-compliant cost segregation reports for residential properties, helping owners save $10K–$100K+ in taxes through accelerated depreciation.
+In parallel, I ship side products that solve real problems — like **[CostSeg Pro](https://github.com/anishtallapureddy/anish-projects/tree/main/consumer/cost-segregation)**, a fintech SaaS that generates IRS-compliant cost segregation reports for residential properties, helping owners save $10K–$100K+ in taxes through accelerated depreciation.
 
 ## What I care about
 

@@ -9,7 +9,7 @@
 ### Setup
 ```bash
 git clone https://github.com/anishtallapureddy/anish-projects.git
-cd anish-projects/cost-segregation
+cd anish-projects/consumer/cost-segregation
 npm install
 npm run dev
 ```

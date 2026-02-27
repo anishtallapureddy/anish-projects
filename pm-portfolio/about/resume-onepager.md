@@ -15,8 +15,8 @@ Product Manager at Microsoft focused on Azure API Management and AI Gateway. Bui
 - Building prototypes and demos that have informed leadership investment decisions
 
 ### Projects & Products
-- **[AI Gateway Foundry](https://github.com/anishtallapureddy/anish-projects/tree/main/ai-gateway-foundry)** — 23-page Azure AI Foundry dashboard with live gateway backend (rate limiting, content safety, semantic caching, PII masking, tool governance)
-- **[CostSeg Pro](https://github.com/anishtallapureddy/anish-projects/tree/main/cost-segregation)** — Fintech SaaS for IRS-compliant cost segregation analysis on residential properties (Next.js, TypeScript, SQLite)
+- **[AI Gateway Foundry](https://github.com/anishtallapureddy/anish-projects/tree/main/ai/ai-gateway-foundry)** — 23-page Azure AI Foundry dashboard with live gateway backend (rate limiting, content safety, semantic caching, PII masking, tool governance)
+- **[CostSeg Pro](https://github.com/anishtallapureddy/anish-projects/tree/main/consumer/cost-segregation)** — Fintech SaaS for IRS-compliant cost segregation analysis on residential properties (Next.js, TypeScript, SQLite)
 
 ### Key Skills
 - Product strategy & roadmap definition

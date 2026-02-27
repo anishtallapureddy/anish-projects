@@ -9,8 +9,8 @@ I ship enterprise-grade systems that make complex AI safe, observable, and easy 
 
 | # | Project | Problem | What I Shipped | Skills Demonstrated | Link |
 |---|---------|---------|----------------|---------------------|------|
-| 1 | **[AI Gateway Governance](./pm-portfolio/projects/01-ai-gateway-governance/)** | Enterprises have no unified control plane for AI models, tools, and agents — governance is fragmented across services | PRD · 32 user stories · architecture · 50+ metrics · 4-phase rollout · 10 ADRs · demo script · [live prototype](./ai-gateway-foundry/) | System design · Policy architecture · Cross-team alignment · Prototyping | [→ Docs](./pm-portfolio/projects/01-ai-gateway-governance/) |
-| 2 | **[Cost Segregation SaaS](./pm-portfolio/projects/02-cost-segregation-saas/)** | CPAs spend $5K–$15K and 4–6 weeks on cost segregation studies that could be automated | PRD · user scenarios · metrics · risk register · rollout plan · 7 ADRs · [working MVP](./cost-segregation/) | 0→1 product spec · IRS domain modeling · Full-stack shipping |  [→ Docs](./pm-portfolio/projects/02-cost-segregation-saas/) |
+| 1 | **[AI Gateway Governance](./pm-portfolio/projects/01-ai-gateway-governance/)** | Enterprises have no unified control plane for AI models, tools, and agents — governance is fragmented across services | PRD · 32 user stories · architecture · 50+ metrics · 4-phase rollout · 10 ADRs · demo script · [live prototype](./ai/ai-gateway-foundry/) | System design · Policy architecture · Cross-team alignment · Prototyping | [→ Docs](./pm-portfolio/projects/01-ai-gateway-governance/) |
+| 2 | **[Cost Segregation SaaS](./pm-portfolio/projects/02-cost-segregation-saas/)** | CPAs spend $5K–$15K and 4–6 weeks on cost segregation studies that could be automated | PRD · user scenarios · metrics · risk register · rollout plan · 7 ADRs · [working MVP](./consumer/cost-segregation/) | 0→1 product spec · IRS domain modeling · Full-stack shipping |  [→ Docs](./pm-portfolio/projects/02-cost-segregation-saas/) |
 | 3 | **[MCP Tool Catalog & Discovery](./pm-portfolio/projects/03-tool-catalog-discovery/)** | AI agents can't find, evaluate, or safely connect to enterprise tools — discovery is manual and ungoverned | Interview guide · 12 synthesized insights · opportunity tree · PRD · metrics · tradeoffs · decision log | Customer discovery · Search/catalog UX · Developer experience | [→ Docs](./pm-portfolio/projects/03-tool-catalog-discovery/) |
 | 4 | **[AI Observability & Cost Controls](./pm-portfolio/projects/04-observability-cost-controls/)** | Platform teams can't attribute AI costs to teams/agents or detect anomalies before budgets blow | Hypothesis · experiment design · simulated results · decision · PRD · metrics · rollout plan | Experiment-driven iteration · Data analysis · Cost optimization | [→ Docs](./pm-portfolio/projects/04-observability-cost-controls/) |
 | 5 | **[API Gateway Pricing Tiers](./pm-portfolio/projects/05-gateway-pricing-tiers/)** | Current flat pricing doesn't segment by usage pattern — small teams overpay, enterprises under-commit | Pricing model · competitive analysis · segment positioning · launch checklist · GTM plan | Pricing/packaging · GTM strategy · Business modeling | [→ Docs](./pm-portfolio/projects/05-gateway-pricing-tiers/) |
@@ -51,8 +51,10 @@ I ship enterprise-grade systems that make complex AI safe, observable, and easy 
 
 ```
 anish-projects/
-├── ai-gateway-foundry/         # Live prototype — AI Gateway + Foundry dashboard
-├── cost-segregation/           # Live MVP — Cost segregation report generator
+├── ai/                            # AI & platform projects
+│   └── ai-gateway-foundry/        # Live prototype — AI Gateway + Foundry dashboard
+├── consumer/                      # Consumer & fintech projects
+│   └── cost-segregation/          # Live MVP — Cost segregation report generator
 ├── pm-portfolio/
 │   ├── vision.md               # 3-year AI governance platform strategy
 │   ├── about/                  # Resume, bio, product principles

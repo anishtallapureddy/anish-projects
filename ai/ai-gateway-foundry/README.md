@@ -128,7 +128,7 @@ This project is part of the [anish-projects](https://github.com/anishtallapuredd
 
 | Project | Description |
 |---------|-------------|
-| **[CostSeg Pro](../cost-segregation/)** | Cost segregation analysis report generator for residential properties |
+| **[CostSeg Pro](../../consumer/cost-segregation/)** | Cost segregation analysis report generator for residential properties |
 | **[PM Portfolio](../pm-portfolio/)** | Product management artifacts, templates, and project case studies |
 
 ## License

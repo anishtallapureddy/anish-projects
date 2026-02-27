@@ -9,7 +9,7 @@
 | **Timeline** | February 2026 → ongoing |
 | **Status** | MVP shipped |
 | **Stack** | Next.js 14 · TypeScript · SQLite · Tailwind CSS |
-| **Repo** | [anishtallapureddy/anish-projects/cost-segregation](https://github.com/anishtallapureddy/anish-projects/tree/main/cost-segregation) |
+| **Repo** | [anishtallapureddy/anish-projects/consumer/cost-segregation](https://github.com/anishtallapureddy/anish-projects/tree/main/consumer/cost-segregation) |
 
 ## Problem
 
