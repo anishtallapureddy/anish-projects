@@ -11,6 +11,12 @@ I'm a Principal PM — Group Product Lead at Microsoft, working on Azure API Man
 ### [AI Gateway](./ai/ai-gateway/)
 A working prototype of an AI governance gateway — rate limiting, content safety, semantic caching, PII detection, MCP tool routing, and load balancing across model deployments. Node.js + Express backend with a 23-page dashboard.
 
+| Discover — Model & tool catalog | Operate — Governance dashboard |
+|:---:|:---:|
+| ![Discover](./ai/ai-gateway/screenshots/01-discover-dashboard.png) | ![Operate](./ai/ai-gateway/screenshots/02-operate-overview.png) |
+| **Build — Agent management** | **Models — Catalog browse** |
+| ![Build](./ai/ai-gateway/screenshots/03-build-playground.png) | ![Models](./ai/ai-gateway/screenshots/04-models-catalog.png) |
+
 ```bash
 cd ai/ai-gateway && npm install && npm start
 ```
