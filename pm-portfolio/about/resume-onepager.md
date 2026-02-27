@@ -1,11 +1,11 @@
-# Anish Tallapureddy — Product Manager
+# Anish Tallapureddy — Principal Product Manager
 
 ## Summary
-Product Manager at Microsoft focused on Azure API Management and AI Gateway. Building the gateway layer that connects enterprise AI workloads — models, tools (MCP), and agents — with governance, observability, and security at scale.
+Principal PM — Group Product Lead at Microsoft focused on Azure API Management and AI Gateway. Building the gateway layer that connects enterprise AI workloads — models, tools (MCP), and agents — with governance, observability, and security at scale.
 
 ## Experience
 
-### Microsoft — Product Manager, Azure API Management
+### Microsoft — Principal PM, Group Product Lead, Azure API Management
 *Current*
 - Leading AI Gateway product development for Azure AI Gateway
 - Defining the [3-year platform vision](../vision.md) for AI governance — from model governance (Y1) to tool/agent governance (Y2–Y3)

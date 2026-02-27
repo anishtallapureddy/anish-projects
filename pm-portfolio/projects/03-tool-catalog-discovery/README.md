@@ -4,7 +4,7 @@
 
 | Attribute | Detail |
 |-----------|--------|
-| **Role** | Product Manager, Azure API Management / AI Gateway |
+| **Role** | Principal PM — Group Product Lead, Azure API Management / AI Gateway |
 | **Timeline** | 8 weeks (discovery through spec) |
 | **Team** | 1 PM, 1 Design Researcher, 2 Engineers (prototype) |
 | **Impact** | Shaped the tool-discovery surface for Azure AI Gateway, influencing catalog architecture adopted by 3 internal agent platform teams |

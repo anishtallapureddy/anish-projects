@@ -2,7 +2,7 @@
 
 A monorepo of things I'm building — AI infrastructure, fintech tools, and the product thinking behind them.
 
-I'm a PM at Microsoft working on Azure API Management and AI Gateway. This repo is where I prototype ideas, document product decisions, and ship side projects.
+I'm a Principal PM — Group Product Lead at Microsoft, working on Azure API Management and AI Gateway. This repo is where I prototype ideas, document product decisions, and ship side projects.
 
 ---
 

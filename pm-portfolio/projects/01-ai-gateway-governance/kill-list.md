@@ -1,6 +1,6 @@
 # Feature Kill List — AI Gateway Governance
 
-**Author:** Anish Tallapureddy · PM, Azure API Management / AI Gateway · Microsoft
+**Author:** Anish Tallapureddy · Principal PM, Azure API Management / AI Gateway · Microsoft
 **Last Updated:** June 2025
 **Project:** AI Gateway Governance (Project 01)
 

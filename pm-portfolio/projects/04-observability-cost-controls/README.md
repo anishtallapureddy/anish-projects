@@ -4,7 +4,7 @@
 
 | Attribute | Detail |
 |-----------|--------|
-| **Role** | Product Manager, Azure API Management — AI Gateway |
+| **Role** | Principal PM — Group Product Lead, Azure API Management — AI Gateway |
 | **Timeline** | Q1–Q2 2025 (12 weeks) |
 | **Team** | 2 backend engineers, 1 data engineer, 1 designer, 1 FinOps advisor |
 | **Project Type** | Experiment-Driven Iteration |

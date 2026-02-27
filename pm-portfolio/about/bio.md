@@ -1,6 +1,6 @@
 # About Me
 
-I'm a Product Manager at Microsoft working on the intersection of **API infrastructure** and **AI platforms**.
+I'm a Principal PM — Group Product Lead at Microsoft working on the intersection of **API infrastructure** and **AI platforms**.
 
 My current focus is building the **AI Gateway** — the system that sits between enterprise applications and AI models, tools, and agents. This means defining how organizations govern, observe, secure, and scale their AI workloads through a unified gateway.
 
