@@ -10,7 +10,8 @@ export interface CspInput {
   optionsChains: Record<string, OptionContract[]>;
   regime: MarketRegime;
   earnings: EarningsEvent[];
-  qualityScores?: Map<string, number>; // symbol → quality score 0-100
+  qualityScores?: Map<string, number>;
+  stockPrices?: Map<string, number>;
 }
 
 export interface CspOutput {
@@ -73,6 +74,10 @@ export function runWheelCspAgent(input: CspInput, config: AppConfig): CspOutput 
       if (qualityScore < 40) riskFlags.push('low-quality');
 
       const oppId = shortId();
+      const currentPrice = input.stockPrices?.get(symbol) ?? 0;
+      const collateral = +(contract.strike * 100).toFixed(0);
+      const effectiveCostBasis = +(contract.strike - contract.mid).toFixed(2);
+      const maxProfit = +(contract.mid * 100).toFixed(2);
 
       opportunities.push({
         id: `csp-${oppId}`,
@@ -82,6 +87,7 @@ export function runWheelCspAgent(input: CspInput, config: AppConfig): CspOutput 
         rationale: `Sell ${symbol} $${contract.strike}P exp ${contract.expiry} (${contract.dte}d). Premium $${contract.mid.toFixed(2)} (${(premiumPct * 100).toFixed(2)}% of strike). Annualized yield ${(annualizedYield * 100).toFixed(1)}%. Delta ${contract.delta.toFixed(2)}. Quality: ${qualityScore}/100.`,
         risk_flags: riskFlags,
         details: {
+          current_price: currentPrice,
           strike: contract.strike,
           expiry: contract.expiry,
           dte: contract.dte,
@@ -89,6 +95,10 @@ export function runWheelCspAgent(input: CspInput, config: AppConfig): CspOutput 
           premium: contract.mid,
           annualized_yield: +(annualizedYield * 100).toFixed(1),
           quality_score: qualityScore,
+          collateral,
+          effective_cost_basis: effectiveCostBasis,
+          max_profit: maxProfit,
+          action: `SELL 1 ${symbol} $${contract.strike} PUT exp ${contract.expiry}`,
         },
       });
 

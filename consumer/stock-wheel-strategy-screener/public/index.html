@@ -186,7 +186,7 @@
         <div class="card">
           <h2 style="margin-bottom:8px">🏆 Top Opportunities by Return — All Categories</h2>
           <table>
-            <thead><tr><th>#</th><th>Category</th><th>Symbol</th><th>Score</th><th>Key Metric</th><th>Rationale</th><th>Flags</th></tr></thead>
+            <thead><tr><th>#</th><th>Category</th><th>Symbol</th><th>Price</th><th>Score</th><th>Key Metric</th><th>Action</th><th>Flags</th></tr></thead>
             <tbody id="opp-table"></tbody>
           </table>
         </div>
@@ -217,7 +217,7 @@
           <h2 style="margin-bottom:8px">💰 Cash-Secured Put Opportunities</h2>
           <p style="color:var(--muted);font-size:12px;margin-bottom:12px">Sorted by annualized yield. Filtered by DTE, delta, premium, and earnings blackout.</p>
           <table>
-            <thead><tr><th>#</th><th>Symbol</th><th>Strike</th><th>Expiry</th><th>DTE</th><th>Delta</th><th>Premium</th><th>Ann. Yield</th><th>Quality</th><th>Score</th><th>Flags</th></tr></thead>
+            <thead><tr><th>#</th><th>Symbol</th><th>Price</th><th>Strike</th><th>Expiry</th><th>DTE</th><th>Delta</th><th>Premium</th><th>Ann. Yield</th><th>Collateral</th><th>Eff. Cost</th><th>Quality</th><th>Score</th><th>Flags</th></tr></thead>
             <tbody id="csp-table"></tbody>
           </table>
         </div>
@@ -229,7 +229,7 @@
           <h2 style="margin-bottom:8px">🏦 Long-Term Value Picks</h2>
           <p style="color:var(--muted);font-size:12px;margin-bottom:12px">Fundamentals screen: ROIC, revenue CAGR, FCF, P/E valuation discount.</p>
           <table>
-            <thead><tr><th>#</th><th>Symbol</th><th>P/E</th><th>5yr Avg P/E</th><th>Discount</th><th>ROIC</th><th>Rev CAGR</th><th>Score</th><th>Flags</th></tr></thead>
+            <thead><tr><th>#</th><th>Symbol</th><th>Price</th><th>Mkt Cap</th><th>P/E</th><th>5yr Avg P/E</th><th>Discount</th><th>ROIC</th><th>Rev CAGR</th><th>Score</th><th>Action</th><th>Flags</th></tr></thead>
             <tbody id="value-table"></tbody>
           </table>
         </div>
@@ -241,7 +241,7 @@
           <h2 style="margin-bottom:8px">🌐 ETF Allocation & Rebalancing</h2>
           <p style="color:var(--muted);font-size:12px;margin-bottom:12px">Drift detection vs target allocation. Includes rebalance suggestions.</p>
           <table>
-            <thead><tr><th>#</th><th>Symbol</th><th>Name / Detail</th><th>Score</th><th>Rationale</th><th>Flags</th></tr></thead>
+            <thead><tr><th>#</th><th>Symbol</th><th>Price</th><th>Name / Detail</th><th>YTD</th><th>Yield</th><th>Score</th><th>Action</th><th>Flags</th></tr></thead>
             <tbody id="etf-table"></tbody>
           </table>
         </div>
@@ -391,10 +391,20 @@
       oppBody.innerHTML = allOpps.slice(0, 30).map((o, i) => {
         const d = o.details || {};
         let keyMetric = '';
-        if (o.category === 'CSP') keyMetric = d.annualized_yield ? `${d.annualized_yield}% ann.` : '';
-        else if (o.category === 'CC') keyMetric = d.if_called_return_pct ? `${d.if_called_return_pct}% if called` : '';
-        else if (o.category === 'VALUE') keyMetric = d.valuation_discount ? `${d.valuation_discount}% discount` : '';
-        else if (o.category === 'ETF') keyMetric = d.drift_pct ? `${Math.abs(d.drift_pct)}% drift` : (d.ytd_return ? `${d.ytd_return}% YTD` : '');
+        let action = d.action || '';
+        let price = d.current_price ? '$' + d.current_price.toFixed(2) : '';
+        if (o.category === 'CSP') {
+          keyMetric = d.annualized_yield ? d.annualized_yield + '% ann.' : '';
+          action = 'SELL PUT $' + (d.strike||'') + ' @ $' + (d.premium ? d.premium.toFixed(2) : '?');
+        } else if (o.category === 'CC') {
+          keyMetric = d.if_called_return_pct ? d.if_called_return_pct + '% if called' : '';
+        } else if (o.category === 'VALUE') {
+          keyMetric = d.valuation_discount ? d.valuation_discount + '% discount' : '';
+          action = 'BUY @ ~$' + (d.current_price ? d.current_price.toFixed(2) : '?');
+        } else if (o.category === 'ETF') {
+          keyMetric = d.drift_pct ? Math.abs(d.drift_pct) + '% drift' : (d.ytd_return ? d.ytd_return + '% YTD' : '');
+          action = d.current_price ? 'BUY @ ~$' + d.current_price.toFixed(2) : '';
+        }
         const statusIcon = o.status === 'approved' ? '✅' : '🚫';
         const rowStyle = o.status === 'blocked' ? 'opacity:0.5' : '';
         return `
@@ -402,9 +412,10 @@
             <td>${i+1}</td>
             <td><span class="tag tag-${o.category.toLowerCase()}">${o.category}</span> ${statusIcon}</td>
             <td><strong>${o.symbol}</strong></td>
+            <td>${price}</td>
             <td>${o.score}</td>
             <td><strong>${keyMetric}</strong></td>
-            <td style="max-width:400px;font-size:12px">${o.rationale}</td>
+            <td style="font-size:11px;font-family:monospace;color:var(--accent)">${action}</td>
             <td>${o.risk_flags.map(f => '<span class="tag tag-flag">'+f+'</span>').join('') || '—'}</td>
           </tr>`;
       }).join('');
@@ -422,17 +433,20 @@
           <tr style="${rowStyle}" title="${o.status === 'blocked' ? (o.block_reason||'') : 'Approved'}">
             <td>${i+1} ${statusIcon}</td>
             <td><strong>${o.symbol}</strong></td>
+            <td>${d.current_price ? '$'+d.current_price.toFixed(2) : '—'}</td>
             <td>$${d.strike || '—'}</td>
             <td>${d.expiry || '—'}</td>
             <td>${d.dte || '—'}d</td>
             <td>${d.delta ? d.delta.toFixed(2) : '—'}</td>
             <td>$${d.premium ? d.premium.toFixed(2) : '—'}</td>
             <td><strong>${d.annualized_yield || '—'}%</strong></td>
+            <td style="font-size:11px">$${d.collateral ? d.collateral.toLocaleString() : '—'}</td>
+            <td style="font-size:11px;color:var(--green)">$${d.effective_cost_basis || '—'}</td>
             <td><span style="color:${qColor};font-weight:600">${qs}</span></td>
             <td>${o.score}</td>
             <td>${o.risk_flags.map(f => '<span class="tag tag-flag">'+f+'</span>').join('') || '—'}</td>
           </tr>`;
-      }).join('') || '<tr><td colspan="11" style="text-align:center;color:var(--muted);padding:30px">No CSP opportunities in current run</td></tr>';
+      }).join('') || '<tr><td colspan="14" style="text-align:center;color:var(--muted);padding:30px">No CSP opportunities in current run</td></tr>';
 
       // ── Value tab ──
       const valOpps = allOpps.filter(o => o.category === 'VALUE');
@@ -445,32 +459,39 @@
           <tr style="${rowStyle}">
             <td>${i+1} ${statusIcon}</td>
             <td><strong>${o.symbol}</strong></td>
+            <td style="color:var(--accent)">${d.current_price ? '$'+d.current_price.toFixed(2) : '—'}</td>
+            <td style="font-size:11px">${d.market_cap_b ? '$'+d.market_cap_b+'B' : '—'}</td>
             <td>${d.pe_ratio || '—'}</td>
-            <td>${d.pe_5y_avg || '—'}</td>
+            <td>${d.pe_5y_avg ? (+d.pe_5y_avg).toFixed(1) : '—'}</td>
             <td><strong>${d.valuation_discount || '—'}%</strong></td>
             <td>${d.roic || '—'}%</td>
             <td>${d.rev_cagr_5y || '—'}%</td>
             <td>${o.score}</td>
+            <td style="font-size:11px;font-family:monospace;color:var(--accent)">${d.action || 'BUY shares'}</td>
             <td>${o.risk_flags.map(f => '<span class="tag tag-flag">'+f+'</span>').join('') || '—'}</td>
           </tr>`;
-      }).join('') || '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:30px">No value opportunities — filters may be too strict</td></tr>';
+      }).join('') || '<tr><td colspan="12" style="text-align:center;color:var(--muted);padding:30px">No value opportunities — filters may be too strict</td></tr>';
 
       // ── ETF tab ──
       const etfOpps = allOpps.filter(o => o.category === 'ETF');
       const etfBody = document.getElementById('etf-table');
       etfBody.innerHTML = etfOpps.map((o, i) => {
+        const d = o.details || {};
         const statusIcon = o.status === 'approved' ? '✅' : '🚫';
         const rowStyle = o.status === 'blocked' ? 'opacity:0.5' : '';
         return `
           <tr style="${rowStyle}">
             <td>${i+1} ${statusIcon}</td>
             <td><strong>${o.symbol}</strong></td>
+            <td style="color:var(--accent)">${d.current_price ? '$'+d.current_price.toFixed(2) : '—'}</td>
             <td style="font-size:12px">${o.rationale.split('.')[0]}</td>
+            <td>${d.ytd_return ? d.ytd_return+'%' : '—'}</td>
+            <td>${d.div_yield ? d.div_yield+'%' : '—'}</td>
             <td>${o.score}</td>
-            <td style="font-size:12px">${o.rationale}</td>
+            <td style="font-size:11px;font-family:monospace;color:var(--accent)">${d.action || '—'}</td>
             <td>${o.risk_flags.map(f => '<span class="tag tag-flag">'+f+'</span>').join('') || '—'}</td>
           </tr>`;
-      }).join('') || '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:30px">No ETF insights</td></tr>';
+      }).join('') || '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:30px">No ETF insights</td></tr>';
 
       // ── Fundamentals tab ──
       const profiles = r.fundamental_profiles || [];

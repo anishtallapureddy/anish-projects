@@ -112,10 +112,16 @@ export async function runDailyPipeline(mode: DataMode = 'mock'): Promise<{ repor
   // ── Step 2: Wheel CSP Agent ──
   console.log('\n💰 [2/8] Wheel CSP Agent...');
   const optionsChains: Record<string, OptionContract[]> = {};
+  const stockPrices = new Map<string, number>();
+
   if (mode === 'live') {
     // Phase 1: pre-screen all S&P 500 tickers by liquidity
     console.log(`   Scanning ${wheelTickers.length} S&P 500 stocks...`);
-    const { candidates } = await preScreenWheelCandidates(wheelTickers, 80);
+    const { candidates, screenData } = await preScreenWheelCandidates(wheelTickers, 80);
+    // Build price map from screen data
+    for (const s of screenData) {
+      if (s.price > 0) stockPrices.set(s.symbol, s.price);
+    }
 
     // Phase 2: fetch options chains in parallel for top candidates
     console.log(`   Fetching options for ${candidates.length} top candidates (8 parallel)...`);
@@ -125,6 +131,9 @@ export async function runDailyPipeline(mode: DataMode = 'mock'): Promise<{ repor
     for (const t of wheelTickers) {
       optionsChains[t] = getMockOptionsChain(t);
     }
+    // Build mock price map
+    const mockQ = getMockQuotes();
+    for (const q of mockQ) stockPrices.set(q.symbol, q.price);
   }
 
   const earnings = mode === 'live'
@@ -137,6 +146,7 @@ export async function runDailyPipeline(mode: DataMode = 'mock'): Promise<{ repor
     regime,
     earnings,
     qualityScores,
+    stockPrices,
   }, config);
   console.log(`   → ${cspResult.opportunities.length} opportunities, ${cspResult.orderDrafts.length} draft orders`);
 

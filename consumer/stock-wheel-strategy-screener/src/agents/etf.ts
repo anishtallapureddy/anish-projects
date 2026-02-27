@@ -82,6 +82,8 @@ export function runEtfAgent(input: EtfInput, config: AppConfig): EtfOutput {
         ytd_return: +(etf.ytd_return * 100).toFixed(1),
         div_yield: +(etf.div_yield * 100).toFixed(1),
         current_weight_pct: +(currentWeight * 100).toFixed(1),
+        current_price: etf.current_price ?? 0,
+        action: `BUY ${etf.symbol} shares at ~$${(etf.current_price ?? 0).toFixed(2)}`,
       },
     });
 

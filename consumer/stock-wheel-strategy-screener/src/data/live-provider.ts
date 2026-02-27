@@ -342,6 +342,7 @@ export async function getLiveFundamentals(symbols: string[]): Promise<Fundamenta
           pe_ratio: pe,
           pe_5y_avg: forwardPe > 0 ? forwardPe * 1.1 : pe * 1.1,
           sector: q.sector ?? 'Unknown',
+          current_price: q.regularMarketPrice ?? 0,
         });
       }
     } catch (err: any) {
@@ -367,10 +368,11 @@ export async function getLiveEtfData(symbols: string[]): Promise<EtfData[]> {
       results.push({
         symbol: q.symbol,
         name: q.shortName || q.longName || q.symbol,
-        expense_ratio: 0.10, // not in quote API; use reasonable default
+        expense_ratio: 0.10,
         aum_b: (q.marketCap ?? 0) / 1e9,
         ytd_return: (q.regularMarketPrice - (q.fiftyTwoWeekLow ?? q.regularMarketPrice)) / (q.fiftyTwoWeekLow || 1),
         div_yield: q.trailingAnnualDividendYield ?? 0,
+        current_price: q.regularMarketPrice ?? 0,
       });
     }
   } catch (err: any) {

@@ -158,40 +158,40 @@ export function getMockOptionsChain(symbol: string): OptionContract[] {
 export function getMockFundamentals(): Fundamentals[] {
   return [
     // Technology
-    { symbol: 'AAPL',  market_cap_b: 2950, roic: 0.56, rev_cagr_5y: 0.08, fcf_positive: true, net_debt_to_ebitda: 0.5, pe_ratio: 29.5, pe_5y_avg: 26.0, sector: 'Technology' },
-    { symbol: 'MSFT',  market_cap_b: 3120, roic: 0.38, rev_cagr_5y: 0.14, fcf_positive: true, net_debt_to_ebitda: 0.3, pe_ratio: 35.2, pe_5y_avg: 32.0, sector: 'Technology' },
-    { symbol: 'NVDA',  market_cap_b: 2150, roic: 0.72, rev_cagr_5y: 0.52, fcf_positive: true, net_debt_to_ebitda: -0.8, pe_ratio: 65.0, pe_5y_avg: 55.0, sector: 'Technology' },
-    { symbol: 'INTC',  market_cap_b: 180,  roic: 0.04, rev_cagr_5y: -0.02, fcf_positive: false, net_debt_to_ebitda: 3.5, pe_ratio: 42.0, pe_5y_avg: 14.0, sector: 'Technology' },
-    { symbol: 'CSCO',  market_cap_b: 210,  roic: 0.28, rev_cagr_5y: 0.05, fcf_positive: true, net_debt_to_ebitda: 0.8, pe_ratio: 15.2, pe_5y_avg: 18.0, sector: 'Technology' },
-    { symbol: 'ADBE',  market_cap_b: 245,  roic: 0.35, rev_cagr_5y: 0.12, fcf_positive: true, net_debt_to_ebitda: 0.2, pe_ratio: 42.5, pe_5y_avg: 50.0, sector: 'Technology' },
-    { symbol: 'CRM',   market_cap_b: 265,  roic: 0.18, rev_cagr_5y: 0.18, fcf_positive: true, net_debt_to_ebitda: 0.5, pe_ratio: 38.0, pe_5y_avg: 52.0, sector: 'Technology' },
+    { symbol: 'AAPL',  market_cap_b: 2950, roic: 0.56, rev_cagr_5y: 0.08, fcf_positive: true, net_debt_to_ebitda: 0.5, pe_ratio: 29.5, pe_5y_avg: 26.0, sector: 'Technology' , current_price: 189.84 },
+    { symbol: 'MSFT',  market_cap_b: 3120, roic: 0.38, rev_cagr_5y: 0.14, fcf_positive: true, net_debt_to_ebitda: 0.3, pe_ratio: 35.2, pe_5y_avg: 32.0, sector: 'Technology' , current_price: 420.21 },
+    { symbol: 'NVDA',  market_cap_b: 2150, roic: 0.72, rev_cagr_5y: 0.52, fcf_positive: true, net_debt_to_ebitda: -0.8, pe_ratio: 65.0, pe_5y_avg: 55.0, sector: 'Technology' , current_price: 875.28 },
+    { symbol: 'INTC',  market_cap_b: 180,  roic: 0.04, rev_cagr_5y: -0.02, fcf_positive: false, net_debt_to_ebitda: 3.5, pe_ratio: 42.0, pe_5y_avg: 14.0, sector: 'Technology' , current_price: 42.85 },
+    { symbol: 'CSCO',  market_cap_b: 210,  roic: 0.28, rev_cagr_5y: 0.05, fcf_positive: true, net_debt_to_ebitda: 0.8, pe_ratio: 15.2, pe_5y_avg: 18.0, sector: 'Technology' , current_price: 50.22 },
+    { symbol: 'ADBE',  market_cap_b: 245,  roic: 0.35, rev_cagr_5y: 0.12, fcf_positive: true, net_debt_to_ebitda: 0.2, pe_ratio: 42.5, pe_5y_avg: 50.0, sector: 'Technology' , current_price: 542.10 },
+    { symbol: 'CRM',   market_cap_b: 265,  roic: 0.18, rev_cagr_5y: 0.18, fcf_positive: true, net_debt_to_ebitda: 0.5, pe_ratio: 38.0, pe_5y_avg: 52.0, sector: 'Technology' , current_price: 272.40 },
     // Communication Services
-    { symbol: 'GOOGL', market_cap_b: 2180, roic: 0.28, rev_cagr_5y: 0.18, fcf_positive: true, net_debt_to_ebitda: -0.5, pe_ratio: 24.1, pe_5y_avg: 28.5, sector: 'Communication Services' },
-    { symbol: 'META',  market_cap_b: 1280, roic: 0.32, rev_cagr_5y: 0.16, fcf_positive: true, net_debt_to_ebitda: -1.2, pe_ratio: 26.8, pe_5y_avg: 30.0, sector: 'Communication Services' },
-    { symbol: 'DIS',   market_cap_b: 205,  roic: 0.08, rev_cagr_5y: 0.04, fcf_positive: true, net_debt_to_ebitda: 2.8, pe_ratio: 38.5, pe_5y_avg: 48.0, sector: 'Communication Services' },
-    { symbol: 'CMCSA', market_cap_b: 170,  roic: 0.15, rev_cagr_5y: 0.03, fcf_positive: true, net_debt_to_ebitda: 2.5, pe_ratio: 11.2, pe_5y_avg: 14.0, sector: 'Communication Services' },
-    { symbol: 'NFLX',  market_cap_b: 270,  roic: 0.22, rev_cagr_5y: 0.15, fcf_positive: true, net_debt_to_ebitda: 1.2, pe_ratio: 45.0, pe_5y_avg: 55.0, sector: 'Communication Services' },
+    { symbol: 'GOOGL', market_cap_b: 2180, roic: 0.28, rev_cagr_5y: 0.18, fcf_positive: true, net_debt_to_ebitda: -0.5, pe_ratio: 24.1, pe_5y_avg: 28.5, sector: 'Communication Services' , current_price: 175.98 },
+    { symbol: 'META',  market_cap_b: 1280, roic: 0.32, rev_cagr_5y: 0.16, fcf_positive: true, net_debt_to_ebitda: -1.2, pe_ratio: 26.8, pe_5y_avg: 30.0, sector: 'Communication Services' , current_price: 505.75 },
+    { symbol: 'DIS',   market_cap_b: 205,  roic: 0.08, rev_cagr_5y: 0.04, fcf_positive: true, net_debt_to_ebitda: 2.8, pe_ratio: 38.5, pe_5y_avg: 48.0, sector: 'Communication Services' , current_price: 112.30 },
+    { symbol: 'CMCSA', market_cap_b: 170,  roic: 0.15, rev_cagr_5y: 0.03, fcf_positive: true, net_debt_to_ebitda: 2.5, pe_ratio: 11.2, pe_5y_avg: 14.0, sector: 'Communication Services' , current_price: 42.75 },
+    { symbol: 'NFLX',  market_cap_b: 270,  roic: 0.22, rev_cagr_5y: 0.15, fcf_positive: true, net_debt_to_ebitda: 1.2, pe_ratio: 45.0, pe_5y_avg: 55.0, sector: 'Communication Services' , current_price: 628.50 },
     // Consumer Discretionary
-    { symbol: 'AMZN',  market_cap_b: 1950, roic: 0.16, rev_cagr_5y: 0.22, fcf_positive: true, net_debt_to_ebitda: 0.8, pe_ratio: 58.3, pe_5y_avg: 72.0, sector: 'Consumer Discretionary' },
-    { symbol: 'NKE',   market_cap_b: 150,  roic: 0.32, rev_cagr_5y: 0.06, fcf_positive: true, net_debt_to_ebitda: 1.2, pe_ratio: 28.5, pe_5y_avg: 38.0, sector: 'Consumer Discretionary' },
-    { symbol: 'HD',    market_cap_b: 365,  roic: 0.45, rev_cagr_5y: 0.08, fcf_positive: true, net_debt_to_ebitda: 1.8, pe_ratio: 24.0, pe_5y_avg: 22.5, sector: 'Consumer Discretionary' },
-    { symbol: 'LOW',   market_cap_b: 142,  roic: 0.42, rev_cagr_5y: 0.07, fcf_positive: true, net_debt_to_ebitda: 2.2, pe_ratio: 18.5, pe_5y_avg: 22.0, sector: 'Consumer Discretionary' },
+    { symbol: 'AMZN',  market_cap_b: 1950, roic: 0.16, rev_cagr_5y: 0.22, fcf_positive: true, net_debt_to_ebitda: 0.8, pe_ratio: 58.3, pe_5y_avg: 72.0, sector: 'Consumer Discretionary' , current_price: 186.49 },
+    { symbol: 'NKE',   market_cap_b: 150,  roic: 0.32, rev_cagr_5y: 0.06, fcf_positive: true, net_debt_to_ebitda: 1.2, pe_ratio: 28.5, pe_5y_avg: 38.0, sector: 'Consumer Discretionary' , current_price: 98.50 },
+    { symbol: 'HD',    market_cap_b: 365,  roic: 0.45, rev_cagr_5y: 0.08, fcf_positive: true, net_debt_to_ebitda: 1.8, pe_ratio: 24.0, pe_5y_avg: 22.5, sector: 'Consumer Discretionary' , current_price: 365.20 },
+    { symbol: 'LOW',   market_cap_b: 142,  roic: 0.42, rev_cagr_5y: 0.07, fcf_positive: true, net_debt_to_ebitda: 2.2, pe_ratio: 18.5, pe_5y_avg: 22.0, sector: 'Consumer Discretionary' , current_price: 245.60 },
     // Financials
-    { symbol: 'JPM',   market_cap_b: 580,  roic: 0.18, rev_cagr_5y: 0.10, fcf_positive: true, net_debt_to_ebitda: 1.0, pe_ratio: 12.5, pe_5y_avg: 11.0, sector: 'Financials' },
-    { symbol: 'BAC',   market_cap_b: 305,  roic: 0.12, rev_cagr_5y: 0.08, fcf_positive: true, net_debt_to_ebitda: 1.5, pe_ratio: 12.0, pe_5y_avg: 14.5, sector: 'Financials' },
-    { symbol: 'GS',    market_cap_b: 140,  roic: 0.15, rev_cagr_5y: 0.12, fcf_positive: true, net_debt_to_ebitda: 0.8, pe_ratio: 14.8, pe_5y_avg: 18.0, sector: 'Financials' },
+    { symbol: 'JPM',   market_cap_b: 580,  roic: 0.18, rev_cagr_5y: 0.10, fcf_positive: true, net_debt_to_ebitda: 1.0, pe_ratio: 12.5, pe_5y_avg: 11.0, sector: 'Financials' , current_price: 198.40 },
+    { symbol: 'BAC',   market_cap_b: 305,  roic: 0.12, rev_cagr_5y: 0.08, fcf_positive: true, net_debt_to_ebitda: 1.5, pe_ratio: 12.0, pe_5y_avg: 14.5, sector: 'Financials' , current_price: 37.85 },
+    { symbol: 'GS',    market_cap_b: 140,  roic: 0.15, rev_cagr_5y: 0.12, fcf_positive: true, net_debt_to_ebitda: 0.8, pe_ratio: 14.8, pe_5y_avg: 18.0, sector: 'Financials' , current_price: 412.50 },
     // Healthcare
-    { symbol: 'JNJ',   market_cap_b: 385,  roic: 0.22, rev_cagr_5y: 0.04, fcf_positive: true, net_debt_to_ebitda: 1.5, pe_ratio: 16.5, pe_5y_avg: 18.0, sector: 'Healthcare' },
-    { symbol: 'PFE',   market_cap_b: 162,  roic: 0.08, rev_cagr_5y: -0.05, fcf_positive: true, net_debt_to_ebitda: 2.8, pe_ratio: 25.0, pe_5y_avg: 14.0, sector: 'Healthcare' },
-    { symbol: 'ABBV',  market_cap_b: 305,  roic: 0.25, rev_cagr_5y: 0.12, fcf_positive: true, net_debt_to_ebitda: 2.2, pe_ratio: 14.2, pe_5y_avg: 18.0, sector: 'Healthcare' },
-    { symbol: 'MRK',   market_cap_b: 320,  roic: 0.28, rev_cagr_5y: 0.10, fcf_positive: true, net_debt_to_ebitda: 1.2, pe_ratio: 16.0, pe_5y_avg: 19.5, sector: 'Healthcare' },
+    { symbol: 'JNJ',   market_cap_b: 385,  roic: 0.22, rev_cagr_5y: 0.04, fcf_positive: true, net_debt_to_ebitda: 1.5, pe_ratio: 16.5, pe_5y_avg: 18.0, sector: 'Healthcare' , current_price: 158.40 },
+    { symbol: 'PFE',   market_cap_b: 162,  roic: 0.08, rev_cagr_5y: -0.05, fcf_positive: true, net_debt_to_ebitda: 2.8, pe_ratio: 25.0, pe_5y_avg: 14.0, sector: 'Healthcare' , current_price: 28.50 },
+    { symbol: 'ABBV',  market_cap_b: 305,  roic: 0.25, rev_cagr_5y: 0.12, fcf_positive: true, net_debt_to_ebitda: 2.2, pe_ratio: 14.2, pe_5y_avg: 18.0, sector: 'Healthcare' , current_price: 172.30 },
+    { symbol: 'MRK',   market_cap_b: 320,  roic: 0.28, rev_cagr_5y: 0.10, fcf_positive: true, net_debt_to_ebitda: 1.2, pe_ratio: 16.0, pe_5y_avg: 19.5, sector: 'Healthcare' , current_price: 125.80 },
     // Energy
-    { symbol: 'XOM',   market_cap_b: 460,  roic: 0.18, rev_cagr_5y: 0.08, fcf_positive: true, net_debt_to_ebitda: 0.5, pe_ratio: 13.5, pe_5y_avg: 16.0, sector: 'Energy' },
-    { symbol: 'CVX',   market_cap_b: 300,  roic: 0.16, rev_cagr_5y: 0.06, fcf_positive: true, net_debt_to_ebitda: 0.8, pe_ratio: 12.8, pe_5y_avg: 15.5, sector: 'Energy' },
-    { symbol: 'COP',   market_cap_b: 142,  roic: 0.20, rev_cagr_5y: 0.15, fcf_positive: true, net_debt_to_ebitda: 0.6, pe_ratio: 11.5, pe_5y_avg: 14.0, sector: 'Energy' },
+    { symbol: 'XOM',   market_cap_b: 460,  roic: 0.18, rev_cagr_5y: 0.08, fcf_positive: true, net_debt_to_ebitda: 0.5, pe_ratio: 13.5, pe_5y_avg: 16.0, sector: 'Energy' , current_price: 108.20 },
+    { symbol: 'CVX',   market_cap_b: 300,  roic: 0.16, rev_cagr_5y: 0.06, fcf_positive: true, net_debt_to_ebitda: 0.8, pe_ratio: 12.8, pe_5y_avg: 15.5, sector: 'Energy' , current_price: 158.40 },
+    { symbol: 'COP',   market_cap_b: 142,  roic: 0.20, rev_cagr_5y: 0.15, fcf_positive: true, net_debt_to_ebitda: 0.6, pe_ratio: 11.5, pe_5y_avg: 14.0, sector: 'Energy' , current_price: 118.30 },
     // Consumer Staples
-    { symbol: 'PG',    market_cap_b: 400,  roic: 0.22, rev_cagr_5y: 0.04, fcf_positive: true, net_debt_to_ebitda: 1.8, pe_ratio: 26.0, pe_5y_avg: 25.0, sector: 'Consumer Staples' },
-    { symbol: 'KO',    market_cap_b: 270,  roic: 0.28, rev_cagr_5y: 0.06, fcf_positive: true, net_debt_to_ebitda: 2.5, pe_ratio: 24.5, pe_5y_avg: 26.0, sector: 'Consumer Staples' },
+    { symbol: 'PG',    market_cap_b: 400,  roic: 0.22, rev_cagr_5y: 0.04, fcf_positive: true, net_debt_to_ebitda: 1.8, pe_ratio: 26.0, pe_5y_avg: 25.0, sector: 'Consumer Staples' , current_price: 168.50 },
+    { symbol: 'KO',    market_cap_b: 270,  roic: 0.28, rev_cagr_5y: 0.06, fcf_positive: true, net_debt_to_ebitda: 2.5, pe_ratio: 24.5, pe_5y_avg: 26.0, sector: 'Consumer Staples' , current_price: 62.40 },
   ];
 }
 
@@ -199,18 +199,18 @@ export function getMockFundamentals(): Fundamentals[] {
 
 export function getMockEtfData(): EtfData[] {
   return [
-    { symbol: 'VTI',  name: 'Vanguard Total Stock Market',     expense_ratio: 0.03, aum_b: 380, ytd_return: 0.12, div_yield: 0.013 },
-    { symbol: 'VOO',  name: 'Vanguard S&P 500',                expense_ratio: 0.03, aum_b: 420, ytd_return: 0.13, div_yield: 0.013 },
-    { symbol: 'QQQ',  name: 'Invesco QQQ Trust',                expense_ratio: 0.20, aum_b: 250, ytd_return: 0.18, div_yield: 0.005 },
-    { symbol: 'SCHD', name: 'Schwab US Dividend Equity',        expense_ratio: 0.06, aum_b: 55,  ytd_return: 0.06, div_yield: 0.035 },
-    { symbol: 'VYM',  name: 'Vanguard High Dividend Yield',     expense_ratio: 0.06, aum_b: 52,  ytd_return: 0.05, div_yield: 0.030 },
-    { symbol: 'JEPI', name: 'JPMorgan Equity Premium Income',   expense_ratio: 0.35, aum_b: 32,  ytd_return: 0.04, div_yield: 0.075 },
-    { symbol: 'IEF',  name: 'iShares 7-10 Year Treasury',      expense_ratio: 0.15, aum_b: 28,  ytd_return: -0.02, div_yield: 0.038 },
-    { symbol: 'BND',  name: 'Vanguard Total Bond Market',       expense_ratio: 0.03, aum_b: 105, ytd_return: -0.01, div_yield: 0.035 },
-    { symbol: 'TLT',  name: 'iShares 20+ Year Treasury',       expense_ratio: 0.15, aum_b: 42,  ytd_return: -0.05, div_yield: 0.042 },
-    { symbol: 'GLD',  name: 'SPDR Gold Shares',                 expense_ratio: 0.40, aum_b: 62,  ytd_return: 0.08, div_yield: 0.0 },
-    { symbol: 'IAU',  name: 'iShares Gold Trust',               expense_ratio: 0.25, aum_b: 28,  ytd_return: 0.08, div_yield: 0.0 },
-    { symbol: 'VXUS', name: 'Vanguard Total International',     expense_ratio: 0.07, aum_b: 65,  ytd_return: 0.04, div_yield: 0.028 },
+    { symbol: 'VTI',  name: 'Vanguard Total Stock Market',     expense_ratio: 0.03, aum_b: 380, ytd_return: 0.12, div_yield: 0.013, current_price: 245.80 },
+    { symbol: 'VOO',  name: 'Vanguard S&P 500',                expense_ratio: 0.03, aum_b: 420, ytd_return: 0.13, div_yield: 0.013, current_price: 510.25 },
+    { symbol: 'QQQ',  name: 'Invesco QQQ Trust',                expense_ratio: 0.20, aum_b: 250, ytd_return: 0.18, div_yield: 0.005, current_price: 485.60 },
+    { symbol: 'SCHD', name: 'Schwab US Dividend Equity',        expense_ratio: 0.06, aum_b: 55,  ytd_return: 0.06, div_yield: 0.035, current_price: 78.50 },
+    { symbol: 'VYM',  name: 'Vanguard High Dividend Yield',     expense_ratio: 0.06, aum_b: 52,  ytd_return: 0.05, div_yield: 0.030, current_price: 118.20 },
+    { symbol: 'JEPI', name: 'JPMorgan Equity Premium Income',   expense_ratio: 0.35, aum_b: 32,  ytd_return: 0.04, div_yield: 0.075, current_price: 56.80 },
+    { symbol: 'IEF',  name: 'iShares 7-10 Year Treasury',      expense_ratio: 0.15, aum_b: 28,  ytd_return: -0.02, div_yield: 0.038, current_price: 95.40 },
+    { symbol: 'BND',  name: 'Vanguard Total Bond Market',       expense_ratio: 0.03, aum_b: 105, ytd_return: -0.01, div_yield: 0.035, current_price: 72.60 },
+    { symbol: 'TLT',  name: 'iShares 20+ Year Treasury',       expense_ratio: 0.15, aum_b: 42,  ytd_return: -0.05, div_yield: 0.042, current_price: 88.30 },
+    { symbol: 'GLD',  name: 'SPDR Gold Shares',                 expense_ratio: 0.40, aum_b: 62,  ytd_return: 0.08, div_yield: 0.0,   current_price: 195.50 },
+    { symbol: 'IAU',  name: 'iShares Gold Trust',               expense_ratio: 0.25, aum_b: 28,  ytd_return: 0.08, div_yield: 0.0,   current_price: 44.20 },
+    { symbol: 'VXUS', name: 'Vanguard Total International',     expense_ratio: 0.07, aum_b: 65,  ytd_return: 0.04, div_yield: 0.028, current_price: 58.90 },
   ];
 }
 
