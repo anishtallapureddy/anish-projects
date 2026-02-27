@@ -1,0 +1,4 @@
+node_modules/
+dist/
+agents/out/
+!agents/out/.gitkeep

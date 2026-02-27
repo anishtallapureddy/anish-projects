@@ -1,0 +1,26 @@
+{
+  "name": "stock-wheel-strategy-screener",
+  "version": "1.0.0",
+  "description": "A consumer investing tool that: - Screens high-quality stocks for wheel strategy execution (CSP + CC) - Finds long-term undervalued stocks - Recommends ETF core allocation and rebalancing - Produces daily insights and **draft orders** (non-executing)",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node src/index.ts",
+    "run:daily": "ts-node src/index.ts",
+    "run:feedback": "ts-node src/feedback-cli.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ajv": "^8.18.0",
+    "ajv-formats": "^3.0.1",
+    "date-fns": "^4.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "yaml": "^2.8.2"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.2"
+  }
+}
