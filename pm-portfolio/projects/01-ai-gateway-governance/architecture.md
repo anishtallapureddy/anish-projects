@@ -4,38 +4,35 @@
 
 ## 1. System Context
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                        AI Gateway Dashboard                           │
-│  ┌──────────────────────┐    ┌──────────────────────────────────┐   │
-│  │     Operate Tab      │    │          Build Tab               │   │
-│  │  (Platform Engineers) │    │   (Developers / Agent Builders)  │   │
-│  └──────────┬───────────┘    └──────────────┬───────────────────┘   │
-└─────────────┼───────────────────────────────┼───────────────────────┘
-              │ Management API                │ Data Plane API
-              ▼                               ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                    AI Gateway (Azure APIM)                          │
-│                                                                     │
-│  ┌────────────┐ ┌────────────┐ ┌───────────┐ ┌──────────────────┐  │
-│  │   Rate     │ │  Semantic  │ │  Content  │ │  Load Balancing  │  │
-│  │  Limiting  │ │  Caching   │ │  Safety   │ │  & Failover      │  │
-│  └────────────┘ └────────────┘ └───────────┘ └──────────────────┘  │
-│  ┌────────────┐ ┌────────────┐ ┌───────────┐ ┌──────────────────┐  │
-│  │  Virtual   │ │  Traffic   │ │    MCP    │ │   Observability  │  │
-│  │   Keys     │ │  Splitting │ │  Runtime  │ │   & Telemetry    │  │
-│  └────────────┘ └────────────┘ └───────────┘ └──────────────────┘  │
-└──────────┬──────────────────┬──────────────────────┬────────────────┘
-           │                  │                      │
-           ▼                  ▼                      ▼
-    ┌──────────────┐  ┌──────────────┐  ┌───────────────────────┐
-    │    Models     │  │    Tools     │  │       Agents          │
-    │              │  │   (MCP)      │  │                       │
-    │ • Azure OAI  │  │ • MCP Servers│  │ • Azure AI Foundry│
-    │ • Third-party│  │ • REST APIs  │  │ • Custom Agents       │
-    │ • Self-hosted│  │ • Functions  │  │ • Vertex AI Agents    │
-    │ • Open-source│  │ • Connectors │  │ • Bedrock Agents      │
-    └──────────────┘  └──────────────┘  └───────────────────────┘
+```mermaid
+graph TD
+    subgraph Dashboard["AI Gateway Dashboard"]
+        Operate["Operate Tab<br/><i>Platform Engineers</i>"]
+        Build["Build Tab<br/><i>Developers / Agent Builders</i>"]
+    end
+
+    subgraph Gateway["AI Gateway — Azure APIM"]
+        RL[Rate Limiting]
+        SC[Semantic Caching]
+        CS[Content Safety]
+        LB[Load Balancing & Failover]
+        VK[Virtual Keys]
+        TS[Traffic Splitting]
+        MCP[MCP Runtime]
+        OBS[Observability & Telemetry]
+    end
+
+    subgraph Backends["Backend Services"]
+        Models["Models<br/>Azure OAI · Third-party · Self-hosted"]
+        Tools["Tools — MCP<br/>MCP Servers · REST APIs · Functions"]
+        Agents["Agents<br/>Azure AI Foundry · Custom · Vertex · Bedrock"]
+    end
+
+    Operate -->|Management API| Gateway
+    Build -->|Data Plane API| Gateway
+    Gateway --> Models
+    Gateway --> Tools
+    Gateway --> Agents
 ```
 
 ## 2. Gateway Capabilities
@@ -86,104 +83,74 @@
 
 ### 3.1 Model Request Flow
 
-```
-Developer App                AI Gateway Dashboard        AI Gateway (APIM)           Model Backend
-     │                            │                            │                         │
-     │  1. Send prompt            │                            │                         │
-     │  (virtual key + payload)   │                            │                         │
-     │ ──────────────────────────────────────────────────────> │                         │
-     │                            │                            │                         │
-     │                            │     2. Validate virtual key│                         │
-     │                            │     3. Check rate limit    │                         │
-     │                            │     4. Check semantic cache│                         │
-     │                            │        ┌─── Cache HIT ───>│ Return cached response  │
-     │                            │        │                   │                         │
-     │                            │        └─── Cache MISS     │                         │
-     │                            │     5. Apply content safety│                         │
-     │                            │        (input filtering)   │                         │
-     │                            │     6. Route to backend    │                         │
-     │                            │        (load balance /     │                         │
-     │                            │         failover)          │                         │
-     │                            │                            │  7. Forward request     │
-     │                            │                            │ ──────────────────────> │
-     │                            │                            │                         │
-     │                            │                            │  8. Model response      │
-     │                            │                            │ <────────────────────── │
-     │                            │     9. Apply content safety│                         │
-     │                            │        (output filtering)  │                         │
-     │                            │    10. Update cache        │                         │
-     │                            │    11. Emit telemetry      │                         │
-     │                            │                            │                         │
-     │  12. Return response       │                            │                         │
-     │ <────────────────────────────────────────────────────── │                         │
+```mermaid
+sequenceDiagram
+    participant App as Developer App
+    participant GW as AI Gateway (APIM)
+    participant Model as Model Backend
+
+    App->>GW: 1. Send prompt (virtual key + payload)
+    GW->>GW: 2. Validate virtual key
+    GW->>GW: 3. Check rate limit
+    GW->>GW: 4. Check semantic cache
+
+    alt Cache HIT
+        GW-->>App: Return cached response
+    else Cache MISS
+        GW->>GW: 5. Content safety (input filter)
+        GW->>GW: 6. Load balance / failover
+        GW->>Model: 7. Forward request
+        Model-->>GW: 8. Model response
+        GW->>GW: 9. Content safety (output filter)
+        GW->>GW: 10. Update cache
+        GW->>GW: 11. Emit telemetry
+        GW-->>App: 12. Return response + gateway annotations
+    end
 ```
 
 ### 3.2 Tool (MCP) Invocation Flow
 
-```
-Agent / App               AI Gateway (APIM)           MCP Runtime              Tool Backend
-     │                          │                         │                         │
-     │  1. MCP tool_call        │                         │                         │
-     │  (tool_name, params,     │                         │                         │
-     │   virtual_key)           │                         │                         │
-     │ ───────────────────────> │                         │                         │
-     │                          │                         │                         │
-     │     2. Validate key      │                         │                         │
-     │     3. Resolve namespace │                         │                         │
-     │        & tool endpoint   │                         │                         │
-     │     4. Check rate limit  │                         │                         │
-     │     5. Validate input    │                         │                         │
-     │        schema            │                         │                         │
-     │                          │  6. Route to MCP server │                         │
-     │                          │ ──────────────────────> │                         │
-     │                          │                         │  7. Execute tool        │
-     │                          │                         │ ───────────────────────>│
-     │                          │                         │                         │
-     │                          │                         │  8. Tool response       │
-     │                          │                         │ <─────────────────────  │
-     │                          │  9. Tool result         │                         │
-     │                          │ <────────────────────── │                         │
-     │                          │                         │                         │
-     │    10. Validate output   │                         │                         │
-     │    11. Emit telemetry    │                         │                         │
-     │                          │                         │                         │
-     │  12. Return tool_result  │                         │                         │
-     │ <─────────────────────── │                         │                         │
+```mermaid
+sequenceDiagram
+    participant Agent as Agent / App
+    participant GW as AI Gateway (APIM)
+    participant MCP as MCP Runtime
+    participant Tool as Tool Backend
+
+    Agent->>GW: 1. MCP tool_call (tool_name, params, key)
+    GW->>GW: 2. Validate key
+    GW->>GW: 3. Resolve namespace & tool endpoint
+    GW->>GW: 4. Check rate limit
+    GW->>GW: 5. Validate input schema
+    GW->>MCP: 6. Route to MCP server
+    MCP->>Tool: 7. Execute tool
+    Tool-->>MCP: 8. Tool response
+    MCP-->>GW: 9. Tool result
+    GW->>GW: 10. Validate output
+    GW->>GW: 11. Emit telemetry
+    GW-->>Agent: 12. Return tool_result
 ```
 
 ### 3.3 Agent Routing Flow
 
-```
-Client / Orchestrator      AI Gateway (APIM)           Agent Registry          Agent Endpoint
-     │                          │                         │                         │
-     │  1. Agent invoke         │                         │                         │
-     │  (agent_id, input,       │                         │                         │
-     │   session_id)            │                         │                         │
-     │ ───────────────────────> │                         │                         │
-     │                          │                         │                         │
-     │     2. Validate auth     │                         │                         │
-     │     3. Resolve agent     │                         │                         │
-     │        endpoint          │ ──────────────────────> │                         │
-     │                          │  4. Return endpoint +   │                         │
-     │                          │     config              │                         │
-     │                          │ <────────────────────── │                         │
-     │     5. Apply guardrails  │                         │                         │
-     │        (input filtering) │                         │                         │
-     │     6. Check rate limit  │                         │                         │
-     │                          │                         │                         │
-     │                          │  7. Forward to agent    │                         │
-     │                          │ ──────────────────────────────────────────────── >│
-     │                          │                         │                         │
-     │                          │  8. Agent response      │                         │
-     │                          │  (may include tool_calls│passing through gateway) │
-     │                          │ <──────────────────────────────────────────────── │
-     │                          │                         │                         │
-     │     9. Apply guardrails  │                         │                         │
-     │        (output filtering)│                         │                         │
-     │    10. Emit telemetry    │                         │                         │
-     │                          │                         │                         │
-     │  11. Return response     │                         │                         │
-     │ <─────────────────────── │                         │                         │
+```mermaid
+sequenceDiagram
+    participant Client as Client / Orchestrator
+    participant GW as AI Gateway (APIM)
+    participant Reg as Agent Registry
+    participant Agent as Agent Endpoint
+
+    Client->>GW: 1. Agent invoke (agent_id, input, session_id)
+    GW->>GW: 2. Validate auth
+    GW->>Reg: 3. Resolve agent endpoint
+    Reg-->>GW: 4. Return endpoint + config
+    GW->>GW: 5. Apply input guardrails
+    GW->>GW: 6. Check rate limit
+    GW->>Agent: 7. Forward to agent
+    Agent-->>GW: 8. Agent response (may include tool_calls)
+    GW->>GW: 9. Apply output guardrails
+    GW->>GW: 10. Emit telemetry
+    GW-->>Client: 11. Return response
 ```
 
 ---
