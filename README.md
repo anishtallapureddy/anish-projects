@@ -17,13 +17,19 @@ I ship enterprise-grade systems that make complex AI safe, observable, and easy 
 
 ---
 
+## Strategic Vision
+
+**[AI Governance Platform: 3-Year Strategy](./pm-portfolio/vision.md)** — My thesis on where AI governance is heading and how these five projects compound into a platform over three years. Includes investment thesis, headcount allocation, and quantified success criteria.
+
+---
+
 ## Signature Strengths
 
 - **Technical depth** — I prototype to learn. Every project above has a working demo or simulation, not just docs.
 - **Governance-first thinking** — I design for the admin and the auditor, not just the happy-path developer.
-- **Cross-functional execution** — I write specs that engineering wants to read and GTM plans that marketing can run with.
+- **Cross-functional execution** — I aligned 5 teams in 3 weeks using prototype-first alignment. [Read the case study →](./pm-portfolio/case-studies/ai-gateway-stakeholder-alignment.md)
 - **Data-driven decisions** — Hypotheses before features. Metrics before launch. Experiments before bets.
-- **Velocity** — I ship small, learn fast, and keep decision logs so the team knows why we chose what we chose.
+- **Prioritization discipline** — I kill features as deliberately as I ship them. [See what I killed and why →](./pm-portfolio/projects/01-ai-gateway-governance/kill-list.md)
 
 ---
 
@@ -37,7 +43,7 @@ I ship enterprise-grade systems that make complex AI safe, observable, and easy 
 
 **Ship in phases with kill criteria.** Every rollout plan has go/no-go gates. If the data says stop, we stop. No sunk-cost shipping.
 
-**Principles:** [Product Principles](./pm-portfolio/about/principles.md) · [Bio](./pm-portfolio/about/bio.md)
+**Principles:** [Product Principles](./pm-portfolio/about/principles.md) · [Bio](./pm-portfolio/about/bio.md) · [3-Year Vision](./pm-portfolio/vision.md)
 
 ---
 
@@ -48,6 +54,7 @@ anish-projects/
 ├── ai-gateway-foundry/         # Live prototype — AI Gateway + Foundry dashboard
 ├── cost-segregation/           # Live MVP — Cost segregation report generator
 ├── pm-portfolio/
+│   ├── vision.md               # 3-year AI governance platform strategy
 │   ├── about/                  # Resume, bio, product principles
 │   ├── projects/
 │   │   ├── 01-ai-gateway-governance/    # System design + governance
@@ -55,6 +62,7 @@ anish-projects/
 │   │   ├── 03-tool-catalog-discovery/   # Customer discovery
 │   │   ├── 04-observability-cost-controls/ # Experiment-driven iteration
 │   │   └── 05-gateway-pricing-tiers/    # Pricing/GTM (fast win)
+│   ├── case-studies/           # Cross-org alignment case study
 │   ├── templates/              # Reusable PM templates
 │   └── ops/                    # Style guide, glossary
 └── README.md                   # ← You are here

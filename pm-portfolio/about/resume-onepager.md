@@ -8,9 +8,10 @@ Product Manager at Microsoft focused on Azure API Management and AI Gateway. Bui
 ### Microsoft — Product Manager, Azure API Management
 *Current*
 - Leading AI Gateway integration with Microsoft Foundry (Azure AI Foundry)
-- Defining the product vision for MCP-based tool governance in enterprise AI
+- Defining the [3-year platform vision](../vision.md) for AI governance — from model governance (Y1) to tool/agent governance (Y2–Y3)
 - Shipping gateway capabilities: rate limiting, semantic caching, content safety, load balancing, failover across AI model deployments
-- Driving cross-team alignment across APIM, Foundry, Azure OpenAI, and partner teams
+- [Aligned 5 cross-functional teams](../case-studies/ai-gateway-stakeholder-alignment.md) (APIM, Foundry, AI Services, MCP Runtime, Security) in 3 weeks using prototype-first approach
+- Drove [5 deliberate feature kills](../projects/01-ai-gateway-governance/kill-list.md) to keep Phase 1 focused — including killing my own cross-cloud sync feature
 - Building prototypes and demos that have informed leadership investment decisions
 
 ### Projects & Products
