@@ -1,6 +1,6 @@
 import {
   Opportunity, OrderDraft, OptionContract, AppConfig,
-  MarketRegime, EarningsEvent,
+  MarketRegime, EarningsEvent, FundamentalProfile,
 } from '../types';
 import { shortId } from '../utils/id';
 import { differenceInCalendarDays, parseISO } from 'date-fns';
@@ -10,6 +10,7 @@ export interface CspInput {
   optionsChains: Record<string, OptionContract[]>;
   regime: MarketRegime;
   earnings: EarningsEvent[];
+  qualityScores?: Map<string, number>; // symbol → quality score 0-100
 }
 
 export interface CspOutput {
@@ -59,11 +60,17 @@ export function runWheelCspAgent(input: CspInput, config: AppConfig): CspOutput 
       const annualizedYield = (premiumPct / contract.dte) * 365;
       const absDelta = Math.abs(contract.delta);
       const regimePenalty = regime.regime === 'Bear' ? 0.3 : regime.regime === 'Neutral' ? 0.1 : 0;
-      const score = +(annualizedYield * 100 - absDelta * 50 - regimePenalty * 20).toFixed(2);
+
+      // Quality-adjusted scoring: blend options yield with fundamental quality
+      const qualityScore = input.qualityScores?.get(symbol) ?? 50;
+      const qualityMultiplier = 0.5 + (qualityScore / 100) * 0.5; // 0.5x to 1.0x
+      const baseScore = annualizedYield * 100 - absDelta * 50 - regimePenalty * 20;
+      const score = +(baseScore * qualityMultiplier).toFixed(2);
 
       const riskFlags: string[] = [];
       if (absDelta > 0.28) riskFlags.push('high-delta');
       if (contract.iv > 0.35) riskFlags.push('elevated-iv');
+      if (qualityScore < 40) riskFlags.push('low-quality');
 
       const oppId = shortId();
 
@@ -72,7 +79,7 @@ export function runWheelCspAgent(input: CspInput, config: AppConfig): CspOutput 
         category: 'CSP',
         symbol,
         score,
-        rationale: `Sell ${symbol} $${contract.strike}P exp ${contract.expiry} (${contract.dte}d). Premium $${contract.mid.toFixed(2)} (${(premiumPct * 100).toFixed(2)}% of strike). Annualized yield ${(annualizedYield * 100).toFixed(1)}%. Delta ${contract.delta.toFixed(2)}.`,
+        rationale: `Sell ${symbol} $${contract.strike}P exp ${contract.expiry} (${contract.dte}d). Premium $${contract.mid.toFixed(2)} (${(premiumPct * 100).toFixed(2)}% of strike). Annualized yield ${(annualizedYield * 100).toFixed(1)}%. Delta ${contract.delta.toFixed(2)}. Quality: ${qualityScore}/100.`,
         risk_flags: riskFlags,
         details: {
           strike: contract.strike,
@@ -81,6 +88,7 @@ export function runWheelCspAgent(input: CspInput, config: AppConfig): CspOutput 
           delta: contract.delta,
           premium: contract.mid,
           annualized_yield: +(annualizedYield * 100).toFixed(1),
+          quality_score: qualityScore,
         },
       });
 

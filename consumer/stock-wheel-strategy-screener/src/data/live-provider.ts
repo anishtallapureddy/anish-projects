@@ -2,7 +2,7 @@ import { format } from 'date-fns';
 import * as https from 'https';
 import {
   StockQuote, OptionContract, Fundamentals, EtfData,
-  PortfolioSnapshot, EarningsEvent,
+  PortfolioSnapshot, EarningsEvent, FundamentalProfile,
 } from '../types';
 
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36';
@@ -405,6 +405,148 @@ export async function getLiveEarnings(symbols: string[]): Promise<EarningsEvent[
   }
 
   return events;
+}
+
+// ── Rich Fundamentals (quoteSummary API — financialData + defaultKeyStatistics) ──
+
+interface RawFundamentals {
+  symbol: string;
+  roe: number;
+  roa: number;
+  profitMargin: number;
+  grossMargin: number;
+  operatingMargin: number;
+  revenueGrowth: number;
+  earningsGrowth: number;
+  trailingPE: number;
+  forwardPE: number;
+  priceToBook: number;
+  debtToEquity: number;
+  currentRatio: number;
+  freeCashflow: number;
+  dividendYield: number;
+  beta: number;
+  marketCap: number;
+  sector: string;
+  currentPrice: number;
+  analystRating: string;
+  analystTarget: number;
+  analystCount: number;
+  earningsQuarterlyGrowth: number;
+}
+
+async function fetchQuoteSummary(symbol: string): Promise<RawFundamentals | null> {
+  try {
+    const data = await yahooFetch(
+      `https://query2.finance.yahoo.com/v10/finance/quoteSummary/${symbol}?modules=financialData,defaultKeyStatistics`
+    );
+    const result = data?.quoteSummary?.result?.[0];
+    if (!result) return null;
+
+    const fd = result.financialData || {};
+    const ks = result.defaultKeyStatistics || {};
+    const raw = (obj: any) => obj?.raw ?? obj ?? 0;
+
+    return {
+      symbol,
+      roe: raw(fd.returnOnEquity),
+      roa: raw(fd.returnOnAssets),
+      profitMargin: raw(fd.profitMargins ?? ks.profitMargins),
+      grossMargin: raw(fd.grossMargins),
+      operatingMargin: raw(fd.operatingMargins),
+      revenueGrowth: raw(fd.revenueGrowth),
+      earningsGrowth: raw(fd.earningsGrowth),
+      trailingPE: raw(ks.trailingPE ?? fd.trailingPE),
+      forwardPE: raw(ks.forwardPE ?? fd.forwardPE),
+      priceToBook: raw(ks.priceToBook),
+      debtToEquity: raw(fd.debtToEquity),
+      currentRatio: raw(fd.currentRatio),
+      freeCashflow: raw(fd.freeCashflow),
+      dividendYield: raw(ks.dividendYield ?? fd.dividendYield),
+      beta: raw(ks.beta),
+      marketCap: raw(ks.enterpriseValue) || 0,
+      sector: '',
+      currentPrice: raw(fd.currentPrice),
+      analystRating: fd.recommendationKey || 'none',
+      analystTarget: raw(fd.targetMeanPrice),
+      analystCount: raw(fd.numberOfAnalystOpinions),
+      earningsQuarterlyGrowth: raw(ks.earningsQuarterlyGrowth),
+    };
+  } catch {
+    return null;
+  }
+}
+
+export async function getLiveRichFundamentals(
+  symbols: string[],
+  sectorMap: Record<string, string>,
+  concurrency: number = 6,
+): Promise<FundamentalProfile[]> {
+  const profiles: FundamentalProfile[] = [];
+  let done = 0;
+  const total = symbols.length;
+  const queue = [...symbols];
+  const workers: Promise<void>[] = [];
+
+  for (let i = 0; i < Math.min(concurrency, queue.length); i++) {
+    workers.push((async () => {
+      while (queue.length > 0) {
+        const sym = queue.shift()!;
+        const raw = await fetchQuoteSummary(sym);
+        done++;
+        if (done % 20 === 0 || done === total) {
+          console.log(`   📊 Fundamentals: ${done}/${total} fetched...`);
+        }
+        if (!raw) continue;
+
+        // Compute sub-scores using the fundamentals agent logic (inline for provider)
+        const sector = sectorMap[sym] || raw.sector || 'Unknown';
+        const mcapB = raw.marketCap / 1e9;
+        const fcfB = raw.freeCashflow / 1e9;
+        const upside = raw.currentPrice > 0
+          ? ((raw.analystTarget - raw.currentPrice) / raw.currentPrice) * 100
+          : 0;
+
+        profiles.push({
+          symbol: sym,
+          sector,
+          market_cap_b: +mcapB.toFixed(1),
+          quality_score: 0, // computed by fundamentals agent
+          profitability_score: 0,
+          growth_score: 0,
+          valuation_score: 0,
+          balance_sheet_score: 0,
+          dividend_score: 0,
+          roe: +(raw.roe * 100).toFixed(1),
+          roa: +(raw.roa * 100).toFixed(1),
+          profit_margin: +(raw.profitMargin * 100).toFixed(1),
+          gross_margin: +(raw.grossMargin * 100).toFixed(1),
+          operating_margin: +(raw.operatingMargin * 100).toFixed(1),
+          revenue_growth: +(raw.revenueGrowth * 100).toFixed(1),
+          earnings_growth: +(raw.earningsGrowth * 100).toFixed(1),
+          pe_ratio: +raw.trailingPE.toFixed(1),
+          forward_pe: +raw.forwardPE.toFixed(1),
+          peg_ratio: raw.earningsGrowth > 0
+            ? +(raw.trailingPE / (raw.earningsGrowth * 100)).toFixed(2)
+            : 0,
+          price_to_book: +raw.priceToBook.toFixed(1),
+          debt_to_equity: +raw.debtToEquity.toFixed(1),
+          current_ratio: +raw.currentRatio.toFixed(2),
+          free_cash_flow_b: +fcfB.toFixed(1),
+          dividend_yield: +(raw.dividendYield * 100).toFixed(2),
+          beta: +raw.beta.toFixed(2),
+          analyst_rating: raw.analystRating,
+          analyst_target: +raw.analystTarget.toFixed(2),
+          analyst_upside: +upside.toFixed(1),
+          analyst_count: raw.analystCount,
+          grade: '', // computed by fundamentals agent
+        });
+      }
+    })());
+  }
+
+  await Promise.all(workers);
+  return profiles;
 }
 
 // ── Portfolio (still user-provided) ──
