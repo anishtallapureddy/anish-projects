@@ -43,12 +43,15 @@ export function runValueAgent(input: ValueInput, config: AppConfig): ValueOutput
       rationale: `${stock.symbol}: P/E ${stock.pe_ratio.toFixed(1)} vs 5yr avg ${stock.pe_5y_avg.toFixed(1)} (${(valuationDiscount * 100).toFixed(0)}% discount). ROIC ${(stock.roic * 100).toFixed(0)}%, 5yr rev CAGR ${(stock.rev_cagr_5y * 100).toFixed(0)}%. Market cap $${stock.market_cap_b}B.`,
       risk_flags: riskFlags,
       details: {
+        current_price: stock.current_price ?? 0,
         pe_ratio: stock.pe_ratio,
         pe_5y_avg: stock.pe_5y_avg,
         valuation_discount: +(valuationDiscount * 100).toFixed(1),
         roic: +(stock.roic * 100).toFixed(1),
         rev_cagr_5y: +(stock.rev_cagr_5y * 100).toFixed(1),
         net_debt_to_ebitda: stock.net_debt_to_ebitda,
+        market_cap_b: stock.market_cap_b,
+        action: `BUY ${stock.symbol} shares at market (~$${(stock.current_price ?? 0).toFixed(2)})`,
       },
     });
   }

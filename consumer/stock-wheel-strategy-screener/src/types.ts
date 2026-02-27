@@ -204,6 +204,7 @@ export interface Fundamentals {
   pe_ratio: number;
   pe_5y_avg: number;
   sector: string;
+  current_price?: number;
 }
 
 export interface EtfData {
@@ -213,6 +214,7 @@ export interface EtfData {
   aum_b: number;
   ytd_return: number;
   div_yield: number;
+  current_price?: number;
 }
 
 export interface PortfolioPosition {
