@@ -24,6 +24,12 @@ cd ai/ai-gateway && npm install && npm start
 ### [Cost Segregation](./consumer/cost-segregation/)
 A fintech SaaS that generates IRS-compliant cost segregation reports for residential properties. Automates what CPAs charge $5K–$15K for. Next.js + TypeScript + SQLite.
 
+| Landing page | Pricing tiers |
+|:---:|:---:|
+| ![Landing](./consumer/cost-segregation/screenshots/01-landing-hero.png) | ![Pricing](./consumer/cost-segregation/screenshots/02-pricing-tiers.png) |
+| **Property input wizard** | **Dashboard** |
+| ![Property](./consumer/cost-segregation/screenshots/03-property-input.png) | ![Dashboard](./consumer/cost-segregation/screenshots/04-dashboard.png) |
+
 ```bash
 cd consumer/cost-segregation && npm install && npm run dev
 ```

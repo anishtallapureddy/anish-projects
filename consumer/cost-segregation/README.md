@@ -4,6 +4,8 @@
 
 Cost segregation is a tax strategy that reclassifies building components into shorter-life IRS asset categories, accelerating depreciation deductions and generating significant upfront tax savings. Traditional engineering-based studies cost $5,000–$15,000. CostSeg Pro delivers comparable analysis for a fraction of the cost.
 
+![CostSeg Pro — Landing Page](./screenshots/01-landing-hero.png)
+
 [![Status](https://img.shields.io/badge/status-MVP-blue)]()
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)]()
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.4-blue)]()
@@ -47,6 +49,16 @@ Automatically allocates property costs across IRS depreciation categories using 
 - Multi-property portfolio management
 - Report history with regeneration
 - Quick-access stats
+
+---
+
+## 📸 Screenshots
+
+| Property input wizard | Pricing tiers |
+|:---:|:---:|
+| ![Property Input](./screenshots/03-property-input.png) | ![Pricing](./screenshots/02-pricing-tiers.png) |
+| **Dashboard** | |
+| ![Dashboard](./screenshots/04-dashboard.png) | |
 
 ---
 
