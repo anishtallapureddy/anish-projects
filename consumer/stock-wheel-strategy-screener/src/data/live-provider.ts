@@ -502,9 +502,16 @@ export async function getLiveRichFundamentals(
         if (!raw) continue;
 
         // Compute sub-scores using the fundamentals agent logic (inline for provider)
+        // Safe number helper — Yahoo Finance fields can be undefined/null/NaN/{raw,fmt}
+        const n = (v: any, scale = 1, decimals = 1): number => {
+          if (v == null) return 0;
+          const num = typeof v === 'object' && v.raw != null ? v.raw : Number(v);
+          return isFinite(num) ? +((num * scale).toFixed(decimals)) : 0;
+        };
+
         const sector = sectorMap[sym] || raw.sector || 'Unknown';
         const mcapB = raw.marketCap / 1e9;
-        const fcfB = raw.freeCashflow / 1e9;
+        const fcfB = (raw.freeCashflow || 0) / 1e9;
         const upside = raw.currentPrice > 0
           ? ((raw.analystTarget - raw.currentPrice) / raw.currentPrice) * 100
           : 0;
@@ -512,35 +519,35 @@ export async function getLiveRichFundamentals(
         profiles.push({
           symbol: sym,
           sector,
-          market_cap_b: +mcapB.toFixed(1),
+          market_cap_b: n(mcapB),
           quality_score: 0, // computed by fundamentals agent
           profitability_score: 0,
           growth_score: 0,
           valuation_score: 0,
           balance_sheet_score: 0,
           dividend_score: 0,
-          roe: +(raw.roe * 100).toFixed(1),
-          roa: +(raw.roa * 100).toFixed(1),
-          profit_margin: +(raw.profitMargin * 100).toFixed(1),
-          gross_margin: +(raw.grossMargin * 100).toFixed(1),
-          operating_margin: +(raw.operatingMargin * 100).toFixed(1),
-          revenue_growth: +(raw.revenueGrowth * 100).toFixed(1),
-          earnings_growth: +(raw.earningsGrowth * 100).toFixed(1),
-          pe_ratio: +raw.trailingPE.toFixed(1),
-          forward_pe: +raw.forwardPE.toFixed(1),
-          peg_ratio: raw.earningsGrowth > 0
-            ? +(raw.trailingPE / (raw.earningsGrowth * 100)).toFixed(2)
+          roe: n(raw.roe, 100),
+          roa: n(raw.roa, 100),
+          profit_margin: n(raw.profitMargin, 100),
+          gross_margin: n(raw.grossMargin, 100),
+          operating_margin: n(raw.operatingMargin, 100),
+          revenue_growth: n(raw.revenueGrowth, 100),
+          earnings_growth: n(raw.earningsGrowth, 100),
+          pe_ratio: n(raw.trailingPE),
+          forward_pe: n(raw.forwardPE),
+          peg_ratio: raw.earningsGrowth > 0 && raw.trailingPE > 0
+            ? n(raw.trailingPE / (raw.earningsGrowth * 100), 1, 2)
             : 0,
-          price_to_book: +raw.priceToBook.toFixed(1),
-          debt_to_equity: +raw.debtToEquity.toFixed(1),
-          current_ratio: +raw.currentRatio.toFixed(2),
-          free_cash_flow_b: +fcfB.toFixed(1),
-          dividend_yield: +(raw.dividendYield * 100).toFixed(2),
-          beta: +raw.beta.toFixed(2),
-          analyst_rating: raw.analystRating,
-          analyst_target: +raw.analystTarget.toFixed(2),
-          analyst_upside: +upside.toFixed(1),
-          analyst_count: raw.analystCount,
+          price_to_book: n(raw.priceToBook),
+          debt_to_equity: n(raw.debtToEquity),
+          current_ratio: n(raw.currentRatio, 1, 2),
+          free_cash_flow_b: n(fcfB),
+          dividend_yield: n(raw.dividendYield, 100, 2),
+          beta: n(raw.beta, 1, 2),
+          analyst_rating: raw.analystRating || '',
+          analyst_target: n(raw.analystTarget, 1, 2),
+          analyst_upside: n(upside),
+          analyst_count: raw.analystCount || 0,
           grade: '', // computed by fundamentals agent
         });
       }
