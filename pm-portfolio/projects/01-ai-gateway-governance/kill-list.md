@@ -38,25 +38,25 @@
 
 **What it was:**
 A full XML policy editor — equivalent to APIM's existing policy editor — embedded directly
-in the Foundry portal. This would allow admins to write, test, and deploy custom gateway
+in the AI Gateway dashboard. This would allow admins to write, test, and deploy custom gateway
 policies in raw XML, mirroring the workflow that veteran APIM customers are accustomed to.
 
 **Why it was proposed:**
 APIM power users on our customer advisory board expected the same policy editing experience
 they have in the standalone APIM portal. Several had built internal tooling around raw XML
-policy files and wanted to reuse that investment in the Foundry context.
+policy files and wanted to reuse that investment in the AI Gateway context.
 
 **Why I killed it:**
 
 - **Wrong audience abstraction.** Our target users are AI platform engineers, not APIM
   specialists. Custom XML is intimidating and error-prone for this audience. User research
-  showed that 70% of Foundry early-access users had never opened the APIM policy editor.
+  showed that 70% of AI Gateway early-access users had never opened the APIM policy editor.
 - **Telemetry doesn't justify it.** APIM telemetry shows only **12% of customers** ever
   edit raw policy XML. The remaining 88% use the visual policy builder or pre-built
   templates. Building for the 12% at the cost of the 88% is bad prioritization.
 - **Massive capacity hit.** A full XML editor with syntax highlighting, validation,
   IntelliSense, and error handling would consume **~4 engineering sprints** — roughly
-  **25% of Phase 1 capacity** — for a feature most Foundry users would never touch.
+  **25% of Phase 1 capacity** — for a feature most AI Gateway users would never touch.
 - **Compromise shipped instead:** Pre-built policy templates in V1 covering the top 6
   governance scenarios (rate limiting, content safety, token quotas, semantic caching,
   load balancing, logging). Added an "Advanced Settings" escape hatch that deep-links
@@ -96,7 +96,7 @@ passes through the gateway is guaranteed to meet a quality bar."
   counts as good enough?" varies by use case, prompt, and context. Forcing async,
   subjective judgments into the synchronous request path creates **false confidence**
   ("the gateway approved it, so it must be good") and false negatives.
-- **Duplicates existing investment.** Foundry already has a dedicated **Evaluation
+- **Duplicates existing investment.** The platform already has a dedicated **Evaluation
   service** with sophisticated scoring models, A/B comparison, and human-in-the-loop
   workflows. Duplicating eval logic in the gateway fragments the evaluation story and
   creates two competing sources of truth.
@@ -121,7 +121,7 @@ losing ~15% of evaluation data. Net win for both teams.
 
 **What it was:**
 Automatically sync agent registrations from **Google Vertex AI**, **AWS Bedrock**, and
-other cloud AI platforms into the Foundry agent catalog. This would enable cross-cloud
+other cloud AI platforms into the AI Gateway agent catalog. This would enable cross-cloud
 governance — a single pane of glass for managing agents regardless of where they run.
 
 **Why it was proposed:**
@@ -145,7 +145,7 @@ scoped into Phase 1 as a differentiator.
   **Tool Catalog** (Project 03) by one full quarter. The Tool Catalog was requested by
   **4x more customers** than cross-cloud sync. The math was clear.
 - **Stopgap shipped instead:** Built a "manual registration" path allowing admins to
-  register non-Foundry agents via API or portal form. Takes ~2 minutes per agent.
+  register external agents via API or portal form. Takes ~2 minutes per agent.
 
 **Outcome:**
 No design partner churn from the deferral. The manual registration path handled the

@@ -61,8 +61,8 @@ As a platform engineer, I want to enable content safety filters and prompt injec
 
 ### Should Have
 
-**US-M-A5: Register Non-Foundry Models**  
-As a platform engineer, I want to register models hosted outside of Foundry so that I can apply consistent governance regardless of where a model is deployed.
+**US-M-A5: Register External Models**  
+As a platform engineer, I want to register models hosted outside of the platform so that I can apply consistent governance regardless of where a model is deployed.
 
 **US-M-A6: Enable Semantic Caching**  
 As a platform engineer, I want to enable semantic caching for model responses so that repeated similar queries are served faster and at lower cost.
@@ -213,8 +213,8 @@ As a developer, I want to access auto-generated documentation for each tool so t
 
 ### Must Have
 
-**US-A-A1: Register Non-Foundry Agents**  
-As a platform engineer, I want to register agents built outside Foundry so that all agents are governed through a single control plane.
+**US-A-A1: Register External Agents**  
+As a platform engineer, I want to register agents built outside the platform so that all agents are governed through a single control plane.
 
 **US-A-A2: Observe Agent Behavior**  
 As a platform engineer, I want to view agent-level metrics (invocations, tool calls, errors) so that I can monitor agent health and behavior.
@@ -256,7 +256,7 @@ As a developer, I want to wire multiple agents together with routing logic so th
 | Priority | Count | Examples |
 |----------|-------|---------|
 | **Must Have** | 16 | Quotas, virtual keys, failover, MCP registration, approval workflows, catalogs, playgrounds |
-| **Should Have** | 12 | Non-Foundry model registration, API-to-MCP conversion, agent guardrails, cloud sync |
+| **Should Have** | 12 | External model registration, API-to-MCP conversion, agent guardrails, cloud sync |
 | **Nice to Have** | 4 | Cost alerts, bulk import, agent lifecycle, multi-agent composition |
 
 ---

@@ -20,7 +20,7 @@ Dogfooding       (Models)             (+ Tools/MCP)        (+ Agents, Cross-Clou
 ## Phase 0: Internal Dogfooding
 
 **Duration:** 4 weeks  
-**Audience:** Internal Microsoft teams (APIM, Foundry, AI Services)  
+**Audience:** Internal Microsoft teams (APIM, Gateway UX, AI Services)  
 **Focus:** Validate prototype, gather early feedback, stress-test core architecture
 
 ### Scope
@@ -30,7 +30,7 @@ Dogfooding       (Models)             (+ Tools/MCP)        (+ Agents, Cross-Clou
 | Models | Register models, configure quotas, virtual keys, basic failover | Semantic caching, RAI policies |
 | Tools | Register 2–3 MCP endpoints, namespace organization | Approval workflows, API-to-MCP conversion |
 | Agents | Register 1–2 internal agents | Cross-cloud sync, guardrails |
-| UX | Prototype dashboard (Node.js mock) | Foundry portal integration |
+| UX | Prototype dashboard (Node.js mock) | AI Gateway dashboard integration |
 | Monitoring | Basic request logging | Full dashboards, alerting |
 
 ### Success Criteria
@@ -38,14 +38,14 @@ Dogfooding       (Models)             (+ Tools/MCP)        (+ Agents, Cross-Clou
 - [ ] 3+ internal teams complete end-to-end model governance flow
 - [ ] Prototype demo delivered to 5+ stakeholder groups
 - [ ] <20 critical bugs identified (and triaged)
-- [ ] Architecture validated for Foundry portal integration path
+- [ ] Architecture validated for AI Gateway dashboard integration path
 - [ ] Internal NPS >20 (early signal)
 
 ### Go/No-Go Gates
 
 | Gate | Criteria | Owner |
 |------|----------|-------|
-| Architecture Review | Architecture approved by APIM and Foundry engineering leads | Engineering |
+| Architecture Review | Architecture approved by APIM and gateway engineering leads | Engineering |
 | Security Review | Threat model reviewed; no P0 security issues | Security |
 | Prototype Feedback | ≥3 stakeholder groups confirm value proposition | PM |
 | Performance Baseline | Gateway latency overhead <30ms at P99 (internal load) | Engineering |
@@ -54,7 +54,7 @@ Dogfooding       (Models)             (+ Tools/MCP)        (+ Agents, Cross-Clou
 
 - Dogfooding uses isolated APIM instance; rollback = disable gateway routing
 - No customer impact; internal teams revert to direct model/tool access
-- Prototype is standalone; no Foundry portal dependencies to revert
+- Prototype is standalone; no dashboard dependencies to revert
 
 ---
 
@@ -62,22 +62,22 @@ Dogfooding       (Models)             (+ Tools/MCP)        (+ Agents, Cross-Clou
 
 **Duration:** 8 weeks  
 **Audience:** 5 design partners (enterprise customers)  
-**Focus:** Models governance end-to-end in Foundry portal
+**Focus:** Models governance end-to-end in AI Gateway dashboard
 
 ### Scope
 
 | Area | Included | Not Included |
 |------|----------|-------------|
-| Models — Admin | Register models (Foundry + external), quotas, virtual keys, RAI policies, failover, semantic caching, analytics | — |
+| Models — Admin | Register models (platform + external), quotas, virtual keys, RAI policies, failover, semantic caching, analytics | — |
 | Models — Developer | Model catalog, playground, get credentials, A/B testing | — |
 | Tools | Not in scope for Phase 1 | All tool governance |
 | Agents | Not in scope for Phase 1 | All agent governance |
-| UX | Foundry portal Operate + Build tabs (Models section) | Tools and Agents sections |
+| UX | AI Gateway dashboard Operate + Build tabs (Models section) | Tools and Agents sections |
 | Monitoring | Model usage dashboards, request logs, failover monitoring | Tool/agent dashboards |
 
 ### Design Partner Selection Criteria
 
-- Enterprise customer with ≥3 AI model deployments in Foundry
+- Enterprise customer with ≥3 AI model deployments
 - Dedicated platform engineering team
 - Willing to provide bi-weekly feedback
 - Diverse industries (finance, healthcare, tech, retail, manufacturing)
@@ -118,7 +118,7 @@ Dogfooding       (Models)             (+ Tools/MCP)        (+ Agents, Cross-Clou
 ## Phase 2: Public Preview — Adding Tools (MCP) Governance
 
 **Duration:** 10 weeks  
-**Audience:** All Foundry customers (opt-in)  
+**Audience:** All AI Gateway customers (opt-in)  
 **Focus:** Add Tools governance alongside Models; MCP-native experience
 
 ### Scope
@@ -134,7 +134,7 @@ Dogfooding       (Models)             (+ Tools/MCP)        (+ Agents, Cross-Clou
 
 ### Success Criteria
 
-- [ ] >100 Foundry projects enable gateway (opt-in)
+- [ ] >100 AI Gateway projects enable gateway (opt-in)
 - [ ] >50 MCP tools registered across tenants
 - [ ] Tool catalog used by >200 developers
 - [ ] API-to-MCP conversion used for >20 APIs
@@ -168,7 +168,7 @@ Dogfooding       (Models)             (+ Tools/MCP)        (+ Agents, Cross-Clou
 ## Phase 3: General Availability — Full Platform (Models + Tools + Agents)
 
 **Duration:** Ongoing (GA launch + continuous improvement)  
-**Audience:** All Foundry customers (enabled by default for new projects, opt-in for existing)  
+**Audience:** All AI Gateway customers (enabled by default for new projects, opt-in for existing)  
 **Focus:** Agents governance, cross-cloud sync, production-grade SLAs
 
 ### Scope
@@ -177,7 +177,7 @@ Dogfooding       (Models)             (+ Tools/MCP)        (+ Agents, Cross-Clou
 |------|----------|-------------|
 | Models (carried) | All Models capabilities, production SLA | — |
 | Tools (carried) | All Tools capabilities, production SLA | — |
-| Agents — Admin | Register non-Foundry agents, cross-cloud sync (Vertex, Bedrock), guardrails, agent lifecycle management, observability | Custom agent orchestration |
+| Agents — Admin | Register external agents, cross-cloud sync (Vertex, Bedrock), guardrails, agent lifecycle management, observability | Custom agent orchestration |
 | Agents — Developer | Agent catalog, agent playground, multi-agent composition | Agent training/fine-tuning |
 | UX | Complete Operate + Build experience across all pillars | Custom policy authoring |
 | Monitoring | Full cross-pillar dashboards, alerting, SLA tracking | — |
@@ -185,7 +185,7 @@ Dogfooding       (Models)             (+ Tools/MCP)        (+ Agents, Cross-Clou
 
 ### Success Criteria (6 months post-GA)
 
-- [ ] >40% of Foundry projects with gateway enabled
+- [ ] >40% of AI Gateway projects with gateway enabled
 - [ ] >500 models, >200 tools, >100 agents registered
 - [ ] >10M monthly governed requests
 - [ ] >2,000 active developer consumers

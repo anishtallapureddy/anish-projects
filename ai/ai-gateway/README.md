@@ -1,11 +1,11 @@
-# AI Gateway Foundry
+# AI Gateway
 
-A high-fidelity interactive prototype of **Azure AI Foundry** with a **live AI Gateway backend** — demonstrating how Azure API Management governs models, tools (MCP), and agents in a unified enterprise AI platform.
+A high-fidelity interactive prototype of **Azure AI Gateway** — demonstrating how Azure API Management governs models, tools (MCP), and agents as a unified enterprise AI governance platform.
 
 ## Quick Start
 
 ```bash
-cd ai-gateway-foundry
+cd ai/ai-gateway
 npm install
 npm start
 ```
@@ -14,7 +14,7 @@ Open **http://localhost:4000** in your browser.
 
 ## What This Is
 
-A 23-page Foundry dashboard (Discover / Build / Operate) backed by a real Express server that provides:
+A 23-page dashboard (Discover / Build / Operate) backed by a real Express server that provides:
 
 - **AI Gateway proxy** — rate limiting, content safety, semantic caching, PII masking, load balancing
 - **OpenAI-compatible chat API** — simulated model responses with gateway annotations
@@ -26,7 +26,7 @@ A 23-page Foundry dashboard (Discover / Build / Operate) backed by a real Expres
 
 ```
 ┌──────────────────────────────────────────────────┐
-│  Browser — Foundry Dashboard (index.html)        │
+│  Browser — AI Gateway Dashboard (index.html)     │
 │  ┌────────────┬──────────┬────────────────────┐  │
 │  │  Discover  │  Build   │      Operate       │  │
 │  │  (Catalog) │ (Editor) │ (Metrics + Issues) │  │
@@ -117,7 +117,7 @@ Every request updates real-time metrics: total requests, blocked count, cache hi
 |------|-------|---------|
 | `server.js` | ~500 | Express backend with gateway, metrics, CRUD APIs |
 | `api-client.js` | ~300 | Client-side wiring (chat → backend, metrics → dashboard) |
-| `index.html` | ~7,400 | 23-page Foundry dashboard |
+| `index.html` | ~7,400 | 23-page AI Gateway dashboard |
 | `styles.css` | ~8,200 | Dark theme component styles |
 | `slide-deck.html` | ~2,000 | Presentation deck for stakeholders |
 | `APIM-MCP-Roadmap.md` | ~120 | APIM MCP feature roadmap |
@@ -129,7 +129,7 @@ This project is part of the [anish-projects](https://github.com/anishtallapuredd
 | Project | Description |
 |---------|-------------|
 | **[CostSeg Pro](../../consumer/cost-segregation/)** | Cost segregation analysis report generator for residential properties |
-| **[PM Portfolio](../pm-portfolio/)** | Product management artifacts, templates, and project case studies |
+| **[PM Portfolio](../../pm-portfolio/)** | Product management artifacts, templates, and project case studies |
 
 ## License
 

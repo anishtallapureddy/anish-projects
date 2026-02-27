@@ -4,7 +4,7 @@ Projects focused on AI infrastructure, governance, and developer platform toolin
 
 | Project | Description | Stack | Status |
 |---------|-------------|-------|--------|
-| [AI Gateway Foundry](./ai-gateway-foundry/) | Azure AI Foundry dashboard with live AI Gateway backend — rate limiting, content safety, semantic caching, PII masking, load balancing, tool governance | Node.js · Express · HTML/CSS/JS | Prototype shipped |
+| [AI Gateway](./ai-gateway/) | Azure AI Gateway dashboard with live backend — rate limiting, content safety, semantic caching, PII masking, load balancing, tool governance | Node.js · Express · HTML/CSS/JS | Prototype shipped |
 
 ---
 

@@ -1,9 +1,9 @@
-# Product Requirements Document: AI Gateway Governance in Foundry
+# Product Requirements Document: AI Gateway Governance
 
 **Author:** Anish  
 **Status:** Draft  
 **Last Updated:** 2025-01  
-**Stakeholders:** APIM, Foundry Portal, AI Services, MCP Runtime, Security & Compliance
+**Stakeholders:** APIM, Gateway UX, AI Services, MCP Runtime, Security & Compliance
 
 ---
 
@@ -27,14 +27,14 @@ Enterprises are rapidly adopting AI across their organizations — deploying lan
 
 - Responsible for governance, security, and reliability of the organization's AI estate
 - Needs to register, configure, and enforce policies across models, tools, and agents
-- Operates through the **Operate tab** in Foundry portal
+- Operates through the **Operate tab** in the AI Gateway dashboard
 - Key concerns: compliance, cost control, availability, auditability
 
 ### Developer / Agent Builder (Build)
 
 - Builds AI-powered applications, agents, and workflows
 - Needs to discover, test, and integrate governed models, tools, and agents
-- Operates through the **Build tab** in Foundry portal
+- Operates through the **Build tab** in the AI Gateway dashboard
 - Key concerns: speed of integration, discoverability, playground testing, clear documentation
 
 ---
@@ -51,7 +51,7 @@ Enterprises are rapidly adopting AI across their organizations — deploying lan
 | M-A2 | **Manage Virtual Keys** | Issue, rotate, and revoke virtual API keys for model access. Map virtual keys to backend credentials without exposing them to consumers. |
 | M-A3 | **Configure RAI (Responsible AI) Policies** | Enable content safety filters, PII detection, and prompt injection guards per model or globally. |
 | M-A4 | **Set Up High Availability & Failover** | Configure primary/fallback model deployments. Define failover triggers (latency, error rate, capacity). Set up round-robin or priority-based load balancing. |
-| M-A5 | **Register Non-Foundry Models** | Onboard models hosted outside Foundry (e.g., self-hosted, third-party endpoints). Define endpoint, auth, and governance policies. |
+| M-A5 | **Register External Models** | Onboard models hosted outside the platform (e.g., self-hosted, third-party endpoints). Define endpoint, auth, and governance policies. |
 | M-A6 | **Observe Model Usage** | View dashboards for model consumption (requests, tokens, latency, errors). Drill into per-consumer and per-model analytics. |
 | M-A7 | **Configure Semantic Caching** | Enable response caching based on semantic similarity to reduce cost and latency for repeated queries. |
 
@@ -94,7 +94,7 @@ Enterprises are rapidly adopting AI across their organizations — deploying lan
 
 | ID | Scenario | Description |
 |----|----------|-------------|
-| A-A1 | **Register Non-Foundry Agents** | Onboard agents built outside Foundry (custom frameworks, LangChain, AutoGen, etc.) with endpoint and metadata. |
+| A-A1 | **Register External Agents** | Onboard agents built outside the platform (custom frameworks, LangChain, AutoGen, etc.) with endpoint and metadata. |
 | A-A2 | **Sync from Other Clouds** | Synchronize agent registrations from Google Vertex AI, Amazon Bedrock, or other cloud platforms. |
 | A-A3 | **Observe Agent Behavior** | View agent-level metrics (invocations, tool calls, model usage, error rates, conversation turns). |
 | A-A4 | **Apply Guardrails** | Configure input/output guardrails, tool access restrictions, and escalation policies per agent. |
@@ -112,9 +112,9 @@ Enterprises are rapidly adopting AI across their organizations — deploying lan
 
 ## 4. UX Design
 
-### Foundry Portal Integration
+### AI Gateway Dashboard Integration
 
-The gateway governance experience is embedded directly in Foundry portal through two primary surfaces:
+The gateway governance experience is built into the AI Gateway dashboard through two primary surfaces:
 
 #### Operate Tab (Platform Engineers)
 
@@ -181,18 +181,18 @@ Azure API Management provides the runtime foundation:
 | MCP routing | Custom policy + MCP server backend configuration |
 | Observability | Application Insights + custom metrics emission |
 
-### Integration with Foundry
+### Integration Architecture
 
-- **Control Plane:** Foundry portal calls APIM management APIs to configure gateway resources
+- **Control Plane:** AI Gateway dashboard calls APIM management APIs to configure gateway resources
 - **Data Plane:** All model/tool/agent requests route through APIM gateway for policy enforcement
 - **Identity:** Entra ID for admin auth; virtual keys + Entra for developer auth
-- **Telemetry:** APIM emits structured telemetry to Application Insights; Foundry portal queries for dashboards
+- **Telemetry:** APIM emits structured telemetry to Application Insights; the gateway dashboard queries for dashboards
 
 ## 6. Success Metrics
 
 | Category | Metric | Target |
 |----------|--------|--------|
-| Adoption | % of Foundry projects with gateway enabled | >40% within 6 months of GA |
+| Adoption | % of AI Gateway projects with gateway enabled | >40% within 6 months of GA |
 | Governance | % of AI requests routed through gateway | >80% for enabled projects |
 | Developer Experience | Time from project creation to first governed API call | <10 minutes |
 | Reliability | Gateway P99 latency overhead | <50ms |
@@ -205,7 +205,7 @@ See [metrics.md](./metrics.md) for the full metrics framework.
 - **Replacing APIM:** This is not a new gateway product — it leverages existing APIM infrastructure.
 - **Model Training/Fine-Tuning:** Gateway governance covers inference and invocation, not training pipelines.
 - **Agent Orchestration:** The gateway governs agent access, not agent internal logic or orchestration.
-- **Real-Time Model Evaluation:** Quality evaluation (evals) is a separate Foundry capability; the gateway provides observability data that feeds into eval workflows.
+- **Real-Time Model Evaluation:** Quality evaluation (evals) is a separate platform capability; the gateway provides observability data that feeds into eval workflows.
 - **Custom Policy Authoring in V1:** Initial release uses pre-built policy templates; custom policy XML authoring is deferred.
 
 ## 8. Constraints
@@ -213,8 +213,8 @@ See [metrics.md](./metrics.md) for the full metrics framework.
 - **APIM Dependency:** Feature availability is gated by APIM team's roadmap for AI Gateway capabilities.
 - **MCP Specification:** MCP is an evolving standard; tool governance must be resilient to spec changes.
 - **Cross-Cloud Sync:** Agent sync from Vertex/Bedrock depends on those platforms' API stability and access.
-- **Portal Performance:** Governance UX must not degrade Foundry portal load times (target: <200ms additional latency for page loads).
-- **Backward Compatibility:** Existing Foundry projects without gateway must continue to function without changes.
+- **Portal Performance:** Governance UX must not degrade AI Gateway dashboard load times (target: <200ms additional latency for page loads).
+- **Backward Compatibility:** Existing AI Gateway projects without gateway must continue to function without changes.
 
 ## 9. Open Questions
 
