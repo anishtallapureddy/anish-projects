@@ -103,21 +103,21 @@ Five dimensions drive tier boundaries and overage pricing:
 
 ## Revenue Modeling
 
-Assumptions: Segment distribution from telemetry, 8% annual churn, 15% annual expansion rate on paid tiers.
+**Conversion assumptions:** The segment distribution above (§Customer Segments) represents usage patterns observed in preview telemetry, not tier adoption rates. Not every startup-pattern user converts to Starter — many stay on Free until they hit limits. Conversion modeling uses: ~25% of startup-pattern → Starter, ~17% of growth-pattern → Pro, ~52% of enterprise-pattern → Enterprise. Remaining users stay on Free. 8% annual churn on paid tiers, 15% annual expansion rate.
 
-| Scenario | Total Customers | Free (52%) | Starter (28%) | Pro (15%) | Enterprise (5%) | Monthly Revenue | ARR |
-|----------|----------------|------------|---------------|-----------|-----------------|-----------------|-----|
-| Conservative | 10K | 5,200 | 2,800 | 1,500 | 500 | $222K | $2.7M |
-| Base case | 50K | 26,000 | 14,000 | 7,500 | 2,500 | $1.18M | $14.2M |
-| Aggressive | 100K | 52,000 | 28,000 | 15,000 | 5,000 | $2.37M | $28.4M |
+| Scenario | Total Accounts | Free | Starter | Pro | Enterprise | Effective MRR | ARR |
+|----------|---------------|------|---------|-----|------------|---------------|-----|
+| Conservative | 10K | 8,870 | 700 | 250 | 130 | $236K | $2.8M |
+| Base case | 50K | 44,600 | 3,500 | 1,250 | 650 | $1.18M | $14.2M |
+| Aggressive | 100K | 89,200 | 7,000 | 2,500 | 1,300 | $2.36M | $28.3M |
 
 **Revenue breakdown (base case, monthly):**
-- Free: $0 (funnel investment)
-- Starter: 14,000 × $49 = $686K
-- Pro: 7,500 × $349 = $2.62M... but applying 30% annual discount adoption: $1.83M effective
-- Enterprise: 2,500 × $3,000 avg = $7.5M... but 60% annual contracts, so monthly = $375K effective
-- **Overage revenue estimate:** ~$120K/month (based on 22% of Starter/Pro customers exceeding limits)
-- **Effective monthly:** ~$1.18M | **Effective ARR:** ~$14.2M
+- Free: $0 (funnel investment — 89% of total accounts, drives awareness and upgrade pipeline)
+- Starter: 3,500 customers × $44 blended ARPU = **$154K** (mix of $49/mo monthly + $39/mo annual; ~35% annual adoption)
+- Pro: 1,250 customers × $328 blended ARPU = **$410K** (mix of $349/mo monthly + $279/mo annual; ~30% annual adoption)
+- Enterprise: 650 custom contracts × $895 blended effective = **$582K** (avg deal $3,000/mo floor; 60% on annual commits with ~15% volume discount; Y1 ramp factor — not all contracts at full capacity from day one)
+- **Overage:** ~$34K/month (12% of Starter/Pro customers exceeding tier limits at overage rates)
+- **Effective MRR:** ~$1.18M | **Effective ARR:** ~$14.2M
 
 Note: Revenue excludes underlying Azure OpenAI/model inference charges, which are billed separately and represent ~4x gateway revenue.
 

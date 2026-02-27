@@ -63,6 +63,7 @@ A fully functional mock was built to demonstrate the vision and align stakeholde
 | [Rollout Plan](./rollout-plan.md) | Phased rollout from dogfooding to GA |
 | [Risks & Tradeoffs](./risks-tradeoffs.md) | Risk register and key design tradeoff analysis |
 | [Decision Log](./decision-log.md) | Architecture and product decision records |
+| [Kill List](./kill-list.md) | Features deliberately killed and why — prioritization discipline |
 | [Demo Script](./demo-script.md) | 5-minute demo walkthrough of the working prototype |
 
 ---
