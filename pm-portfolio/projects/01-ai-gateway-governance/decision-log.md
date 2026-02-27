@@ -219,7 +219,7 @@ Build a working prototype (Node.js + Express + HTML dashboard) that demonstrates
 - (−) Risk of stakeholders confusing prototype fidelity with production readiness — mitigated by clear "prototype" labeling
 
 ### Artifacts
-- **Repository:** [github.com/anishtallapureddy/anish-projects/ai-gateway-foundry](https://github.com/anishtallapureddy/anish-projects/tree/main/ai-gateway-foundry)
+- **Repository:** [github.com/anishtallapureddy/anish-projects/ai/ai-gateway-foundry](https://github.com/anishtallapureddy/anish-projects/tree/main/ai/ai-gateway-foundry)
 - **Tech stack:** Node.js, Express, vanilla HTML/CSS/JS dashboard
 - **Covers:** Operate tab (Models, Tools, Agents), Build tab (Catalog, Toolbox, Playground), Monitor tab (Metrics, Logs)
 

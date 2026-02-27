@@ -3,7 +3,7 @@
 **Duration:** 5 minutes  
 **Audience:** Stakeholders, design partners, leadership  
 **Prototype URL:** http://localhost:3000  
-**Repository:** [github.com/anishtallapureddy/anish-projects/ai-gateway-foundry](https://github.com/anishtallapureddy/anish-projects/tree/main/ai-gateway-foundry)
+**Repository:** [github.com/anishtallapureddy/anish-projects/ai/ai-gateway-foundry](https://github.com/anishtallapureddy/anish-projects/tree/main/ai/ai-gateway-foundry)
 
 ---
 

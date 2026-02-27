@@ -55,7 +55,7 @@ Automatically allocates property costs across IRS depreciation categories using 
 ```bash
 # Clone the repository
 git clone https://github.com/anishtallapureddy/anish-projects.git
-cd anish-projects/cost-segregation
+cd anish-projects/consumer/cost-segregation
 
 # Install dependencies
 npm install
@@ -226,5 +226,5 @@ This project is part of the [anish-projects](https://github.com/anishtallapuredd
 
 | Project | Description |
 |---------|-------------|
-| **[AI Gateway Foundry](../ai-gateway-foundry/)** | Azure AI Foundry experience with live AI Gateway backend — rate limiting, content safety, semantic caching, tool governance |
+| **[AI Gateway Foundry](../../ai/ai-gateway-foundry/)** | Azure AI Foundry experience with live AI Gateway backend — rate limiting, content safety, semantic caching, tool governance |
 | **[PM Portfolio](../pm-portfolio/)** | Product management artifacts, templates, and project case studies |
