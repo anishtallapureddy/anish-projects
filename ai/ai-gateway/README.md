@@ -2,6 +2,8 @@
 
 A high-fidelity interactive prototype of **Azure AI Gateway** — demonstrating how Azure API Management governs models, tools (MCP), and agents as a unified enterprise AI governance platform.
 
+![AI Gateway — Discover Dashboard](./screenshots/01-discover-dashboard.png)
+
 ## Quick Start
 
 ```bash
@@ -97,6 +99,11 @@ Per-key rate limiting (RPM). Exceeding the limit returns a `429` with gateway an
 Every request updates real-time metrics: total requests, blocked count, cache hit rate, token usage, per-model breakdowns. The Operate dashboard auto-refreshes every 10 seconds.
 
 ## Dashboard Pages
+
+| Tab | Screenshot |
+|-----|-----------|
+| **Operate** — Issues, governance, metrics, compliance | ![Operate](./screenshots/02-operate-overview.png) |
+| **Build** — Agents, tools, models, evaluations | ![Build](./screenshots/03-build-playground.png) |
 
 **Discover** — Models catalog, MCP tools catalog, agents, skills, capabilities search, templates  
 **Build** — Agent editor with playground, tool connections, workflow designer, fine-tuning, evaluations  
