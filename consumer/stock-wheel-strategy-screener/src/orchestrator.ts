@@ -3,7 +3,7 @@ import * as path from 'path';
 import { format } from 'date-fns';
 
 import { loadConfig } from './config/loader';
-import { DailyReport, Opportunity, OrderDraft, OptionContract } from './types';
+import { DailyReport, Opportunity, OrderDraft, OptionContract, FundamentalProfile } from './types';
 
 import { runMarketRegimeAgent } from './agents/market-regime';
 import { runWheelCspAgent } from './agents/wheel-csp';
@@ -12,6 +12,7 @@ import { runValueAgent } from './agents/value';
 import { runEtfAgent } from './agents/etf';
 import { runRiskGatekeeperAgent } from './agents/risk-gatekeeper';
 import { runReportAgent } from './agents/report-email';
+import { runFundamentalsAgent } from './agents/fundamentals';
 
 import {
   getMockQuotes, getMockVix, getMockOptionsChain,
@@ -23,6 +24,7 @@ import {
   getLiveFundamentals, getLiveEtfData, getDefaultPortfolio,
   enrichPortfolioWithLivePrices, getLiveEarnings,
   preScreenWheelCandidates, getLiveBatchOptionsChains,
+  getLiveRichFundamentals,
 } from './data/live-provider';
 
 export type DataMode = 'mock' | 'live';
@@ -38,7 +40,7 @@ export async function runDailyPipeline(mode: DataMode = 'mock'): Promise<{ repor
   console.log('='.repeat(50));
 
   // ── Step 1: Market Regime ──
-  console.log('\n📊 [1/7] Market Regime Agent...');
+  console.log('\n📊 [1/8] Market Regime Agent...');
   let spyQuote, vix;
   if (mode === 'live') {
     const quotes = await getLiveQuotes(['SPY']);
@@ -52,9 +54,63 @@ export async function runDailyPipeline(mode: DataMode = 'mock'): Promise<{ repor
   const regime = runMarketRegimeAgent({ spyQuote, vix }, config);
   console.log(`   → ${regime.regime} (${regime.risk_posture})`);
 
-  // ── Step 2: Wheel CSP Agent ──
-  console.log('\n💰 [2/7] Wheel CSP Agent...');
   const wheelTickers = config.universe.universes.wheel_universe;
+
+  // ── Step 1.5: Fundamentals Agent ──
+  console.log('\n📊 [1.5/8] Fundamentals Agent...');
+  let fundamentalProfiles: FundamentalProfile[] = [];
+  const qualityScores = new Map<string, number>();
+  if (mode === 'live') {
+    console.log(`   Fetching rich fundamentals for ${wheelTickers.length} stocks (6 parallel)...`);
+    const rawProfiles = await getLiveRichFundamentals(wheelTickers, config.universe.sectors, 6);
+    fundamentalProfiles = runFundamentalsAgent(rawProfiles);
+    for (const p of fundamentalProfiles) {
+      qualityScores.set(p.symbol, p.quality_score);
+    }
+    const gradeCount: Record<string, number> = {};
+    for (const p of fundamentalProfiles) gradeCount[p.grade] = (gradeCount[p.grade] || 0) + 1;
+    const gradeSummary = Object.entries(gradeCount).sort().map(([g, c]) => `${g}:${c}`).join(' ');
+    console.log(`   → ${fundamentalProfiles.length} profiles scored [${gradeSummary}]`);
+  } else {
+    // Generate basic mock profiles for mock mode
+    for (const sym of wheelTickers.slice(0, 50)) {
+      const mockScore = 40 + Math.random() * 50;
+      qualityScores.set(sym, +mockScore.toFixed(1));
+      fundamentalProfiles.push({
+        symbol: sym, sector: config.universe.sectors[sym] || 'Unknown',
+        market_cap_b: 50 + Math.random() * 200,
+        quality_score: +mockScore.toFixed(1),
+        profitability_score: +(30 + Math.random() * 60).toFixed(1),
+        growth_score: +(20 + Math.random() * 60).toFixed(1),
+        valuation_score: +(30 + Math.random() * 50).toFixed(1),
+        balance_sheet_score: +(40 + Math.random() * 50).toFixed(1),
+        dividend_score: +(20 + Math.random() * 60).toFixed(1),
+        roe: +(5 + Math.random() * 30).toFixed(1) as unknown as number,
+        roa: +(3 + Math.random() * 20).toFixed(1) as unknown as number,
+        profit_margin: +(5 + Math.random() * 25).toFixed(1) as unknown as number,
+        gross_margin: +(30 + Math.random() * 40).toFixed(1) as unknown as number,
+        operating_margin: +(10 + Math.random() * 25).toFixed(1) as unknown as number,
+        revenue_growth: +(-5 + Math.random() * 35).toFixed(1) as unknown as number,
+        earnings_growth: +(-10 + Math.random() * 50).toFixed(1) as unknown as number,
+        pe_ratio: +(10 + Math.random() * 30).toFixed(1) as unknown as number,
+        forward_pe: +(8 + Math.random() * 25).toFixed(1) as unknown as number,
+        peg_ratio: +(0.5 + Math.random() * 2.5).toFixed(2) as unknown as number,
+        price_to_book: +(1 + Math.random() * 15).toFixed(1) as unknown as number,
+        debt_to_equity: +(10 + Math.random() * 100).toFixed(1) as unknown as number,
+        current_ratio: +(0.8 + Math.random() * 2).toFixed(2) as unknown as number,
+        free_cash_flow_b: +(1 + Math.random() * 20).toFixed(1) as unknown as number,
+        dividend_yield: +(Math.random() * 4).toFixed(2) as unknown as number,
+        beta: +(0.5 + Math.random() * 1.5).toFixed(2) as unknown as number,
+        analyst_rating: ['buy', 'hold', 'sell'][Math.floor(Math.random() * 2)] as string,
+        analyst_target: 0, analyst_upside: 0, analyst_count: 0,
+        grade: mockScore >= 85 ? 'A' : mockScore >= 70 ? 'B' : mockScore >= 55 ? 'C' : mockScore >= 40 ? 'D' : 'F',
+      });
+    }
+    console.log(`   → ${fundamentalProfiles.length} mock profiles generated`);
+  }
+
+  // ── Step 2: Wheel CSP Agent ──
+  console.log('\n💰 [2/8] Wheel CSP Agent...');
   const optionsChains: Record<string, OptionContract[]> = {};
   if (mode === 'live') {
     // Phase 1: pre-screen all S&P 500 tickers by liquidity
@@ -80,11 +136,12 @@ export async function runDailyPipeline(mode: DataMode = 'mock'): Promise<{ repor
     optionsChains,
     regime,
     earnings,
+    qualityScores,
   }, config);
   console.log(`   → ${cspResult.opportunities.length} opportunities, ${cspResult.orderDrafts.length} draft orders`);
 
   // ── Step 3: Covered Call Agent ──
-  console.log('\n📈 [3/7] Covered Call Agent...');
+  console.log('\n📈 [3/8] Covered Call Agent...');
   let portfolio;
   if (mode === 'live') {
     portfolio = await enrichPortfolioWithLivePrices(getDefaultPortfolio());
@@ -98,7 +155,7 @@ export async function runDailyPipeline(mode: DataMode = 'mock'): Promise<{ repor
   console.log(`   → ${ccResult.opportunities.length} opportunities, ${ccResult.orderDrafts.length} draft orders`);
 
   // ── Step 4: Value Agent ──
-  console.log('\n🏦 [4/7] Value Agent...');
+  console.log('\n🏦 [4/8] Value Agent...');
   // Use value_universe from config, falling back to value_candidates watchlist
   const valueSymbols = config.universe.universes.value_universe
     || config.userPreferences.watchlists.value_candidates;
@@ -113,7 +170,7 @@ export async function runDailyPipeline(mode: DataMode = 'mock'): Promise<{ repor
   console.log(`   → ${valueResult.opportunities.length} value picks`);
 
   // ── Step 5: ETF Agent ──
-  console.log('\n🌐 [5/7] ETF Agent...');
+  console.log('\n🌐 [5/8] ETF Agent...');
   const etfSymbols = config.universe.universes.etf_universe;
   const etfData = mode === 'live'
     ? await getLiveEtfData(etfSymbols)
@@ -127,7 +184,7 @@ export async function runDailyPipeline(mode: DataMode = 'mock'): Promise<{ repor
   console.log(`   → ${etfResult.opportunities.length} ETF insights, ${etfResult.orderDrafts.length} draft orders`);
 
   // ── Step 6: Risk Gatekeeper ──
-  console.log('\n🛡️  [6/7] Risk Gatekeeper Agent...');
+  console.log('\n🛡️  [6/8] Risk Gatekeeper Agent...');
   const allOpportunities: Opportunity[] = [
     ...cspResult.opportunities,
     ...ccResult.opportunities,
@@ -155,10 +212,11 @@ export async function runDailyPipeline(mode: DataMode = 'mock'): Promise<{ repor
     approved_opportunities: gateResult.approved_opportunities,
     blocked_opportunities: gateResult.blocked_opportunities,
     order_drafts: gateResult.order_drafts,
+    fundamental_profiles: fundamentalProfiles,
   };
 
-  // ── Step 7: Report Agent ──
-  console.log('\n📧 [7/7] Report/Email Agent...');
+  // ── Step 8: Report Agent ──
+  console.log('\n📧 [8/8] Report/Email Agent...');
   const emailMarkdown = runReportAgent(dailyReport);
 
   // ── Save outputs ──

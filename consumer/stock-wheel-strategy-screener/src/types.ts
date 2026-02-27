@@ -61,6 +61,7 @@ export interface DailyReport {
   approved_opportunities: Opportunity[];
   blocked_opportunities: BlockedOpportunity[];
   order_drafts: OrderDraft[];
+  fundamental_profiles?: FundamentalProfile[];
 }
 
 // ── Feedback ──
@@ -234,4 +235,47 @@ export interface PortfolioSnapshot {
 export interface EarningsEvent {
   symbol: string;
   date: string; // YYYY-MM-DD
+}
+
+// ── Fundamental Profile (rich quality analysis) ──
+
+export interface FundamentalProfile {
+  symbol: string;
+  sector: string;
+  market_cap_b: number;
+
+  // Scores (0-100 each)
+  quality_score: number;       // composite overall
+  profitability_score: number;
+  growth_score: number;
+  valuation_score: number;
+  balance_sheet_score: number;
+  dividend_score: number;
+
+  // Raw metrics
+  roe: number;                 // return on equity
+  roa: number;                 // return on assets
+  profit_margin: number;       // net profit margin
+  gross_margin: number;        // gross margin
+  operating_margin: number;    // operating margin
+  revenue_growth: number;      // YoY revenue growth
+  earnings_growth: number;     // YoY earnings growth
+  pe_ratio: number;            // trailing P/E
+  forward_pe: number;          // forward P/E
+  peg_ratio: number;           // P/E to growth
+  price_to_book: number;       // P/B ratio
+  debt_to_equity: number;      // total debt / equity
+  current_ratio: number;       // current assets / current liabilities
+  free_cash_flow_b: number;    // FCF in billions
+  dividend_yield: number;      // trailing yield %
+  beta: number;                // market beta
+
+  // Analyst consensus
+  analyst_rating: string;      // buy/hold/sell
+  analyst_target: number;      // mean price target
+  analyst_upside: number;      // % upside to target
+  analyst_count: number;       // number of analysts
+
+  // Grade (A/B/C/D/F)
+  grade: string;
 }

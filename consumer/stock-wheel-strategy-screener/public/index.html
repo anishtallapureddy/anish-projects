@@ -170,6 +170,7 @@
       <!-- Tabs -->
       <div class="tabs">
         <div class="tab active" data-tab="opportunities" onclick="switchTab(this)">🏆 Top Returns</div>
+        <div class="tab" data-tab="fundamentals" onclick="switchTab(this)">🔬 Fundamentals</div>
         <div class="tab" data-tab="csp" onclick="switchTab(this)">💰 CSP</div>
         <div class="tab" data-tab="value" onclick="switchTab(this)">🏦 Value</div>
         <div class="tab" data-tab="etf" onclick="switchTab(this)">🌐 ETF</div>
@@ -191,13 +192,32 @@
         </div>
       </div>
 
+      <!-- Fundamentals -->
+      <div class="tab-content" id="tab-fundamentals">
+        <div class="card">
+          <h2 style="margin-bottom:4px">🔬 Fundamental Quality Scores — S&P 500</h2>
+          <p style="color:var(--muted);font-size:12px;margin-bottom:8px">Composite quality score from profitability, growth, valuation, balance sheet &amp; dividend. Grades: A (≥85) B (≥70) C (≥55) D (≥40) F (&lt;40)</p>
+          <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap" id="fund-grade-summary"></div>
+          <div style="overflow-x:auto">
+          <table>
+            <thead><tr>
+              <th>#</th><th>Grade</th><th>Symbol</th><th>Sector</th><th>Quality</th>
+              <th>Profit.</th><th>Growth</th><th>Valuat.</th><th>Balance</th><th>Divid.</th>
+              <th>ROE</th><th>Margin</th><th>Rev Gr.</th><th>P/E</th><th>Fwd P/E</th><th>D/E</th><th>Yield</th><th>Analyst</th>
+            </tr></thead>
+            <tbody id="fund-table"></tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+
       <!-- CSP Opportunities -->
       <div class="tab-content" id="tab-csp">
         <div class="card">
           <h2 style="margin-bottom:8px">💰 Cash-Secured Put Opportunities</h2>
           <p style="color:var(--muted);font-size:12px;margin-bottom:12px">Sorted by annualized yield. Filtered by DTE, delta, premium, and earnings blackout.</p>
           <table>
-            <thead><tr><th>#</th><th>Symbol</th><th>Strike</th><th>Expiry</th><th>DTE</th><th>Delta</th><th>Premium</th><th>Ann. Yield</th><th>Score</th><th>Flags</th></tr></thead>
+            <thead><tr><th>#</th><th>Symbol</th><th>Strike</th><th>Expiry</th><th>DTE</th><th>Delta</th><th>Premium</th><th>Ann. Yield</th><th>Quality</th><th>Score</th><th>Flags</th></tr></thead>
             <tbody id="csp-table"></tbody>
           </table>
         </div>
@@ -316,13 +336,14 @@
         // Update log
         const r = data.report;
         log.innerHTML = `<span class="info">🚀 WheelAlpha Daily Pipeline — ${r.date}</span>
-<span class="step">📊 [1/7] Market Regime Agent...</span>  <span class="ok">→ ${r.market_regime.regime} (${r.market_regime.risk_posture})</span>
-<span class="step">💰 [2/7] Wheel CSP Agent...</span>      <span class="ok">→ ${r.approved_opportunities.filter(o=>o.category==='CSP').length + r.blocked_opportunities.filter(o=>o.opportunity.category==='CSP').length} opportunities</span>
-<span class="step">📈 [3/7] Covered Call Agent...</span>   <span class="ok">→ ${r.approved_opportunities.filter(o=>o.category==='CC').length + r.blocked_opportunities.filter(o=>o.opportunity.category==='CC').length} opportunities</span>
-<span class="step">🏦 [4/7] Value Agent...</span>          <span class="ok">→ ${r.approved_opportunities.filter(o=>o.category==='VALUE').length} value picks</span>
-<span class="step">🌐 [5/7] ETF Agent...</span>            <span class="ok">→ ${r.approved_opportunities.filter(o=>o.category==='ETF').length + r.blocked_opportunities.filter(o=>o.opportunity.category==='ETF').length} ETF insights</span>
-<span class="step">🛡️  [6/7] Risk Gatekeeper...</span>     <span class="ok">→ ${r.approved_opportunities.length} approved, ${r.blocked_opportunities.length} blocked</span>
-<span class="step">📧 [7/7] Report/Email Agent...</span>   <span class="ok">→ email generated</span>
+<span class="step">📊 [1/8] Market Regime Agent...</span>  <span class="ok">→ ${r.market_regime.regime} (${r.market_regime.risk_posture})</span>
+<span class="step">🔬 [1.5/8] Fundamentals Agent...</span> <span class="ok">→ ${(r.fundamental_profiles||[]).length} stock profiles scored</span>
+<span class="step">💰 [2/8] Wheel CSP Agent...</span>      <span class="ok">→ ${r.approved_opportunities.filter(o=>o.category==='CSP').length + r.blocked_opportunities.filter(o=>o.opportunity.category==='CSP').length} opportunities</span>
+<span class="step">📈 [3/8] Covered Call Agent...</span>   <span class="ok">→ ${r.approved_opportunities.filter(o=>o.category==='CC').length + r.blocked_opportunities.filter(o=>o.opportunity.category==='CC').length} opportunities</span>
+<span class="step">🏦 [4/8] Value Agent...</span>          <span class="ok">→ ${r.approved_opportunities.filter(o=>o.category==='VALUE').length} value picks</span>
+<span class="step">🌐 [5/8] ETF Agent...</span>            <span class="ok">→ ${r.approved_opportunities.filter(o=>o.category==='ETF').length + r.blocked_opportunities.filter(o=>o.opportunity.category==='ETF').length} ETF insights</span>
+<span class="step">🛡️  [6/8] Risk Gatekeeper...</span>     <span class="ok">→ ${r.approved_opportunities.length} approved, ${r.blocked_opportunities.length} blocked</span>
+<span class="step">📧 [8/8] Report/Email Agent...</span>   <span class="ok">→ email generated</span>
 
 <span class="ok">✅ Pipeline complete — ${r.order_drafts.length} draft orders ready for review</span>`;
 
@@ -395,6 +416,8 @@
         const d = o.details || {};
         const statusIcon = o.status === 'approved' ? '✅' : '🚫';
         const rowStyle = o.status === 'blocked' ? 'opacity:0.5' : '';
+        const qs = d.quality_score || 0;
+        const qColor = qs >= 70 ? '#3fb950' : qs >= 50 ? '#d29922' : '#f85149';
         return `
           <tr style="${rowStyle}" title="${o.status === 'blocked' ? (o.block_reason||'') : 'Approved'}">
             <td>${i+1} ${statusIcon}</td>
@@ -405,10 +428,11 @@
             <td>${d.delta ? d.delta.toFixed(2) : '—'}</td>
             <td>$${d.premium ? d.premium.toFixed(2) : '—'}</td>
             <td><strong>${d.annualized_yield || '—'}%</strong></td>
+            <td><span style="color:${qColor};font-weight:600">${qs}</span></td>
             <td>${o.score}</td>
             <td>${o.risk_flags.map(f => '<span class="tag tag-flag">'+f+'</span>').join('') || '—'}</td>
           </tr>`;
-      }).join('') || '<tr><td colspan="10" style="text-align:center;color:var(--muted);padding:30px">No CSP opportunities in current run</td></tr>';
+      }).join('') || '<tr><td colspan="11" style="text-align:center;color:var(--muted);padding:30px">No CSP opportunities in current run</td></tr>';
 
       // ── Value tab ──
       const valOpps = allOpps.filter(o => o.category === 'VALUE');
@@ -447,6 +471,47 @@
             <td>${o.risk_flags.map(f => '<span class="tag tag-flag">'+f+'</span>').join('') || '—'}</td>
           </tr>`;
       }).join('') || '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:30px">No ETF insights</td></tr>';
+
+      // ── Fundamentals tab ──
+      const profiles = r.fundamental_profiles || [];
+      const gradeColors = { A: '#3fb950', B: '#58a6ff', C: '#d29922', D: '#f0883e', F: '#f85149' };
+      const gradeCounts = {};
+      profiles.forEach(p => { gradeCounts[p.grade] = (gradeCounts[p.grade] || 0) + 1; });
+      const gradeSummaryEl = document.getElementById('fund-grade-summary');
+      gradeSummaryEl.innerHTML = ['A','B','C','D','F'].filter(g => gradeCounts[g]).map(g =>
+        '<span style="background:' + gradeColors[g] + '22;color:' + gradeColors[g] + ';padding:4px 10px;border-radius:12px;font-size:12px;font-weight:600">' + g + ': ' + gradeCounts[g] + '</span>'
+      ).join('');
+
+      const fundBody = document.getElementById('fund-table');
+      fundBody.innerHTML = profiles.map((p, i) => {
+        const gc = gradeColors[p.grade] || '#8b949e';
+        const scoreBar = (val, max) => {
+          const pct = Math.min(100, (val / max) * 100);
+          const color = pct >= 70 ? '#3fb950' : pct >= 50 ? '#d29922' : '#f85149';
+          return '<div style="width:60px;height:6px;background:#30363d;border-radius:3px;display:inline-block;vertical-align:middle;margin-left:4px"><div style="width:' + pct + '%;height:100%;background:' + color + ';border-radius:3px"></div></div>';
+        };
+        const ratingEmoji = p.analyst_rating === 'buy' || p.analyst_rating === 'strongBuy' ? '🟢' : p.analyst_rating === 'hold' ? '🟡' : p.analyst_rating === 'sell' ? '🔴' : '⚪';
+        return '<tr>' +
+          '<td>' + (i+1) + '</td>' +
+          '<td><span style="background:' + gc + '22;color:' + gc + ';padding:2px 8px;border-radius:8px;font-weight:700;font-size:13px">' + p.grade + '</span></td>' +
+          '<td><strong>' + p.symbol + '</strong></td>' +
+          '<td style="font-size:11px;color:var(--muted)">' + p.sector + '</td>' +
+          '<td><strong>' + p.quality_score + '</strong>' + scoreBar(p.quality_score, 100) + '</td>' +
+          '<td>' + p.profitability_score + scoreBar(p.profitability_score, 100) + '</td>' +
+          '<td>' + p.growth_score + scoreBar(p.growth_score, 100) + '</td>' +
+          '<td>' + p.valuation_score + scoreBar(p.valuation_score, 100) + '</td>' +
+          '<td>' + p.balance_sheet_score + scoreBar(p.balance_sheet_score, 100) + '</td>' +
+          '<td>' + p.dividend_score + scoreBar(p.dividend_score, 100) + '</td>' +
+          '<td>' + p.roe + '%</td>' +
+          '<td>' + p.profit_margin + '%</td>' +
+          '<td>' + p.revenue_growth + '%</td>' +
+          '<td>' + p.pe_ratio + '</td>' +
+          '<td>' + p.forward_pe + '</td>' +
+          '<td>' + p.debt_to_equity + '</td>' +
+          '<td>' + p.dividend_yield + '%</td>' +
+          '<td>' + ratingEmoji + ' ' + p.analyst_rating + (p.analyst_upside > 0 ? ' (+' + p.analyst_upside + '%)' : '') + '</td>' +
+          '</tr>';
+      }).join('') || '<tr><td colspan="18" style="text-align:center;color:var(--muted);padding:30px">No fundamental data — run pipeline first</td></tr>';
 
       // Draft orders
       const draftsBody = document.getElementById('drafts-table');
