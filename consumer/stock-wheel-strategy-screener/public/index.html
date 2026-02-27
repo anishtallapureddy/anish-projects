@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WheelAlpha Dashboard</title>
+  <style>
+    :root {
+      --bg: #0d1117; --surface: #161b22; --border: #30363d;
+      --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff;
+      --green: #3fb950; --red: #f85149; --yellow: #d29922; --purple: #bc8cff;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* Header */
+    header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
+    header h1 { font-size: 18px; font-weight: 600; }
+    header h1 span { color: var(--accent); }
+    .header-right { display: flex; align-items: center; gap: 12px; }
+    .status-badge { font-size: 12px; padding: 4px 10px; border-radius: 12px; background: var(--border); color: var(--muted); }
+    .status-badge.bull { background: rgba(63,185,80,0.15); color: var(--green); }
+    .status-badge.bear { background: rgba(248,81,73,0.15); color: var(--red); }
+    .status-badge.neutral { background: rgba(210,153,34,0.15); color: var(--yellow); }
+
+    /* Layout */
+    .container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .full { grid-column: 1 / -1; }
+
+    /* Cards */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+    .card h2 { font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+    .card h3 { font-size: 16px; margin-bottom: 8px; }
+    .stat { font-size: 32px; font-weight: 700; }
+    .stat.green { color: var(--green); }
+    .stat.red { color: var(--red); }
+    .stat.blue { color: var(--accent); }
+
+    /* Buttons */
+    .btn { padding: 10px 20px; border-radius: 6px; border: none; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.15s; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #4c94e6; }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-outline { background: transparent; color: var(--accent); border: 1px solid var(--border); }
+    .btn-outline:hover { background: rgba(88,166,255,0.1); }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { text-align: left; padding: 10px 12px; color: var(--muted); border-bottom: 1px solid var(--border); font-weight: 500; }
+    td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+    tr:hover td { background: rgba(88,166,255,0.04); }
+
+    /* Tags */
+    .tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; margin-right: 4px; }
+    .tag-csp { background: rgba(88,166,255,0.15); color: var(--accent); }
+    .tag-cc { background: rgba(188,140,255,0.15); color: var(--purple); }
+    .tag-value { background: rgba(63,185,80,0.15); color: var(--green); }
+    .tag-etf { background: rgba(210,153,34,0.15); color: var(--yellow); }
+    .tag-flag { background: rgba(248,81,73,0.15); color: var(--red); }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 0; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .tab { padding: 10px 20px; cursor: pointer; color: var(--muted); border-bottom: 2px solid transparent; font-size: 14px; transition: all 0.15s; }
+    .tab:hover { color: var(--text); }
+    .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Feedback */
+    .feedback-area { width: 100%; min-height: 120px; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 12px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; resize: vertical; }
+    .feedback-area::placeholder { color: var(--muted); }
+    .feedback-actions { display: flex; gap: 8px; margin-top: 12px; align-items: center; }
+    .feedback-result { margin-top: 12px; padding: 12px; background: var(--bg); border-radius: 6px; font-family: monospace; font-size: 12px; max-height: 200px; overflow-y: auto; }
+
+    /* Pipeline log */
+    .log { background: var(--bg); border-radius: 6px; padding: 16px; font-family: 'SF Mono', monospace; font-size: 13px; line-height: 1.8; max-height: 300px; overflow-y: auto; white-space: pre-wrap; }
+    .log .step { color: var(--muted); }
+    .log .ok { color: var(--green); }
+    .log .info { color: var(--accent); }
+
+    /* Email preview */
+    .email-preview { background: var(--bg); padding: 20px; border-radius: 6px; font-size: 13px; line-height: 1.7; max-height: 600px; overflow-y: auto; white-space: pre-wrap; }
+
+    /* Empty state */
+    .empty { text-align: center; padding: 60px 20px; color: var(--muted); }
+    .empty h3 { font-size: 18px; margin-bottom: 8px; color: var(--text); }
+    .empty p { margin-bottom: 20px; }
+
+    /* Blocked detail */
+    .blocked-item { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+    .blocked-item:last-child { border-bottom: none; }
+    .blocked-reason { color: var(--red); font-size: 12px; margin-top: 4px; }
+
+    /* Quick commands */
+    .quick-cmds { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .quick-cmd { font-size: 11px; padding: 4px 10px; border-radius: 4px; background: var(--bg); border: 1px solid var(--border); color: var(--muted); cursor: pointer; }
+    .quick-cmd:hover { color: var(--accent); border-color: var(--accent); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>📊 <span>WheelAlpha</span> Dashboard</h1>
+    <div class="header-right">
+      <span class="status-badge" id="regime-badge">No data</span>
+      <button class="btn btn-primary" id="run-btn" onclick="runPipeline()">▶ Run Pipeline</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Empty state -->
+    <div id="empty-state" class="empty">
+      <h3>Welcome to WheelAlpha</h3>
+      <p>Run the daily pipeline to generate investment insights and draft orders.</p>
+      <button class="btn btn-primary" onclick="runPipeline()">▶ Run Daily Pipeline</button>
+    </div>
+
+    <!-- Dashboard content (hidden until first run) -->
+    <div id="dashboard" style="display:none">
+      <!-- Stats row -->
+      <div class="grid-3" id="stats-row">
+        <div class="card">
+          <h2>Approved</h2>
+          <div class="stat green" id="stat-approved">0</div>
+        </div>
+        <div class="card">
+          <h2>Blocked</h2>
+          <div class="stat red" id="stat-blocked">0</div>
+        </div>
+        <div class="card">
+          <h2>Draft Orders</h2>
+          <div class="stat blue" id="stat-drafts">0</div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <div class="tab active" data-tab="opportunities" onclick="switchTab(this)">Opportunities</div>
+        <div class="tab" data-tab="drafts" onclick="switchTab(this)">Draft Orders</div>
+        <div class="tab" data-tab="blocked" onclick="switchTab(this)">Blocked</div>
+        <div class="tab" data-tab="email" onclick="switchTab(this)">Email Preview</div>
+        <div class="tab" data-tab="feedback" onclick="switchTab(this)">Feedback</div>
+        <div class="tab" data-tab="log" onclick="switchTab(this)">Pipeline Log</div>
+      </div>
+
+      <!-- Opportunities -->
+      <div class="tab-content active" id="tab-opportunities">
+        <div class="card">
+          <table>
+            <thead><tr><th>Category</th><th>Symbol</th><th>Score</th><th>Rationale</th><th>Flags</th></tr></thead>
+            <tbody id="opp-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Draft Orders -->
+      <div class="tab-content" id="tab-drafts">
+        <div class="card">
+          <table>
+            <thead><tr><th>Order ID</th><th>Type</th><th>Symbol</th><th>Qty</th><th>Details</th><th>Price</th><th>Action</th></tr></thead>
+            <tbody id="drafts-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Blocked -->
+      <div class="tab-content" id="tab-blocked">
+        <div class="card">
+          <div id="blocked-list"></div>
+        </div>
+      </div>
+
+      <!-- Email Preview -->
+      <div class="tab-content" id="tab-email">
+        <div class="card">
+          <div class="email-preview" id="email-content"></div>
+        </div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="tab-content" id="tab-feedback">
+        <div class="card">
+          <h2>Send Feedback Commands</h2>
+          <div class="quick-cmds" id="quick-commands"></div>
+          <textarea class="feedback-area" id="feedback-input" placeholder="APPROVE: ord-csp-abc123&#10;REJECT: ord-cc-def456&#10;SET_RULE: wheel.csp_delta_range=[0.18,0.25]&#10;NOTE: Prefer lower delta this week"></textarea>
+          <div class="feedback-actions">
+            <button class="btn btn-primary" onclick="submitFeedback()">Submit Feedback</button>
+            <button class="btn btn-outline" onclick="document.getElementById('feedback-input').value=''">Clear</button>
+          </div>
+          <div class="feedback-result" id="feedback-result" style="display:none"></div>
+        </div>
+      </div>
+
+      <!-- Pipeline Log -->
+      <div class="tab-content" id="tab-log">
+        <div class="card">
+          <div class="log" id="pipeline-log">Pipeline has not been run yet.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentReport = null;
+
+    async function runPipeline() {
+      const btn = document.getElementById('run-btn');
+      btn.disabled = true;
+      btn.textContent = '⏳ Running...';
+
+      document.getElementById('empty-state').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+
+      // Switch to log tab
+      document.querySelector('[data-tab="log"]').click();
+      const log = document.getElementById('pipeline-log');
+      log.innerHTML = '<span class="info">🚀 Starting daily pipeline...</span>\n';
+
+      try {
+        const res = await fetch('/api/run', { method: 'POST' });
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.error);
+
+        currentReport = data.report;
+
+        // Update log
+        const r = data.report;
+        log.innerHTML = `<span class="info">🚀 WheelAlpha Daily Pipeline — ${r.date}</span>
+<span class="step">📊 [1/7] Market Regime Agent...</span>  <span class="ok">→ ${r.market_regime.regime} (${r.market_regime.risk_posture})</span>
+<span class="step">💰 [2/7] Wheel CSP Agent...</span>      <span class="ok">→ ${r.approved_opportunities.filter(o=>o.category==='CSP').length + r.blocked_opportunities.filter(o=>o.opportunity.category==='CSP').length} opportunities</span>
+<span class="step">📈 [3/7] Covered Call Agent...</span>   <span class="ok">→ ${r.approved_opportunities.filter(o=>o.category==='CC').length + r.blocked_opportunities.filter(o=>o.opportunity.category==='CC').length} opportunities</span>
+<span class="step">🏦 [4/7] Value Agent...</span>          <span class="ok">→ ${r.approved_opportunities.filter(o=>o.category==='VALUE').length} value picks</span>
+<span class="step">🌐 [5/7] ETF Agent...</span>            <span class="ok">→ ${r.approved_opportunities.filter(o=>o.category==='ETF').length + r.blocked_opportunities.filter(o=>o.opportunity.category==='ETF').length} ETF insights</span>
+<span class="step">🛡️  [6/7] Risk Gatekeeper...</span>     <span class="ok">→ ${r.approved_opportunities.length} approved, ${r.blocked_opportunities.length} blocked</span>
+<span class="step">📧 [7/7] Report/Email Agent...</span>   <span class="ok">→ email generated</span>
+
+<span class="ok">✅ Pipeline complete — ${r.order_drafts.length} draft orders ready for review</span>`;
+
+        renderDashboard(data);
+
+        // Switch to opportunities tab
+        document.querySelector('[data-tab="opportunities"]').click();
+      } catch (err) {
+        log.innerHTML += `\n<span style="color:var(--red)">❌ Error: ${err.message}</span>`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '▶ Run Pipeline';
+      }
+    }
+
+    function renderDashboard(data) {
+      const r = data.report;
+
+      // Regime badge
+      const badge = document.getElementById('regime-badge');
+      badge.textContent = `${r.market_regime.regime} — ${r.market_regime.risk_posture}`;
+      badge.className = `status-badge ${r.market_regime.regime.toLowerCase()}`;
+
+      // Stats
+      document.getElementById('stat-approved').textContent = r.approved_opportunities.length;
+      document.getElementById('stat-blocked').textContent = r.blocked_opportunities.length;
+      document.getElementById('stat-drafts').textContent = r.order_drafts.length;
+
+      // Opportunities table
+      const oppBody = document.getElementById('opp-table');
+      oppBody.innerHTML = r.approved_opportunities.map(o => `
+        <tr>
+          <td><span class="tag tag-${o.category.toLowerCase()}">${o.category}</span></td>
+          <td><strong>${o.symbol}</strong></td>
+          <td>${o.score}</td>
+          <td style="max-width:500px">${o.rationale}</td>
+          <td>${o.risk_flags.map(f => `<span class="tag tag-flag">${f}</span>`).join('') || '—'}</td>
+        </tr>
+      `).join('');
+
+      // Draft orders
+      const draftsBody = document.getElementById('drafts-table');
+      draftsBody.innerHTML = r.order_drafts.map(d => {
+        const details = d.option ? `${d.option.put_call} $${d.option.strike} exp ${d.option.expiry}` : 'shares';
+        const price = d.limit_price ? `$${d.limit_price}` : 'MKT';
+        return `
+          <tr>
+            <td><code>${d.order_id}</code></td>
+            <td><span class="tag tag-${d.type.toLowerCase()}">${d.type}</span></td>
+            <td><strong>${d.symbol}</strong></td>
+            <td>${d.quantity}</td>
+            <td>${details}</td>
+            <td>${price}</td>
+            <td>
+              <button class="btn btn-outline" style="padding:4px 8px;font-size:11px" onclick="quickApprove('${d.order_id}')">✓ Approve</button>
+              <button class="btn btn-outline" style="padding:4px 8px;font-size:11px;margin-left:4px" onclick="quickReject('${d.order_id}')">✗ Reject</button>
+            </td>
+          </tr>`;
+      }).join('');
+
+      // Blocked list
+      const blockedList = document.getElementById('blocked-list');
+      if (r.blocked_opportunities.length === 0) {
+        blockedList.innerHTML = '<p style="color:var(--muted);padding:20px;text-align:center">No blocked opportunities</p>';
+      } else {
+        blockedList.innerHTML = r.blocked_opportunities.map(b => `
+          <div class="blocked-item">
+            <span class="tag tag-${b.opportunity.category.toLowerCase()}">${b.opportunity.category}</span>
+            <strong>${b.opportunity.symbol}</strong> (score: ${b.opportunity.score})
+            <div class="blocked-reason">🚫 ${b.reason}</div>
+          </div>`).join('');
+      }
+
+      // Email preview
+      document.getElementById('email-content').textContent = data.email;
+
+      // Quick commands for feedback
+      const quickCmds = document.getElementById('quick-commands');
+      quickCmds.innerHTML = r.order_drafts.map(d =>
+        `<span class="quick-cmd" onclick="appendCmd('APPROVE: ${d.order_id}')">✓ ${d.order_id}</span>`
+      ).join('') +
+      `<span class="quick-cmd" onclick="appendCmd('SET_RULE: wheel.csp_delta_range=[0.18,0.25]')">Tighten CSP delta</span>` +
+      `<span class="quick-cmd" onclick="appendCmd('ADD_TO_LIST: watchlists.wheel_universe+=TSM')">Add TSM</span>` +
+      `<span class="quick-cmd" onclick="appendCmd('NOTE: ')">Add note</span>`;
+    }
+
+    function appendCmd(cmd) {
+      const ta = document.getElementById('feedback-input');
+      ta.value = ta.value ? ta.value + '\n' + cmd : cmd;
+      ta.focus();
+    }
+
+    function quickApprove(id) { appendCmd(`APPROVE: ${id}`); document.querySelector('[data-tab="feedback"]').click(); }
+    function quickReject(id) { appendCmd(`REJECT: ${id}`); document.querySelector('[data-tab="feedback"]').click(); }
+
+    async function submitFeedback() {
+      const text = document.getElementById('feedback-input').value.trim();
+      if (!text) return;
+      const resultEl = document.getElementById('feedback-result');
+      try {
+        const res = await fetch('/api/feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text }),
+        });
+        const data = await res.json();
+        resultEl.style.display = 'block';
+        resultEl.innerHTML = `<span style="color:var(--green)">✅ Feedback parsed: ${data.feedback.actions.length} action(s)</span>\n\n${JSON.stringify(data.feedback, null, 2)}`;
+      } catch (err) {
+        resultEl.style.display = 'block';
+        resultEl.innerHTML = `<span style="color:var(--red)">❌ ${err.message}</span>`;
+      }
+    }
+
+    function switchTab(el) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('tab-' + el.dataset.tab).classList.add('active');
+    }
+
+    // Auto-load if there's a previous run
+    fetch('/api/report').then(r => r.ok ? r.json() : null).then(data => {
+      if (data) {
+        currentReport = data.report;
+        document.getElementById('empty-state').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        renderDashboard(data);
+      }
+    }).catch(() => {});
+  </script>
+</body>
+</html>

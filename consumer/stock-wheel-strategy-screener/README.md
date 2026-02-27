@@ -7,12 +7,19 @@ A multi-agent investing tool that generates daily insights and **draft orders** 
 
 Human-in-the-loop: all orders are drafts requiring explicit approval. No broker integration — this is a decision-support tool.
 
+![WheelAlpha Dashboard](./screenshots/01-dashboard-opportunities.png)
+
+| Draft Orders | Blocked by Risk Gatekeeper |
+|:---:|:---:|
+| ![Drafts](./screenshots/02-draft-orders.png) | ![Blocked](./screenshots/03-blocked.png) |
+
 ## Quick Start
 
 ```bash
 npm install
-npm start          # Run daily pipeline
-npm run run:feedback  # Interactive feedback CLI
+npm start                 # Launch web dashboard → http://localhost:4001
+npm run run:cli           # CLI-only pipeline (no UI)
+npm run run:feedback      # Interactive feedback CLI
 ```
 
 ## Sample Output

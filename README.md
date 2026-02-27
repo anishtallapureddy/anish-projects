@@ -37,6 +37,14 @@ cd consumer/cost-segregation && npm install && npm run dev
 ### [WheelAlpha — Stock Wheel Strategy Screener](./consumer/stock-wheel-strategy-screener/)
 A multi-agent investing tool that screens stocks for wheel strategy income (cash-secured puts + covered calls), identifies undervalued long-term holds, and recommends ETF core allocations. Produces daily insights and **draft orders only** — human-in-the-loop, no execution. 8 sub-agents with config-driven risk gating.
 
+| Opportunities dashboard | Draft orders with approve/reject |
+|:---:|:---:|
+| ![Opportunities](./consumer/stock-wheel-strategy-screener/screenshots/01-dashboard-opportunities.png) | ![Drafts](./consumer/stock-wheel-strategy-screener/screenshots/02-draft-orders.png) |
+
+```bash
+cd consumer/stock-wheel-strategy-screener && npm install && npm start
+```
+
 → [Agent specs](./consumer/stock-wheel-strategy-screener/agents/) · [Orchestrator design](./consumer/stock-wheel-strategy-screener/agents/orchestrator.md) · [Risk limits](./consumer/stock-wheel-strategy-screener/agents/configs/risk_limits.yaml)
 
 ---
