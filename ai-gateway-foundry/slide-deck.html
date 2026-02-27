@@ -1,0 +1,2055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280,initial-scale=1">
+<title>Azure AI Foundry — Discover, Build, Operate</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&display=swap');
+
+  :root {
+    --bg: #0f0f0f;
+    --bg-card: #1a1a1a;
+    --bg-card-alt: #222;
+    --fg: #f0f0f0;
+    --muted: #999;
+    --accent: #4f9cf7;
+    --accent-glow: rgba(79,156,247,.15);
+    --green: #22c55e;
+    --orange: #f97316;
+    --red: #ef4444;
+    --purple: #a855f7;
+    --border: rgba(255,255,255,.08);
+    --gradient-hero: linear-gradient(135deg, #0a1628 0%, #0d1f3c 40%, #0f0f0f 100%);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    overflow: hidden;
+  }
+
+  /* ── Slide container ── */
+  .deck { position: relative; width: 100vw; height: 100vh; }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    padding: 56px 72px;
+    overflow: hidden;
+  }
+  .slide.active { display: flex; }
+
+  /* ── Typography ── */
+  .slide-number {
+    position: absolute;
+    bottom: 28px;
+    right: 40px;
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: .5px;
+  }
+  .slide-logo {
+    position: absolute;
+    bottom: 28px;
+    left: 40px;
+    font-size: 12px;
+    color: #555;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  h1.hero-title {
+    font-size: 52px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -1px;
+    max-width: 900px;
+  }
+  h1.hero-title span { color: var(--accent); }
+
+  h2.section-title {
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -.5px;
+  }
+  h2.section-title span { color: var(--accent); }
+
+  h3.card-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    font-size: 20px;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 780px;
+    margin-top: 16px;
+  }
+
+  .eyebrow {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  /* ── Hero slide ── */
+  .slide-hero {
+    background: var(--gradient-hero);
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 96px;
+  }
+  .slide-hero .subtitle { margin-top: 24px; font-size: 22px; }
+
+  .hero-metrics {
+    display: flex;
+    gap: 32px;
+    margin-top: 40px;
+    padding: 20px 0;
+    border-top: 1px solid var(--border);
+  }
+  .hero-metric {
+    text-align: center;
+  }
+  .hero-metric-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .hero-metric-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+
+  /* ── Section divider slides ── */
+  .slide-divider {
+    background: var(--gradient-hero);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .divider-icon {
+    font-size: 64px;
+    margin-bottom: 24px;
+  }
+  .slide-divider h2 { font-size: 48px; }
+  .slide-divider .subtitle { text-align: center; margin: 16px auto 0; }
+
+  /* ── Content slides ── */
+  .slide-content {
+    padding-top: 48px;
+  }
+  .slide-content h2 { margin-bottom: 32px; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    flex: 1;
+  }
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    flex: 1;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+  }
+  .card.accent-border { border-left: 3px solid var(--accent); }
+  .card.green-border { border-left: 3px solid var(--green); }
+  .card.orange-border { border-left: 3px solid var(--orange); }
+  .card.purple-border { border-left: 3px solid var(--purple); }
+  .card.red-border { border-left: 3px solid var(--red); }
+
+  .card-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+
+  .card p, .card li {
+    font-size: 15px;
+    line-height: 1.65;
+    color: #bbb;
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 12px;
+  }
+  .card ul li {
+    padding: 6px 0;
+    padding-left: 24px;
+    position: relative;
+  }
+  .card ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 13px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .card.green-border ul li::before { background: var(--green); }
+  .card.orange-border ul li::before { background: var(--orange); }
+  .card.purple-border ul li::before { background: var(--purple); }
+  .card.red-border ul li::before { background: var(--red); }
+
+  /* ── Screenshot placeholder ── */
+  .screenshot-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(79,156,247,.06);
+    border: 1px dashed rgba(79,156,247,.25);
+    border-radius: 10px;
+    padding: 24px 32px;
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 500;
+    min-height: 100px;
+    text-align: center;
+  }
+  .screenshot-hint .icon { font-size: 24px; margin-right: 12px; }
+
+  /* ── Value table ── */
+  .value-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+  }
+  .value-table th, .value-table td {
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .value-table th {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+  .value-table td:first-child { font-weight: 600; color: var(--fg); }
+  .value-table td:nth-child(2) { color: #777; }
+  .value-table td:nth-child(3) { color: var(--green); }
+
+  /* ── Takeaway items ── */
+  .takeaway {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .takeaway:last-child { border-bottom: none; }
+  .takeaway-num {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .takeaway h3 { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+  .takeaway p { font-size: 15px; color: #bbb; line-height: 1.6; }
+
+  /* ── Persona badge ── */
+  .persona-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .persona-badge.dev { background: rgba(79,156,247,.12); color: var(--accent); border: 1px solid rgba(79,156,247,.3); }
+  .persona-badge.admin { background: rgba(168,85,247,.12); color: var(--purple); border: 1px solid rgba(168,85,247,.3); }
+
+  /* ── Stat pill ── */
+  .stat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 13px;
+    font-weight: 600;
+    background: rgba(79,156,247,.1);
+    color: var(--accent);
+    margin-right: 6px;
+    margin-bottom: 6px;
+  }
+
+  /* ── Flow diagram ── */
+  .flow-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin: 28px 0 20px;
+  }
+  .flow-step {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 28px;
+    text-align: center;
+    min-width: 180px;
+  }
+  .flow-step.active { border-color: var(--accent); box-shadow: 0 0 20px var(--accent-glow); }
+  .flow-step h4 { font-size: 16px; font-weight: 600; }
+  .flow-step p { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .flow-arrow {
+    font-size: 24px;
+    color: var(--muted);
+    padding: 0 8px;
+  }
+
+  /* ── Navigation hints ── */
+  .nav-hints {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    font-size: 12px;
+    color: #555;
+    z-index: 100;
+  }
+  .nav-hints kbd {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #222;
+    border: 1px solid #444;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 11px;
+    color: #888;
+  }
+
+  /* ── Progress bar ── */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: var(--accent);
+    transition: width .3s ease;
+    z-index: 100;
+  }
+
+  /* ── Slide transitions ── */
+  .slide { animation: fadeIn .4s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Highlight box ── */
+  .highlight-box {
+    background: var(--accent-glow);
+    border: 1px solid rgba(79,156,247,.2);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-top: 16px;
+  }
+  .highlight-box p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #ccc;
+  }
+
+  /* ── Before/After grid ── */
+  .ba-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 20px;
+  }
+  .ba-col { padding: 24px 28px; }
+  .ba-col.before { background: rgba(239,68,68,.04); border-right: 1px solid var(--border); }
+  .ba-col.after { background: rgba(34,197,94,.04); }
+  .ba-col h4 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+  .ba-col.before h4 { color: var(--red); }
+  .ba-col.after h4 { color: var(--green); }
+  .ba-col ul { list-style: none; padding: 0; }
+  .ba-col ul li { padding: 7px 0; font-size: 14px; color: #bbb; padding-left: 20px; position: relative; }
+  .ba-col.before ul li::before { content: '✕'; position: absolute; left: 0; color: var(--red); font-size: 12px; }
+  .ba-col.after ul li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-size: 12px; font-weight: 700; }
+
+  /* ── Persona cards ── */
+  .persona-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    flex: 1;
+    align-items: start;
+    margin-top: 8px;
+  }
+  .persona-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px 36px 32px;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .persona-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+  }
+  .persona-card.dev::before { background: linear-gradient(90deg, var(--accent), #60a5fa); }
+  .persona-card.admin::before { background: linear-gradient(90deg, var(--purple), #c084fc); }
+
+  .persona-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+  }
+  .persona-card.dev .persona-avatar { background: rgba(79,156,247,.12); border: 2px solid rgba(79,156,247,.25); }
+  .persona-card.admin .persona-avatar { background: rgba(168,85,247,.12); border: 2px solid rgba(168,85,247,.25); }
+
+  .persona-role {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .persona-card.dev .persona-role { color: var(--accent); }
+  .persona-card.admin .persona-role { color: var(--purple); }
+
+  .persona-name {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .persona-desc {
+    font-size: 15px;
+    color: #aaa;
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
+
+  .persona-goals {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+  }
+  .persona-goals li {
+    padding: 8px 0;
+    padding-left: 28px;
+    position: relative;
+    font-size: 14px;
+    color: #ccc;
+    line-height: 1.5;
+    border-bottom: 1px solid rgba(255,255,255,.04);
+  }
+  .persona-goals li:last-child { border-bottom: none; }
+  .persona-goals li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .persona-card.dev .persona-goals li::before { background: var(--accent); }
+  .persona-card.admin .persona-goals li::before { background: var(--purple); }
+
+  .persona-tabs {
+    display: flex;
+    gap: 8px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .persona-tab {
+    padding: 5px 14px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .3px;
+  }
+  .persona-card.dev .persona-tab {
+    background: rgba(79,156,247,.1);
+    color: var(--accent);
+    border: 1px solid rgba(79,156,247,.2);
+  }
+  .persona-card.admin .persona-tab {
+    background: rgba(168,85,247,.1);
+    color: var(--purple);
+    border: 1px solid rgba(168,85,247,.2);
+  }
+
+  .persona-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+  }
+
+  /* ── Gateway architecture visual ── */
+  .gw-arch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    flex: 1;
+    justify-content: center;
+    margin-top: -8px;
+  }
+
+  .gw-layer-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    align-self: flex-start;
+    margin-left: 80px;
+  }
+
+  .gw-layer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    width: 100%;
+    position: relative;
+  }
+
+  .gw-node {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 22px;
+    text-align: center;
+    min-width: 130px;
+    position: relative;
+  }
+  .gw-node .gw-node-icon { font-size: 22px; margin-bottom: 4px; }
+  .gw-node .gw-node-title { font-size: 14px; font-weight: 600; color: var(--fg); }
+  .gw-node .gw-node-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  .gw-connectors {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    width: 100%;
+    padding: 0 80px;
+  }
+  .gw-connector-line {
+    width: 130px;
+    display: flex;
+    justify-content: center;
+  }
+  .gw-connector-line::after {
+    content: '';
+    width: 2px;
+    height: 24px;
+    background: linear-gradient(180deg, rgba(79,156,247,.4), rgba(79,156,247,.15));
+  }
+
+  .gw-center-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 0 40px;
+  }
+
+  .gw-center {
+    background: linear-gradient(135deg, rgba(79,156,247,.08) 0%, rgba(168,85,247,.06) 100%);
+    border: 2px solid rgba(79,156,247,.3);
+    border-radius: 16px;
+    padding: 24px 40px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 0 40px rgba(79,156,247,.08), 0 0 80px rgba(79,156,247,.04);
+    width: 700px;
+    max-width: 100%;
+  }
+  .gw-center::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 17px;
+    background: linear-gradient(135deg, rgba(79,156,247,.25), rgba(168,85,247,.15));
+    z-index: -1;
+    opacity: .5;
+  }
+
+  .gw-center-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: .5px;
+  }
+  .gw-center-title span { color: var(--accent); }
+  .gw-center-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+    letter-spacing: .3px;
+  }
+
+  .gw-capabilities {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .gw-cap {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    text-align: center;
+    min-width: 120px;
+    flex: 1;
+    max-width: 160px;
+  }
+  .gw-cap-icon { font-size: 20px; margin-bottom: 4px; }
+  .gw-cap-name { font-size: 13px; font-weight: 600; color: var(--fg); }
+  .gw-cap-desc { font-size: 10px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+
+  .gw-asset-node {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 20px;
+    text-align: center;
+    min-width: 110px;
+  }
+  .gw-asset-node .gw-node-icon { font-size: 20px; margin-bottom: 2px; }
+  .gw-asset-node .gw-node-title { font-size: 13px; font-weight: 600; color: var(--fg); }
+  .gw-asset-node .gw-node-count { font-size: 18px; font-weight: 700; color: var(--accent); margin-top: 2px; }
+  .gw-asset-node .gw-node-sub { font-size: 10px; color: var(--muted); }
+
+  .gw-side-panels {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 40px;
+    margin-top: 20px;
+  }
+
+  .gw-side-panel {
+    max-width: 280px;
+  }
+  .gw-side-panel h4 {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .gw-side-panel.before h4 { color: var(--muted); }
+  .gw-side-panel.after h4 { color: var(--green); }
+  .gw-side-panel ul { list-style: none; padding: 0; margin: 0; }
+  .gw-side-panel ul li {
+    font-size: 12px;
+    color: #888;
+    padding: 3px 0 3px 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .gw-side-panel.before ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: #555;
+    font-size: 10px;
+  }
+  .gw-side-panel.after ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-size: 11px;
+  }
+
+  .gw-stats-row {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 20px;
+    padding: 14px 0 0;
+    border-top: 1px solid var(--border);
+  }
+  .gw-stat {
+    text-align: center;
+  }
+  .gw-stat-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .gw-stat-label {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin-top: 2px;
+  }
+
+  /* ── Mock UI Frame (for embedding UI screenshots as styled mockups) ── */
+  .mock-frame {
+    background: #111;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 920px;
+    margin: 0 auto;
+    box-shadow: 0 8px 32px rgba(0,0,0,.4);
+  }
+  .mock-layout {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    min-height: 340px;
+  }
+  /* Sidebar */
+  .mock-sidebar {
+    background: #0d0d0d;
+    border-right: 1px solid rgba(255,255,255,.06);
+    padding: 14px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .mock-nav-item {
+    font-size: 12px;
+    color: var(--muted);
+    padding: 7px 16px;
+    cursor: default;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .mock-nav-item.active {
+    color: var(--accent);
+    background: rgba(79,156,247,.08);
+    border-left: 2px solid var(--accent);
+  }
+  .mock-nav-item::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    background: rgba(255,255,255,.06);
+    flex-shrink: 0;
+  }
+  .mock-nav-item.active::before {
+    background: rgba(79,156,247,.15);
+  }
+  /* Main area */
+  .mock-main {
+    display: flex;
+    flex-direction: column;
+  }
+  /* Top bar */
+  .mock-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .mock-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--fg);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .mock-title .mock-back {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .mock-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .mock-btn-coral {
+    background: #e74c5e;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: default;
+  }
+  .mock-btn-ghost {
+    background: transparent;
+    color: var(--fg);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: default;
+  }
+  .mock-btn-primary {
+    background: var(--purple);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: default;
+    white-space: nowrap;
+  }
+  /* Tabs */
+  .mock-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    padding: 0 20px;
+  }
+  .mock-tab {
+    font-size: 12px;
+    color: var(--muted);
+    padding: 10px 14px;
+    border-bottom: 2px solid transparent;
+    cursor: default;
+  }
+  .mock-tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  /* Content */
+  .mock-content {
+    padding: 16px 20px;
+    flex: 1;
+  }
+  .mock-content-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    gap: 16px;
+  }
+  .mock-section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--fg);
+    margin-bottom: 4px;
+  }
+  .mock-section-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  /* Table */
+  .mock-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255,255,255,.02);
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .mock-table th {
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 500;
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    text-transform: uppercase;
+    letter-spacing: .3px;
+  }
+  .mock-table td {
+    font-size: 12px;
+    color: var(--fg);
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255,255,255,.04);
+    vertical-align: middle;
+  }
+  .mock-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+  .mock-sub {
+    font-size: 10px;
+    color: var(--muted);
+    display: block;
+    margin-top: 2px;
+  }
+  /* Radio */
+  .mock-radio {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,.2);
+    vertical-align: middle;
+  }
+  .mock-radio.filled {
+    border-color: var(--accent);
+    background: var(--accent);
+    box-shadow: inset 0 0 0 3px #111;
+  }
+  /* Active badge */
+  .mock-badge-active {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--green);
+    background: rgba(34,197,94,.1);
+    border: 1px solid rgba(34,197,94,.2);
+    border-radius: 999px;
+    padding: 2px 8px;
+  }
+  .mock-gear {
+    color: var(--muted);
+    font-size: 13px;
+    cursor: default;
+  }
+  .mock-category {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .mock-category-icon {
+    font-size: 13px;
+  }
+
+  /* ── Gateway Capabilities Grid (6-card layout) ── */
+  .cap-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .cap-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .cap-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .cap-icon {
+    font-size: 18px;
+  }
+  .cap-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--fg);
+    margin: 0;
+  }
+  .cap-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .cap-list li {
+    font-size: 11px;
+    line-height: 1.45;
+    padding-left: 14px;
+    position: relative;
+  }
+  .cap-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+  .cap-apim {
+    color: #555;
+  }
+  .cap-apim::before {
+    background: #444 !important;
+  }
+  .cap-shipped {
+    color: var(--fg);
+  }
+  .cap-shipped::before {
+    background: var(--green) !important;
+  }
+  .cap-planned {
+    color: var(--muted);
+    font-style: italic;
+  }
+  .cap-planned::before {
+    background: var(--purple) !important;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<div class="deck" id="deck">
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 1: Title -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-hero active" data-slide="1">
+    <div class="eyebrow">Azure AI Foundry</div>
+    <h1 class="hero-title">
+      <span>AI Gateway</span> built in.<br>
+      Catalog. Governance. Observability. <span>One platform.</span>
+    </h1>
+    <p class="subtitle">
+      A built-in AI Gateway that gives developers a governed catalog, transparent guardrails, and full runtime visibility &mdash; while giving admins policies, compliance, and observability in a single pane of glass.
+    </p>
+    <div class="hero-metrics">
+      <div class="hero-metric"><div class="hero-metric-value">11,783</div><div class="hero-metric-label">Total assets</div></div>
+      <div class="hero-metric"><div class="hero-metric-value">11,307</div><div class="hero-metric-label">Models</div></div>
+      <div class="hero-metric"><div class="hero-metric-value">248</div><div class="hero-metric-label">Tools</div></div>
+      <div class="hero-metric"><div class="hero-metric-value">86</div><div class="hero-metric-label">Agents</div></div>
+      <div class="hero-metric"><div class="hero-metric-value">142</div><div class="hero-metric-label">Skills</div></div>
+      <div class="hero-metric"><div class="hero-metric-value">99.97%</div><div class="hero-metric-label">Uptime</div></div>
+    </div>
+    <span class="slide-number">1 / 18</span>
+    <span class="slide-logo">Azure AI Foundry</span>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 2: AI Gateway Architecture Visual -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-content" data-slide="2" style="padding-top:36px">
+    <div class="eyebrow">What is the built-in AI Gateway?</div>
+    <h2 class="section-title" style="margin-bottom:8px">Every AI asset, governed by <span>one gateway</span></h2>
+
+    <div class="gw-arch">
+
+      <!-- Layer 1: Developers -->
+      <div class="gw-layer-label">Developer Experience</div>
+      <div class="gw-layer">
+        <div class="gw-node">
+          <div class="gw-node-icon">&#128269;</div>
+          <div class="gw-node-title">Discover</div>
+          <div class="gw-node-sub">Find approved assets</div>
+        </div>
+        <div class="gw-node">
+          <div class="gw-node-icon">&#128736;</div>
+          <div class="gw-node-title">Build</div>
+          <div class="gw-node-sub">Assemble agents</div>
+        </div>
+        <div class="gw-node">
+          <div class="gw-node-icon">&#128200;</div>
+          <div class="gw-node-title">Operate</div>
+          <div class="gw-node-sub">Monitor &amp; debug</div>
+        </div>
+      </div>
+
+      <!-- Connectors down -->
+      <div class="gw-connectors">
+        <div class="gw-connector-line"></div>
+        <div class="gw-connector-line"></div>
+        <div class="gw-connector-line"></div>
+      </div>
+
+      <!-- Center: AI Gateway -->
+      <div class="gw-center-wrap">
+        <div class="gw-center">
+          <div class="gw-center-title"><span>Built-in Foundry AI Gateway</span></div>
+          <div class="gw-center-subtitle">Powered by Azure API Management &mdash; no separate setup required</div>
+          <div class="gw-capabilities">
+            <div class="gw-cap">
+              <div class="gw-cap-icon">&#128218;</div>
+              <div class="gw-cap-name">Catalog</div>
+              <div class="gw-cap-desc">Governed registry of approved assets</div>
+            </div>
+            <div class="gw-cap">
+              <div class="gw-cap-icon">&#128220;</div>
+              <div class="gw-cap-name">Policies</div>
+              <div class="gw-cap-desc">Safety, PII, rate limits, auth</div>
+            </div>
+            <div class="gw-cap">
+              <div class="gw-cap-icon">&#9989;</div>
+              <div class="gw-cap-name">Compliance</div>
+              <div class="gw-cap-desc">Real-time posture monitoring</div>
+            </div>
+            <div class="gw-cap">
+              <div class="gw-cap-icon">&#128202;</div>
+              <div class="gw-cap-name">Observability</div>
+              <div class="gw-cap-desc">Traces, alerts, KPIs</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Connectors down -->
+      <div class="gw-connectors" style="padding:0 60px">
+        <div class="gw-connector-line"></div>
+        <div class="gw-connector-line"></div>
+        <div class="gw-connector-line"></div>
+        <div class="gw-connector-line"></div>
+      </div>
+
+      <!-- Layer 3: AI Assets -->
+      <div class="gw-layer-label">AI Assets &mdash; Governed by Default</div>
+      <div class="gw-layer">
+        <div class="gw-asset-node">
+          <div class="gw-node-icon">&#129504;</div>
+          <div class="gw-node-title">Models</div>
+        </div>
+        <div class="gw-asset-node">
+          <div class="gw-node-icon">&#128295;</div>
+          <div class="gw-node-title">Tools</div>
+        </div>
+        <div class="gw-asset-node">
+          <div class="gw-node-icon">&#129302;</div>
+          <div class="gw-node-title">Agents</div>
+        </div>
+        <div class="gw-asset-node">
+          <div class="gw-node-icon">&#9889;</div>
+          <div class="gw-node-title">Skills</div>
+        </div>
+      </div>
+
+      <!-- Side panels -->
+      <div class="gw-side-panels">
+        <div class="gw-side-panel before">
+          <h4>What it replaces</h4>
+          <ul>
+            <li>Separate APIM gateway setup per resource</li>
+            <li>Manual policy wiring per project</li>
+            <li>Disconnected monitoring tools</li>
+            <li>Point-in-time compliance audits</li>
+          </ul>
+        </div>
+        <div class="gw-side-panel after">
+          <h4>Where we're going</h4>
+          <ul>
+            <li>Every asset governed by default, day one</li>
+            <li>Compliance built into the developer workflow</li>
+            <li>Single control plane for platform teams</li>
+            <li>AI-assisted policy creation and optimization</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="gw-stats-row">
+        <div class="gw-stat"><div class="gw-stat-value">11,783</div><div class="gw-stat-label">Assets governed</div></div>
+        <div class="gw-stat"><div class="gw-stat-value">94%</div><div class="gw-stat-label">Compliance posture</div></div>
+        <div class="gw-stat"><div class="gw-stat-value">5</div><div class="gw-stat-label">Policies enforcing</div></div>
+        <div class="gw-stat"><div class="gw-stat-value">15</div><div class="gw-stat-label">Controls active</div></div>
+        <div class="gw-stat"><div class="gw-stat-value">47</div><div class="gw-stat-label">Threats blocked / week</div></div>
+      </div>
+
+    </div>
+
+    <span class="slide-number">2 / 18</span>
+    <span class="slide-logo">Azure AI Foundry</span>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- SLIDE: Built-in Foundry Gateway Capabilities -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-content" data-slide="gw-caps" style="padding-top:32px">
+    <h2 class="section-title" style="margin-bottom:4px">Built-in Foundry <span>AI Gateway</span> Capabilities</h2>
+    <p class="subtitle" style="margin-bottom:20px">Built on proven APIM foundations &mdash; what&rsquo;s already there, what we&rsquo;re building in Foundry, and what&rsquo;s coming next.</p>
+
+    <div class="cap-grid">
+
+      <!-- Publish -->
+      <div class="cap-card">
+        <div class="cap-header">
+          <span class="cap-icon">&#128640;</span>
+          <h3 class="cap-title">Publish</h3>
+        </div>
+        <ul class="cap-list">
+          <li class="cap-apim">Adding API and MCP endpoints</li>
+          <li class="cap-shipped">Creating MCP tools from OpenAPI</li>
+          <li class="cap-planned">Creating MCP tools from Logic Apps Connectors</li>
+          <li class="cap-shipped">Adding Skills</li>
+          <li class="cap-planned">Auto-generate tool schemas from API specs</li>
+        </ul>
+      </div>
+
+      <!-- Bundle -->
+      <div class="cap-card">
+        <div class="cap-header">
+          <span class="cap-icon">&#128230;</span>
+          <h3 class="cap-title">Bundle</h3>
+        </div>
+        <ul class="cap-list">
+          <li class="cap-apim">Create and share collections of tools, endpoints, skills</li>
+          <li class="cap-shipped">Visibility controls (Org / Team / Private)</li>
+          <li class="cap-planned">Curated starter bundles per industry</li>
+          <li class="cap-planned">Cross-project bundle sharing with governance inheritance</li>
+        </ul>
+      </div>
+
+      <!-- Govern -->
+      <div class="cap-card">
+        <div class="cap-header">
+          <span class="cap-icon">&#128737;</span>
+          <h3 class="cap-title">Govern</h3>
+        </div>
+        <ul class="cap-list">
+          <li class="cap-apim">Runtime &amp; design-time policies with controls library</li>
+          <li class="cap-apim">Content safety, PII masking, rate limiting, auth</li>
+          <li class="cap-shipped">Per-asset policy assignment (Token Quota, Fallback)</li>
+          <li class="cap-planned">AI-assisted policy creation wizard</li>
+          <li class="cap-planned">Policy simulation &amp; impact analysis before enforcement</li>
+        </ul>
+      </div>
+
+      <!-- Discover -->
+      <div class="cap-card">
+        <div class="cap-header">
+          <span class="cap-icon">&#128269;</span>
+          <h3 class="cap-title">Discover</h3>
+        </div>
+        <ul class="cap-list">
+          <li class="cap-shipped">Intent-based AI search across 11,000+ assets</li>
+          <li class="cap-shipped">Compliance &amp; governance filters on search results</li>
+          <li class="cap-shipped">Governed catalog with approval workflows</li>
+          <li class="cap-planned">Semantic tool matching from natural language prompts</li>
+          <li class="cap-planned">Personalized recommendations based on project context</li>
+        </ul>
+      </div>
+
+      <!-- Execute -->
+      <div class="cap-card">
+        <div class="cap-header">
+          <span class="cap-icon">&#9889;</span>
+          <h3 class="cap-title">Execute</h3>
+        </div>
+        <ul class="cap-list">
+          <li class="cap-apim">Gateway-routed tool calls with full policy enforcement</li>
+          <li class="cap-apim">Model routing (latency, cost, capability-based)</li>
+          <li class="cap-apim">Fallback chains across models and providers</li>
+          <li class="cap-planned">AI-powered tool lookup before execution</li>
+          <li class="cap-planned">Dynamic tool composition at runtime</li>
+        </ul>
+      </div>
+
+      <!-- Observe -->
+      <div class="cap-card">
+        <div class="cap-header">
+          <span class="cap-icon">&#128200;</span>
+          <h3 class="cap-title">Observe</h3>
+        </div>
+        <ul class="cap-list">
+          <li class="cap-apim">Request logging &amp; Application Insights integration</li>
+          <li class="cap-apim">API metrics: latency, throughput, error rates</li>
+          <li class="cap-apim">Policy enforcement logging &amp; diagnostics</li>
+          <li class="cap-shipped">Real-time compliance posture dashboard (94%)</li>
+          <li class="cap-shipped">AI invocation traces with per-step policy outcomes</li>
+          <li class="cap-shipped">Issues dashboard prioritized by severity &amp; category</li>
+          <li class="cap-planned">Anomaly detection &amp; proactive alerting</li>
+          <li class="cap-planned">Cost attribution per team / project / agent</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div style="display:flex;align-items:center;gap:24px;margin-top:14px;font-size:11px;color:var(--muted)">
+      <span style="display:flex;align-items:center;gap:6px"><span style="color:#444;font-size:8px">&#9679;</span> Already in APIM</span>
+      <span style="display:flex;align-items:center;gap:6px"><span style="color:var(--green);font-size:8px">&#9679;</span> Building in Foundry</span>
+      <span style="display:flex;align-items:center;gap:6px"><span style="color:var(--purple);font-size:8px">&#9679;</span> Planned / Coming Next</span>
+    </div>
+
+    <span class="slide-number">3 / 18</span>
+    <span class="slide-logo">Azure AI Foundry</span>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 3: Two Personas -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-content" data-slide="2">
+    <div class="eyebrow">Who is this for?</div>
+    <h2 class="section-title">Two personas. <span>One gateway.</span></h2>
+    <p class="subtitle" style="margin-bottom:24px">Azure AI Foundry serves two core users &mdash; each with distinct needs that the built-in AI Gateway addresses.</p>
+
+    <div class="persona-grid">
+
+      <!-- Developer / Agent Builder -->
+      <div class="persona-card dev">
+        <div class="persona-avatar">&#128104;&#8205;&#128187;</div>
+        <div class="persona-role">Primary User</div>
+        <div class="persona-name">Developer / Agent Builder</div>
+        <p class="persona-desc">Builds AI-powered agents and applications. Needs to find approved assets fast, build without governance blocking them, and understand what's happening in production.</p>
+        <ul class="persona-goals">
+          <li>Find the right models and tools without searching across vendor portals</li>
+          <li>Know what's approved and compliant before building</li>
+          <li>Build agents without manually wiring governance controls</li>
+          <li>Understand why requests are blocked or flagged</li>
+          <li>Monitor production agents with real-time traces and alerts</li>
+        </ul>
+        <div class="persona-tabs">
+          <span class="persona-tab">Discover</span>
+          <span class="persona-tab">Build</span>
+          <span class="persona-tab">Operate</span>
+        </div>
+      </div>
+
+      <!-- Admin / Platform Engineer -->
+      <div class="persona-card admin">
+        <div class="persona-avatar">&#128119;</div>
+        <div class="persona-role">Platform Owner</div>
+        <div class="persona-name">Admin / Platform Engineer</div>
+        <p class="persona-desc">Manages the AI platform for the organization. Needs to enforce safety and compliance across hundreds of assets without becoming a bottleneck for developers.</p>
+        <ul class="persona-goals">
+          <li>Enforce safety, PII protection, and rate limits consistently across all projects</li>
+          <li>See compliance posture in real-time, not through point-in-time audits</li>
+          <li>Control what developers can discover and deploy in the catalog</li>
+          <li>Investigate violations and debug policy decisions quickly</li>
+          <li>Manage all governance and observability from one place</li>
+        </ul>
+        <div class="persona-tabs">
+          <span class="persona-tab">Governance</span>
+          <span class="persona-tab">Compliance</span>
+          <span class="persona-tab">Admin</span>
+        </div>
+      </div>
+
+    </div>
+
+    <span class="slide-number">4 / 18</span>
+    <span class="slide-logo">Azure AI Foundry</span>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 3: The Challenge -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-content" data-slide="2">
+    <h2 class="section-title">Without a built-in gateway, <span>everyone suffers</span></h2>
+    <p class="subtitle">Without an integrated AI Gateway, developers and admins are stuck with fragmented tools and manual governance.</p>
+
+    <div class="ba-grid">
+      <div class="ba-col before">
+        <h4>Without Built-in AI Gateway</h4>
+        <ul>
+          <li>Developers search across vendor portals &mdash; no governed catalog</li>
+          <li>Governance wired manually per project &mdash; inconsistent controls</li>
+          <li>No runtime visibility &mdash; blocked requests are a black box</li>
+          <li>Admins configure APIM, policies, and monitoring separately</li>
+          <li>Compliance audits are point-in-time &mdash; no live posture</li>
+          <li>Collections tracked in spreadsheets and wikis</li>
+        </ul>
+      </div>
+      <div class="ba-col after">
+        <h4>With Built-in AI Gateway</h4>
+        <ul>
+          <li>Governed catalog with intent-based search across 11,783 assets</li>
+          <li>Policies inherited automatically from the gateway at build time</li>
+          <li>Gateway annotations explain every decision in the playground</li>
+          <li>Single pane: policies, compliance, traces, alerts in one place</li>
+          <li>Real-time 94% compliance posture with continuous monitoring</li>
+          <li>Curated collections with gateway policy inheritance</li>
+        </ul>
+      </div>
+    </div>
+    <span class="slide-number">5 / 18</span>
+    <span class="slide-logo">Azure AI Foundry</span>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 3: Developer Journey Flow -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-content" data-slide="3">
+    <div class="persona-badge dev">Developer Journey</div>
+    <h2 class="section-title">Three tabs. <span>One gateway.</span></h2>
+    <p class="subtitle">The AI Gateway threads through every step &mdash; from discovering governed assets, to building with transparent controls, to operating with full runtime visibility.</p>
+
+    <div class="flow-row">
+      <div class="flow-step active">
+        <div style="font-size:28px; margin-bottom:4px">&#128269;</div>
+        <h4>Discover</h4>
+        <p>Find &amp; evaluate assets</p>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step active">
+        <div style="font-size:28px; margin-bottom:4px">&#128736;</div>
+        <h4>Build</h4>
+        <p>Assemble &amp; test agents</p>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step active">
+        <div style="font-size:28px; margin-bottom:4px">&#128200;</div>
+        <h4>Operate</h4>
+        <p>Monitor &amp; manage at scale</p>
+      </div>
+    </div>
+
+    <div class="three-col" style="margin-top:12px">
+      <div class="card accent-border">
+        <h3 class="card-title">Discover</h3>
+        <p style="font-size:12px;color:var(--accent);margin-bottom:8px;font-weight:600">GATEWAY &rarr; GOVERNED CATALOG</p>
+        <ul>
+          <li>Gateway-managed registry of 11,783 assets</li>
+          <li>Intent-based search with compliance filters</li>
+          <li>Only approved, governed assets surfaced</li>
+          <li>Collections with gateway policy inheritance</li>
+          <li>Model leaderboard with cost comparison</li>
+          <li>Capabilities for goal-driven discovery</li>
+        </ul>
+      </div>
+      <div class="card green-border">
+        <h3 class="card-title">Build</h3>
+        <p style="font-size:12px;color:var(--green);margin-bottom:8px;font-weight:600">GATEWAY &rarr; TRANSPARENT CONTROLS</p>
+        <ul>
+          <li>Gateway policies auto-inherited at build time</li>
+          <li>Gateway annotations in playground responses</li>
+          <li>See PII, safety, rate limits in every test</li>
+          <li>Agent editor with model, tools, skills, knowledge</li>
+          <li>Workflow canvas with per-node compliance</li>
+          <li>Add from Collection with governed assets</li>
+        </ul>
+      </div>
+      <div class="card purple-border">
+        <h3 class="card-title">Operate</h3>
+        <p style="font-size:12px;color:var(--purple);margin-bottom:8px;font-weight:600">GATEWAY &rarr; FULL OBSERVABILITY</p>
+        <ul>
+          <li>Gateway-powered invocation traces</li>
+          <li>Policy outcome tracking per request</li>
+          <li>Issues dashboard by severity &amp; category</li>
+          <li>Agent run volume and success trends</li>
+          <li>Collections &amp; Catalog management</li>
+          <li>Alerts for latency, policy spikes, failures</li>
+        </ul>
+      </div>
+    </div>
+    <span class="slide-number">6 / 18</span>
+    <span class="slide-logo">Azure AI Foundry</span>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 4: Discover Deep Dive -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-divider" data-slide="4">
+    <div>
+      <div class="divider-icon">&#128269;</div>
+      <div class="eyebrow">Developer Journey &middot; Step 1</div>
+      <h2 class="section-title"><span>Discover</span></h2>
+      <p class="subtitle">A gateway-governed catalog. Find approved assets, instantly.</p>
+    </div>
+    <span class="slide-number">7 / 18</span>
+    <span class="slide-logo">Azure AI Foundry</span>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 5: Discover Features -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-content" data-slide="5">
+    <div class="persona-badge dev">Developer &middot; Discover</div>
+    <h2 class="section-title">A <span>gateway-governed</span> catalog with intent-based search</h2>
+
+    <div class="two-col" style="margin-top:12px">
+      <div>
+        <div class="card accent-border" style="margin-bottom:20px">
+          <div class="card-icon">&#10024;</div>
+          <h3 class="card-title">Intent-Based Search</h3>
+          <p>Developers describe what they want to accomplish &mdash; not asset names. Typing <strong>"CRM tool with SOC2"</strong> or <strong>"summarization model under $5"</strong> instantly surfaces relevant, compliant results.</p>
+        </div>
+        <div class="card accent-border">
+          <div class="card-icon">&#127942;</div>
+          <h3 class="card-title">Model Leaderboard</h3>
+          <p>Compare models side-by-side on quality, safety, throughput, and cost. Make informed decisions without running benchmarks yourself.</p>
+        </div>
+      </div>
+      <div>
+        <div class="card green-border" style="margin-bottom:20px">
+          <div class="card-icon">&#128218;</div>
+          <h3 class="card-title">Collections</h3>
+          <p>Curated asset groups scoped by org, team, or personal. Like playlists for AI &mdash; browse <code>acme-corp.finance</code> (24 assets, SOC2+HIPAA) or <code>@anishta/crm-toolkit</code> (8 assets).</p>
+        </div>
+        <div class="card green-border">
+          <div class="card-icon">&#128737;</div>
+          <h3 class="card-title">Compliance Upfront</h3>
+          <p>Every asset card shows SOC2, HIPAA, GDPR badges, cost tier, and lifecycle status. Developers see what's approved <em>before</em> they click.</p>
+          <div style="margin-top:12px">
+            <span class="stat-pill">SOC2</span>
+            <span class="stat-pill">HIPAA</span>
+            <span class="stat-pill">GDPR</span>
+            <span class="stat-pill">GA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screenshot-hint" style="margin-top:16px">
+      <span class="icon">&#128248;</span> Screenshot: Discover Overview &mdash; hero section, intent search, model cards, collections sidebar
+    </div>
+    <span class="slide-number">8 / 18</span>
+    <span class="slide-logo">Azure AI Foundry</span>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 6: Build Divider -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-divider" data-slide="6">
+    <div>
+      <div class="divider-icon">&#128736;</div>
+      <div class="eyebrow">Developer Journey &middot; Step 2</div>
+      <h2 class="section-title"><span>Build</span></h2>
+      <p class="subtitle">Assemble agents with gateway guardrails baked in.</p>
+    </div>
+    <span class="slide-number">9 / 18</span>
+    <span class="slide-logo">Azure AI Foundry</span>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 7: Build Features -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-content" data-slide="7">
+    <div class="persona-badge dev">Developer &middot; Build</div>
+    <h2 class="section-title">Build agents with the <span>gateway built in</span></h2>
+
+    <div class="two-col" style="margin-top:8px">
+      <div>
+        <div class="card accent-border" style="margin-bottom:16px">
+          <div class="card-icon">&#129302;</div>
+          <h3 class="card-title">Agent Editor</h3>
+          <p>Split-panel experience: configure identity, models, tools, skills, policies, and knowledge on the left &mdash; test in a live playground on the right. Every response shows gateway annotations: PII masked, latency, tokens, safety checks.</p>
+        </div>
+        <div class="card green-border" style="margin-bottom:16px">
+          <div class="card-icon">&#128736;</div>
+          <h3 class="card-title">Tools &amp; Skills</h3>
+          <p>Attach tools with toggle switches, see suggested tools based on your agent's capabilities. Import entire curated collections with governance inherited automatically.</p>
+        </div>
+        <div class="card purple-border">
+          <div class="card-icon">&#127760;</div>
+          <h3 class="card-title">Workflow Canvas</h3>
+          <p>Compose multi-step agent workflows visually &mdash; chain models, skills, tools, and sub-agents. Each node shows policy compliance status.</p>
+        </div>
+      </div>
+      <div>
+        <div class="card orange-border" style="margin-bottom:16px">
+          <div class="card-icon">&#128737;</div>
+          <h3 class="card-title">Transparent Policies</h3>
+          <p>Developers see exactly what's enforced: content safety thresholds, PII entity types, auth methods, rate limits, and telemetry. These controls are inherited from org policy and active by default.</p>
+          <ul>
+            <li>Content Safety &#9989; &mdash; Medium severity</li>
+            <li>PII Masking &#128737; &mdash; Email, Phone, SSN, CC</li>
+            <li>Authentication &#128274; &mdash; OAuth 2.0</li>
+            <li>Rate Limiting &#9201; &mdash; 60 req/min</li>
+            <li>Telemetry &#128202; &mdash; 100% sampling</li>
+          </ul>
+        </div>
+        <div class="highlight-box">
+          <p><strong>Key insight:</strong> Because the AI Gateway is built in, developers never configure governance separately. Gateway annotations on every playground response show PII masking, safety checks, and rate limits &mdash; building trust through transparency.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="screenshot-hint" style="margin-top:12px">
+      <span class="icon">&#128248;</span> Screenshot: Agent Editor &mdash; config tabs on left, playground with gateway annotations on right
+    </div>
+    <span class="slide-number">10 / 18</span>
+    <span class="slide-logo">Azure AI Foundry</span>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 8: Operate Divider -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-divider" data-slide="8">
+    <div>
+      <div class="divider-icon">&#128200;</div>
+      <div class="eyebrow">Developer Journey &middot; Step 3</div>
+      <h2 class="section-title"><span>Operate</span></h2>
+      <p class="subtitle">Gateway-powered observability. See everything. Debug anything.</p>
+    </div>
+    <span class="slide-number">11 / 18</span>
+    <span class="slide-logo">Azure AI Foundry</span>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 9: Operate Features -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-content" data-slide="9">
+    <div class="persona-badge dev">Developer &middot; Operate</div>
+    <h2 class="section-title">Gateway-powered <span>observability</span></h2>
+
+    <div class="three-col" style="margin-top:16px">
+      <div class="card accent-border">
+        <div class="card-icon">&#9888;&#65039;</div>
+        <h3 class="card-title">Issues Dashboard</h3>
+        <p>10 prioritized issues surfaced by severity (Critical, Warning, Info) and category (Security, Policy, Cost, Evaluation, Quota). One-click review actions.</p>
+        <div style="margin-top:12px">
+          <span class="stat-pill" style="background:rgba(239,68,68,.12);color:var(--red)">1 Critical</span>
+          <span class="stat-pill" style="background:rgba(249,115,22,.12);color:var(--orange)">2 Warning</span>
+          <span class="stat-pill" style="background:rgba(79,156,247,.12);color:var(--accent)">7 Info</span>
+        </div>
+      </div>
+      <div class="card green-border">
+        <div class="card-icon">&#128202;</div>
+        <h3 class="card-title">KPIs &amp; Trends</h3>
+        <p>Four key metrics at a glance with week-over-week trends:</p>
+        <ul>
+          <li><strong>47</strong> behaviors prevented &#8593;2.5%</li>
+          <li><strong>$3,202</strong> budget usage &#8595;2.5%</li>
+          <li><strong>2,847</strong> agent runs &#8593;2.5%</li>
+          <li><strong>87.3%</strong> success rate &#8593;2.5%</li>
+        </ul>
+      </div>
+      <div class="card purple-border">
+        <div class="card-icon">&#128269;</div>
+        <h3 class="card-title">Invocation Traces</h3>
+        <p>Debug at the request level &mdash; every trace shows scenario, policy outcomes (&#128274; &#9201; &#128737; &#9989;), latency, and cost. No more filing tickets to understand why something was blocked.</p>
+      </div>
+    </div>
+
+    <div class="two-col" style="margin-top:16px">
+      <div class="card accent-border">
+        <div class="card-icon">&#128230;</div>
+        <h3 class="card-title">Unified Asset Inventory</h3>
+        <p>All agents across platforms (Foundry, Logic Apps, Container Apps, Custom) in a single table. Spot the $85K FinancialService agent or the 45% drop in LegacySync usage instantly.</p>
+      </div>
+      <div class="card orange-border">
+        <div class="card-icon">&#128218;</div>
+        <h3 class="card-title">Collections &amp; Catalog</h3>
+        <p>Manage collections with visibility badges (Org/Team/Private), governance compliance status, and policy previews. The Catalog controls featured collections, visibility rules, and asset restrictions.</p>
+      </div>
+    </div>
+
+    <div class="screenshot-hint" style="margin-top:12px">
+      <span class="icon">&#128248;</span> Screenshots: Overview dashboard, Assets table, Collections tab, Traces page
+    </div>
+    <span class="slide-number">12 / 18</span>
+    <span class="slide-logo">Azure AI Foundry</span>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- SLIDE: Model-Router Policies Mock UI -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-content" data-slide="mr-policies">
+    <div class="persona-badge dev">Developer &middot; Operate</div>
+    <h2 class="section-title">Asset-level gateway <span>policies</span></h2>
+
+    <div class="mock-frame" style="margin-top:16px">
+      <div class="mock-layout">
+        <!-- Sidebar -->
+        <div class="mock-sidebar">
+          <div class="mock-nav-item">Overview</div>
+          <div class="mock-nav-item active">Assets</div>
+          <div class="mock-nav-item">Controls</div>
+          <div class="mock-nav-item">Compliance</div>
+          <div class="mock-nav-item">Quota</div>
+          <div class="mock-nav-item">Admin</div>
+        </div>
+        <!-- Main area -->
+        <div class="mock-main">
+          <!-- Top bar -->
+          <div class="mock-topbar">
+            <div class="mock-title"><span class="mock-back">&larr;</span> model-router</div>
+            <div class="mock-actions">
+              <button class="mock-btn-coral">Save as agent</button>
+              <button class="mock-btn-ghost">Compare models &#9662;</button>
+            </div>
+          </div>
+          <!-- Tabs -->
+          <div class="mock-tabs">
+            <span class="mock-tab">Playground</span>
+            <span class="mock-tab">Details</span>
+            <span class="mock-tab">Monitoring</span>
+            <span class="mock-tab">Evaluation</span>
+            <span class="mock-tab active">Policies</span>
+          </div>
+          <!-- Content -->
+          <div class="mock-content">
+            <div class="mock-content-header">
+              <div>
+                <div class="mock-section-title">Policies</div>
+                <div class="mock-section-desc">Configure runtime policies to control rate limiting, quotas, caching, content safety, and error handling.</div>
+              </div>
+              <button class="mock-btn-primary">+ Add Control</button>
+            </div>
+            <!-- Table -->
+            <table class="mock-table">
+              <thead>
+                <tr>
+                  <th style="width:32px"></th>
+                  <th>Name</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th style="width:32px"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="mock-radio filled"></span></td>
+                  <td>
+                    <strong>Token Quota</strong>
+                    <span class="mock-sub">1,000,000 tokens per month</span>
+                  </td>
+                  <td><span class="mock-category"><span class="mock-category-icon">&#128230;</span> Token quota</span></td>
+                  <td><span class="mock-badge-active">Active</span></td>
+                  <td><span class="mock-gear">&#9881;</span></td>
+                </tr>
+                <tr>
+                  <td><span class="mock-radio"></span></td>
+                  <td>
+                    <strong>Fallback</strong>
+                    <span class="mock-sub">gpt-5.1 &rarr; claude-sonnet-4-5 &rarr; o4-mini</span>
+                  </td>
+                  <td><span class="mock-category"><span class="mock-category-icon">&#128256;</span> Fallback</span></td>
+                  <td><span class="mock-badge-active">Active</span></td>
+                  <td><span class="mock-gear">&#9881;</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <span class="slide-number">13 / 18</span>
+    <span class="slide-logo">Azure AI Foundry</span>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 10: Admin Divider -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-divider" data-slide="10">
+    <div>
+      <div class="divider-icon">&#128737;</div>
+      <div class="eyebrow">Admin Journey &middot; AI Gateway</div>
+      <h2 class="section-title">One pane of glass for <span>everything</span></h2>
+      <p class="subtitle">The AI Gateway gives admins catalog governance, policies, compliance, and observability &mdash; all in a single, integrated control plane.</p>
+    </div>
+    <span class="slide-number">14 / 18</span>
+    <span class="slide-logo">Azure AI Foundry</span>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 11: Governance Policies -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-content" data-slide="11">
+    <div class="persona-badge admin">Admin &middot; AI Gateway</div>
+    <h2 class="section-title">Gateway policies &amp; <span>Controls Library</span></h2>
+
+    <div class="two-col" style="margin-top:12px">
+      <div>
+        <div class="card purple-border" style="margin-bottom:16px">
+          <div class="card-icon">&#128220;</div>
+          <h3 class="card-title">6 Policies, Full Spectrum</h3>
+          <p>Runtime and Design-time policies covering safety, prompt protection, PII, catalog restrictions, rate limiting, and copyright. Each shows enforcement mode, scope, control count, and 30-day violations.</p>
+          <ul>
+            <li>Default Content Safety &mdash; 1,245 violations / 156k invocations</li>
+            <li>Prompt Protection Suite &mdash; 234 blocks</li>
+            <li>PII &amp; Data Guard &mdash; 142 detections</li>
+            <li>Dev Catalog Restrictions &mdash; 0 violations</li>
+            <li>Production Rate Limits &mdash; Audit-only mode</li>
+            <li>Copyright &amp; IP Protection &mdash; 23 blocks</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="card accent-border" style="margin-bottom:16px">
+          <div class="card-icon">&#128296;</div>
+          <h3 class="card-title">Controls Library</h3>
+          <p>7 atomic building blocks that compose policies. Built-in controls (Microsoft.DefaultV2, prompt-injection-shield) and custom controls (Azure Functions, XML Policy). Each shows Input/Output stage, usage count, and block rates.</p>
+        </div>
+        <div class="card green-border">
+          <div class="card-icon">&#10024;</div>
+          <h3 class="card-title">Create Policy Wizard</h3>
+          <p>6-step guided wizard: Policy type &rarr; Add controls &rarr; Scope &rarr; Exceptions &rarr; Name &rarr; Review. Includes an <strong>AI assistant mode</strong> that recommends controls based on natural language descriptions.</p>
+          <div style="margin-top:12px; font-size:13px; color:var(--muted)">
+            7 control categories &middot; 18+ controls &middot; Configurable parameters
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screenshot-hint" style="margin-top:12px">
+      <span class="icon">&#128248;</span> Screenshots: Policies table, Controls Library, Create Policy Wizard with AI assistant
+    </div>
+    <span class="slide-number">15 / 18</span>
+    <span class="slide-logo">Azure AI Foundry</span>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 12: Compliance & Admin -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-content" data-slide="12">
+    <div class="persona-badge admin">Admin &middot; AI Gateway</div>
+    <h2 class="section-title">Gateway compliance: <span>94%</span> posture, in real-time</h2>
+
+    <div class="two-col" style="margin-top:12px">
+      <div>
+        <div class="card purple-border" style="margin-bottom:16px">
+          <div class="card-icon">&#128202;</div>
+          <h3 class="card-title">Compliance Dashboard</h3>
+          <p>Real-time posture score with per-policy compliance bars. Instantly see that Default Content Safety is at 99.2% while Production Rate Limits is at 98.0% (flagged). Violation severity breakdown: Critical, Warning, Info.</p>
+          <ul>
+            <li><strong>5</strong> policies enforcing</li>
+            <li><strong>15</strong> controls active</li>
+            <li><strong>234</strong> assets in scope</li>
+            <li><strong>3</strong> active violations</li>
+          </ul>
+        </div>
+        <div class="card red-border">
+          <div class="card-icon">&#128680;</div>
+          <h3 class="card-title">Violations Audit Trail</h3>
+          <p>Every violation logged with timestamp, policy, control, affected asset, severity, and action taken (Blocked, Flagged, Logged). Filter by severity, policy, or asset type to investigate patterns.</p>
+        </div>
+      </div>
+      <div>
+        <div class="card orange-border" style="margin-bottom:16px">
+          <div class="card-icon">&#9881;</div>
+          <h3 class="card-title">Admin &amp; Gateway</h3>
+          <p>Resource-level infrastructure control. Manage AI Gateway configuration (Built-in or existing APIM), enable/disable enforcement per asset type (Models, Tools, Agents), manage API keys, and view project assignments.</p>
+        </div>
+        <div class="card accent-border">
+          <div class="card-icon">&#128276;</div>
+          <h3 class="card-title">Operational Alerts</h3>
+          <p>Active alerts for latency spikes (P95 &gt; 900ms), policy block surges (PII blocks up 40%), and publish validation failures. Each alert has clear severity and actionable description.</p>
+          <div style="margin-top:12px">
+            <span class="stat-pill" style="background:rgba(239,68,68,.12);color:var(--red)">High latency</span>
+            <span class="stat-pill" style="background:rgba(249,115,22,.12);color:var(--orange)">Policy spike</span>
+            <span class="stat-pill" style="background:rgba(239,68,68,.12);color:var(--red)">Validation failed</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screenshot-hint" style="margin-top:12px">
+      <span class="icon">&#128248;</span> Screenshots: Compliance posture, Violations table, Admin resource detail, Configure Gateway modal
+    </div>
+    <span class="slide-number">16 / 18</span>
+    <span class="slide-logo">Azure AI Foundry</span>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 13: Value Comparison -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-content" data-slide="13">
+    <h2 class="section-title">The AI Gateway <span>value</span> at a glance</h2>
+
+    <div class="card" style="margin-top:20px; padding:0; overflow:hidden">
+      <table class="value-table">
+        <thead>
+          <tr>
+            <th>AI Gateway Capability</th>
+            <th>Without Built-in Gateway</th>
+            <th>With Built-in AI Gateway</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Catalog</td>
+            <td>Fragmented vendor portals, no governance</td>
+            <td>Gateway-governed registry &middot; intent search &middot; compliance filters</td>
+          </tr>
+          <tr>
+            <td>Policies</td>
+            <td>Manual config per project, shadow IT</td>
+            <td>Define once in gateway &middot; auto-inherited across all assets</td>
+          </tr>
+          <tr>
+            <td>Compliance</td>
+            <td>Point-in-time audits, separate tools</td>
+            <td>Real-time 94% posture &middot; continuous gateway monitoring</td>
+          </tr>
+          <tr>
+            <td>Observability</td>
+            <td>Separate monitoring stack</td>
+            <td>Gateway traces, KPIs, alerts &mdash; single pane of glass</td>
+          </tr>
+          <tr>
+            <td>Collections</td>
+            <td>Spreadsheets and wikis</td>
+            <td>Curated bundles with gateway policy inheritance</td>
+          </tr>
+          <tr>
+            <td>Controls</td>
+            <td>YAML / JSON manual config per endpoint</td>
+            <td>Composable controls library &middot; AI-assisted wizard</td>
+          </tr>
+          <tr>
+            <td>Developer Experience</td>
+            <td>"Why was my request blocked?"</td>
+            <td>Gateway annotations explain every decision transparently</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="slide-number">17 / 18</span>
+    <span class="slide-logo">Azure AI Foundry</span>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 14: Key Takeaways -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div class="slide slide-content" data-slide="14">
+    <h2 class="section-title">Key <span>takeaways</span></h2>
+    <p class="subtitle" style="margin-bottom:24px">Why the built-in AI Gateway changes everything.</p>
+
+    <div class="takeaway">
+      <div class="takeaway-num">1</div>
+      <div>
+        <h3>Built-in gateway simplifies the developer journey</h3>
+        <p>Developers never configure governance separately. The AI Gateway provides a governed catalog, transparent guardrails in the playground, and full runtime observability &mdash; all built into Discover, Build, and Operate.</p>
+      </div>
+    </div>
+    <div class="takeaway">
+      <div class="takeaway-num">2</div>
+      <div>
+        <h3>Single pane of glass for admins</h3>
+        <p>Catalog governance, policies, compliance monitoring, invocation traces, and alerts &mdash; all powered by the gateway and accessible from one control plane. Define policies once, enforce everywhere. 94% posture across 234 assets.</p>
+      </div>
+    </div>
+    <div class="takeaway">
+      <div class="takeaway-num">3</div>
+      <div>
+        <h3>Gateway enables, not gates</h3>
+        <p>Because the gateway is built in, governance is transparent &mdash; not a black box. Developers see annotations on every response, admins see compliance in real-time, and violations are explained, not just blocked.</p>
+      </div>
+    </div>
+    <div class="takeaway">
+      <div class="takeaway-num">4</div>
+      <div>
+        <h3>Catalog + Collections + Policies + Observability = One gateway</h3>
+        <p>The AI Gateway unifies what was previously 4 separate systems. Collections inherit gateway policies. The catalog enforces gateway rules. Observability flows from gateway traces. Everything is connected.</p>
+      </div>
+    </div>
+    <span class="slide-number">18 / 18</span>
+    <span class="slide-logo">Azure AI Foundry</span>
+  </div>
+
+</div><!-- /deck -->
+
+<div class="nav-hints">
+  <span><kbd>&larr;</kbd> <kbd>&rarr;</kbd> Navigate</span>
+  <span><kbd>F</kbd> Fullscreen</span>
+  <span><kbd>Home</kbd> First slide</span>
+  <span><kbd>End</kbd> Last slide</span>
+</div>
+
+<script>
+(function () {
+  var slides = document.querySelectorAll('.slide');
+  var current = 0;
+  var total = slides.length;
+  var progress = document.getElementById('progress');
+
+  function show(n) {
+    slides[current].classList.remove('active');
+    current = Math.max(0, Math.min(n, total - 1));
+    slides[current].classList.add('active');
+    // Re-trigger animation
+    slides[current].style.animation = 'none';
+    slides[current].offsetHeight; // reflow
+    slides[current].style.animation = '';
+    // Update progress bar
+    progress.style.width = ((current + 1) / total * 100) + '%';
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault();
+      show(current + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      show(current - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      show(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      show(total - 1);
+    } else if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+  });
+
+  // Click to advance
+  document.addEventListener('click', function (e) {
+    if (e.clientX > window.innerWidth / 2) {
+      show(current + 1);
+    } else {
+      show(current - 1);
+    }
+  });
+
+  // Initialize
+  progress.style.width = (1 / total * 100) + '%';
+})();
+</script>
+
+</body>
+</html>
