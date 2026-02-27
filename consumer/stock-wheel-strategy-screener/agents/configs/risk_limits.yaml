@@ -1,0 +1,17 @@
+portfolio:
+  max_position_pct: 0.10
+  max_sector_pct: 0.30
+  min_cash_reserve_pct: 0.15
+  max_new_trades_per_day: 3
+
+wheel:
+  disable_new_csp_when_regime: ["Bear"]
+  tighten_delta_when_regime:
+    Bull: [0.20, 0.30]
+    Neutral: [0.18, 0.25]
+    Bear: [0.10, 0.18]
+
+safety:
+  avoid_earnings: true
+  avoid_high_iv_events: true
+  never_trade_list: []

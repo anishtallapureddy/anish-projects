@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DailyReport",
+  "type": "object",
+  "required": ["date", "timezone", "market_regime", "approved_opportunities", "blocked_opportunities", "order_drafts"],
+  "properties": {
+    "date": { "type": "string", "description": "YYYY-MM-DD" },
+    "timezone": { "type": "string" },
+    "market_regime": {
+      "type": "object",
+      "required": ["regime", "risk_posture", "notes"],
+      "properties": {
+        "regime": { "type": "string", "enum": ["Bull", "Neutral", "Bear"] },
+        "risk_posture": { "type": "string", "enum": ["Risk-On", "Balanced", "Risk-Off"] },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "approved_opportunities": { "type": "array", "items": { "$ref": "opportunity.schema.json" } },
+    "blocked_opportunities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["opportunity", "reason"],
+        "properties": {
+          "opportunity": { "$ref": "opportunity.schema.json" },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "order_drafts": { "type": "array", "items": { "$ref": "order_draft.schema.json" } }
+  },
+  "additionalProperties": true
+}
