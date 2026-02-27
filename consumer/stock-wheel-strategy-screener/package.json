@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "ts-node src/index.ts",
+    "start": "ts-node src/server.ts",
+    "run:cli": "ts-node src/index.ts",
     "run:daily": "ts-node src/index.ts",
     "run:feedback": "ts-node src/feedback-cli.ts"
   },
@@ -16,11 +17,13 @@
     "ajv": "^8.18.0",
     "ajv-formats": "^3.0.1",
     "date-fns": "^4.1.0",
+    "express": "^5.2.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "yaml": "^2.8.2"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "@types/node": "^25.3.2"
   }
 }
