@@ -380,11 +380,10 @@
       document.getElementById('stat-blocked').textContent = r.blocked_opportunities.length;
       document.getElementById('stat-drafts').textContent = r.order_drafts.length;
 
-      // All opportunities (approved + blocked) sorted by score for Top Returns
-      const allOpps = [
-        ...r.approved_opportunities.map(o => ({...o, status: 'approved'})),
-        ...r.blocked_opportunities.map(b => ({...b.opportunity, status: 'blocked', block_reason: b.reason})),
-      ].sort((a, b) => b.score - a.score);
+      // Only approved opportunities in main tabs; blocked shown only in Blocked tab
+      const allOpps = r.approved_opportunities
+        .map(o => ({...o, status: 'approved'}))
+        .sort((a, b) => b.score - a.score);
 
       // ── Top Returns tab (all categories, ranked) ──
       const oppBody = document.getElementById('opp-table');
@@ -405,12 +404,10 @@
           keyMetric = d.drift_pct ? Math.abs(d.drift_pct) + '% drift' : (d.ytd_return ? d.ytd_return + '% YTD' : '');
           action = d.current_price ? 'BUY @ ~$' + d.current_price.toFixed(2) : '';
         }
-        const statusIcon = o.status === 'approved' ? '✅' : '🚫';
-        const rowStyle = o.status === 'blocked' ? 'opacity:0.5' : '';
         return `
-          <tr style="${rowStyle}" title="${o.status === 'blocked' ? o.block_reason : 'Approved'}">
+          <tr>
             <td>${i+1}</td>
-            <td><span class="tag tag-${o.category.toLowerCase()}">${o.category}</span> ${statusIcon}</td>
+            <td><span class="tag tag-${o.category.toLowerCase()}">${o.category}</span></td>
             <td><strong>${o.symbol}</strong></td>
             <td>${price}</td>
             <td>${o.score}</td>
@@ -425,13 +422,11 @@
       const cspBody = document.getElementById('csp-table');
       cspBody.innerHTML = cspOpps.map((o, i) => {
         const d = o.details || {};
-        const statusIcon = o.status === 'approved' ? '✅' : '🚫';
-        const rowStyle = o.status === 'blocked' ? 'opacity:0.5' : '';
         const qs = d.quality_score || 0;
         const qColor = qs >= 70 ? '#3fb950' : qs >= 50 ? '#d29922' : '#f85149';
         return `
-          <tr style="${rowStyle}" title="${o.status === 'blocked' ? (o.block_reason||'') : 'Approved'}">
-            <td>${i+1} ${statusIcon}</td>
+          <tr>
+            <td>${i+1}</td>
             <td><strong>${o.symbol}</strong></td>
             <td>${d.current_price ? '$'+d.current_price.toFixed(2) : '—'}</td>
             <td>$${d.strike || '—'}</td>
@@ -453,11 +448,9 @@
       const valBody = document.getElementById('value-table');
       valBody.innerHTML = valOpps.map((o, i) => {
         const d = o.details || {};
-        const statusIcon = o.status === 'approved' ? '✅' : '🚫';
-        const rowStyle = o.status === 'blocked' ? 'opacity:0.5' : '';
         return `
-          <tr style="${rowStyle}">
-            <td>${i+1} ${statusIcon}</td>
+          <tr>
+            <td>${i+1}</td>
             <td><strong>${o.symbol}</strong></td>
             <td style="color:var(--accent)">${d.current_price ? '$'+d.current_price.toFixed(2) : '—'}</td>
             <td style="font-size:11px">${d.market_cap_b ? '$'+d.market_cap_b+'B' : '—'}</td>
@@ -477,11 +470,9 @@
       const etfBody = document.getElementById('etf-table');
       etfBody.innerHTML = etfOpps.map((o, i) => {
         const d = o.details || {};
-        const statusIcon = o.status === 'approved' ? '✅' : '🚫';
-        const rowStyle = o.status === 'blocked' ? 'opacity:0.5' : '';
         return `
-          <tr style="${rowStyle}">
-            <td>${i+1} ${statusIcon}</td>
+          <tr>
+            <td>${i+1}</td>
             <td><strong>${o.symbol}</strong></td>
             <td style="color:var(--accent)">${d.current_price ? '$'+d.current_price.toFixed(2) : '—'}</td>
             <td style="font-size:12px">${o.rationale.split('.')[0]}</td>
