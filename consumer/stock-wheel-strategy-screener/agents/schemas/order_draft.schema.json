@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OrderDraft",
+  "type": "object",
+  "required": ["order_id", "type", "symbol", "quantity", "price_type", "rationale", "requires_approval"],
+  "properties": {
+    "order_id": { "type": "string" },
+    "type": { "type": "string", "enum": ["CSP", "CC", "BUY_STOCK", "BUY_ETF", "REBALANCE"] },
+    "symbol": { "type": "string" },
+    "quantity": { "type": "number" },
+    "option": {
+      "type": ["object", "null"],
+      "properties": {
+        "put_call": { "type": "string", "enum": ["PUT", "CALL"] },
+        "strike": { "type": "number" },
+        "expiry": { "type": "string", "description": "YYYY-MM-DD" }
+      },
+      "required": ["put_call", "strike", "expiry"],
+      "additionalProperties": false
+    },
+    "price_type": { "type": "string", "enum": ["LIMIT", "MARKET"] },
+    "limit_price": { "type": ["number", "null"] },
+    "rationale": { "type": "string" },
+    "risk_flags": { "type": "array", "items": { "type": "string" } },
+    "requires_approval": { "type": "boolean", "const": true }
+  },
+  "additionalProperties": false
+}

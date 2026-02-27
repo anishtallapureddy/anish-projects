@@ -1,0 +1,21 @@
+wheel:
+  dte_days: [30, 45]
+  csp_delta_range: [0.20, 0.30]
+  cc_delta_range: [0.15, 0.25]
+  min_csp_premium_pct_of_strike: 0.02
+  min_cc_premium_pct_of_strike: 0.015
+  earnings_blackout_days: 7
+  allow_weeklies: false
+
+value:
+  min_market_cap_b: 10
+  min_roic: 0.15
+  min_rev_cagr_5y: 0.10
+  require_positive_fcf: true
+  valuation_discount_min: 0.15
+  max_net_debt_to_ebitda: 3
+
+etf:
+  max_expense_ratio: 0.20
+  min_aum_b: 5
+  rebalance_threshold_pct: 0.05

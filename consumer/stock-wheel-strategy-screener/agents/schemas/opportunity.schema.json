@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Opportunity",
+  "type": "object",
+  "required": ["id", "category", "symbol", "score", "rationale"],
+  "properties": {
+    "id": { "type": "string" },
+    "category": { "type": "string", "enum": ["CSP", "CC", "VALUE", "ETF"] },
+    "symbol": { "type": "string" },
+    "score": { "type": "number" },
+    "rationale": { "type": "string" },
+    "risk_flags": { "type": "array", "items": { "type": "string" } },
+    "details": { "type": "object" }
+  },
+  "additionalProperties": true
+}

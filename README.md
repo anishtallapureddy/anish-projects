@@ -34,6 +34,11 @@ A fintech SaaS that generates IRS-compliant cost segregation reports for residen
 cd consumer/cost-segregation && npm install && npm run dev
 ```
 
+### [WheelAlpha — Stock Wheel Strategy Screener](./consumer/stock-wheel-strategy-screener/)
+A multi-agent investing tool that screens stocks for wheel strategy income (cash-secured puts + covered calls), identifies undervalued long-term holds, and recommends ETF core allocations. Produces daily insights and **draft orders only** — human-in-the-loop, no execution. 8 sub-agents with config-driven risk gating.
+
+→ [Agent specs](./consumer/stock-wheel-strategy-screener/agents/) · [Orchestrator design](./consumer/stock-wheel-strategy-screener/agents/orchestrator.md) · [Risk limits](./consumer/stock-wheel-strategy-screener/agents/configs/risk_limits.yaml)
+
 ---
 
 ## 📋 Product Work
@@ -59,7 +64,8 @@ anish-projects/
 ├── ai/                            # AI & platform projects
 │   └── ai-gateway/                # Live prototype — gateway + dashboard
 ├── consumer/                      # Consumer & fintech projects
-│   └── cost-segregation/          # Live MVP — tax report generator
+│   ├── cost-segregation/          # Live MVP — tax report generator
+│   └── stock-wheel-strategy-screener/  # Multi-agent investing tool (WheelAlpha)
 ├── pm-portfolio/
 │   ├── vision.md                  # 3-year strategy
 │   ├── about/                     # Bio, resume, principles

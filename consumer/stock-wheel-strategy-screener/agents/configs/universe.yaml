@@ -1,0 +1,27 @@
+universes:
+  wheel_universe:
+    - AAPL
+    - MSFT
+    - GOOGL
+    - AMZN
+    - META
+    - NVDA
+  etf_universe:
+    - VTI
+    - QQQ
+    - SCHD
+    - IEF
+    - GLD
+sectors:
+  # Optional mapping for risk controls; expand later
+  AAPL: Technology
+  MSFT: Technology
+  GOOGL: Communication Services
+  AMZN: Consumer Discretionary
+  META: Communication Services
+  NVDA: Technology
+  VTI: ETF
+  QQQ: ETF
+  SCHD: ETF
+  IEF: ETF
+  GLD: ETF

@@ -1,0 +1,14 @@
+allocation_targets:
+  wheel_income: 0.50
+  long_term_value: 0.30
+  etf_core: 0.20
+
+watchlists:
+  wheel_universe: ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "NVDA"]
+  value_candidates: ["MSFT", "GOOGL", "META", "AMZN"]
+  etf_core: ["VTI", "QQQ", "SCHD"]
+
+style:
+  wheel_mode: conservative   # conservative | balanced | aggressive
+  value_mode: quality        # quality | deep_value
+  email_tone: crisp          # crisp | detailed
