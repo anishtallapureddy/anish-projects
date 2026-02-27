@@ -3,7 +3,7 @@
 **Duration:** 5 minutes  
 **Audience:** Stakeholders, design partners, leadership  
 **Prototype URL:** http://localhost:3000  
-**Repository:** [github.com/anishta_microsoft/ai-gateway-mock](https://github.com/anishta_microsoft/ai-gateway-mock)
+**Repository:** [github.com/anishtallapureddy/anish-projects/ai-gateway-foundry](https://github.com/anishtallapureddy/anish-projects/tree/main/ai-gateway-foundry)
 
 ---
 
