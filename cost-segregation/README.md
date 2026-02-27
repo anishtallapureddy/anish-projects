@@ -217,3 +217,14 @@ POST /api/reports             # Generate a report
 ## 📄 License
 
 MIT — see [LICENSE](../LICENSE)
+
+---
+
+## 🔗 Related Projects
+
+This project is part of the [anish-projects](https://github.com/anishtallapureddy/anish-projects) monorepo:
+
+| Project | Description |
+|---------|-------------|
+| **[AI Gateway Foundry](../ai-gateway-foundry/)** | Azure AI Foundry experience with live AI Gateway backend — rate limiting, content safety, semantic caching, tool governance |
+| **[PM Portfolio](../pm-portfolio/)** | Product management artifacts, templates, and project case studies |

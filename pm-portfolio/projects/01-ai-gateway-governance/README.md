@@ -8,7 +8,7 @@
 | **Timeline** | Q1–Q3 2025 (Prototype → Private Preview → GA) |
 | **Team** | Cross-functional: APIM, Foundry Portal, AI Services, MCP Runtime |
 | **Impact** | Unified governance layer for models, tools, and agents across Azure AI Foundry |
-| **Prototype** | [Working demo](https://github.com/anishta_microsoft/ai-gateway-mock) (Node.js + Express + HTML dashboard) |
+| **Prototype** | [Live demo](https://github.com/anishtallapureddy/anish-projects/tree/main/ai-gateway-foundry) (Node.js + Express + 23-page Foundry dashboard) |
 
 ---
 
@@ -50,7 +50,7 @@ A fully functional mock was built to demonstrate the vision and align stakeholde
 - The **Build** experience (developer discovery, toolbox building, playground testing)
 - The **Monitor** experience (metrics dashboard, request logs, health indicators)
 
-🔗 **Repository:** [github.com/anishta_microsoft/ai-gateway-mock](https://github.com/anishta_microsoft/ai-gateway-mock)
+🔗 **Repository:** [github.com/anishtallapureddy/anish-projects/ai-gateway-foundry](https://github.com/anishtallapureddy/anish-projects/tree/main/ai-gateway-foundry)
 
 ## Documentation
 
