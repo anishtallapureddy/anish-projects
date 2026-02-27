@@ -50,8 +50,11 @@ For a $500K single-family home with typical features:
 | Document | Description |
 |---|---|
 | [PRD](./prd.md) | Product requirements with personas, user stories, architecture |
+| [User Scenarios & Non-Goals](./user-scenarios.md) | 6 user scenarios with explicit non-goals |
 | [Metrics](./metrics.md) | KPIs, OKRs, analytics event schema |
-| [Decision Log](./decision-log.md) | Architecture decision records |
+| [Risks & Tradeoffs](./risks-tradeoffs.md) | 6 risks + 3 key tradeoff analyses |
+| [Rollout Plan](./rollout-plan.md) | 4-phase rollout with go/no-go criteria |
+| [Decision Log](./decision-log.md) | 7 architecture decision records |
 
 ## Next Steps
 
