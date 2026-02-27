@@ -8,50 +8,31 @@ Each project folder contains the complete set of PM artifacts — PRDs, user sto
 
 ## 🗂️ Projects
 
-| # | Project | Domain | Role | Status |
-|---|---|---|---|---|
-| 01 | [AI Gateway Governance](./projects/01-ai-gateway-governance/) | AI Infrastructure · Azure | PM Lead | Prototype shipped |
-| 02 | [Cost Segregation SaaS](./projects/02-cost-segregation-saas/) | FinTech · Real Estate | PM / Founder | MVP shipped |
+| # | Project | Type | Domain | Key Artifacts | Status |
+|---|---------|------|--------|---------------|--------|
+| 01 | [AI Gateway Governance](./projects/01-ai-gateway-governance/) | System Design + Governance | AI Infrastructure · Azure | PRD · 32 user stories · architecture · 50+ metrics · rollout · 10 ADRs · demo script | Prototype shipped |
+| 02 | [Cost Segregation SaaS](./projects/02-cost-segregation-saas/) | 0→1 Product Spec | FinTech · Real Estate | PRD · 6 user scenarios · risks · rollout · metrics · 7 ADRs · [live MVP](../../cost-segregation/) | MVP shipped |
+| 03 | [MCP Tool Catalog & Discovery](./projects/03-tool-catalog-discovery/) | Customer Discovery | AI Platform · Developer Tools | Interview guide · 12 insights · opportunity tree · PRD · metrics · 5 ADRs | Research complete |
+| 04 | [AI Observability & Cost Controls](./projects/04-observability-cost-controls/) | Experiment-Driven Iteration | AI Platform · FinOps | 3 hypotheses · experiment plan · results · ship/iterate/kill decisions · PRD · rollout | Experiments run |
+| 05 | [API Gateway Pricing Tiers](./projects/05-gateway-pricing-tiers/) | Pricing / GTM | API Platform · Business | Pricing model · competitive analysis · GTM plan · launch checklist · revenue model | Plan complete |
 
 ## 📁 Structure
 
 ```
 pm-portfolio/
-├── about/                          # Bio, resume, PM principles
+├── about/                              # Bio, resume, PM principles
 │   ├── resume-onepager.md
 │   ├── bio.md
 │   └── principles.md
-├── projects/                       # Project portfolios
-│   ├── 01-ai-gateway-governance/   # Azure APIM × Foundry
-│   │   ├── README.md
-│   │   ├── prd.md
-│   │   ├── user-stories.md
-│   │   ├── architecture.md
-│   │   ├── metrics.md
-│   │   ├── rollout-plan.md
-│   │   ├── risks-tradeoffs.md
-│   │   ├── decision-log.md
-│   │   └── demo-script.md
-│   └── 02-cost-segregation-saas/   # CostSeg Pro
-│       ├── README.md
-│       ├── prd.md
-│       ├── metrics.md
-│       └── decision-log.md
-├── templates/                      # Reusable PM frameworks
-│   ├── prd-template.md
-│   ├── one-pager-template.md
-│   ├── metrics-template.md
-│   ├── experiment-template.md
-│   ├── decision-record-template.md
-│   └── rollout-template.md
-├── writing/                        # Blog posts & talks
-│   ├── posts/
-│   └── talks/
-├── case-studies/                   # Retrospective case studies
-│   └── case-study-template.md
-└── ops/                            # Portfolio maintenance
-    ├── repo-style-guide.md
-    └── glossary.md
+├── projects/
+│   ├── 01-ai-gateway-governance/       # System design + governance (9 docs)
+│   ├── 02-cost-segregation-saas/       # 0→1 product spec (7 docs)
+│   ├── 03-tool-catalog-discovery/      # Customer discovery (7 docs)
+│   ├── 04-observability-cost-controls/ # Experiment-driven iteration (8 docs)
+│   └── 05-gateway-pricing-tiers/       # Pricing/GTM fast win (5 docs)
+├── templates/                          # Reusable PM frameworks (6 templates)
+├── case-studies/                       # Retrospective case studies
+└── ops/                                # Style guide, glossary
 ```
 
 ## 📄 About Me
