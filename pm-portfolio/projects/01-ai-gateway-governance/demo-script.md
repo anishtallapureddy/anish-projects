@@ -3,7 +3,7 @@
 **Duration:** 5 minutes  
 **Audience:** Stakeholders, design partners, leadership  
 **Prototype URL:** http://localhost:3000  
-**Repository:** [github.com/anishtallapureddy/anish-projects/ai/ai-gateway-foundry](https://github.com/anishtallapureddy/anish-projects/tree/main/ai/ai-gateway-foundry)
+**Repository:** [github.com/anishtallapureddy/anish-projects/ai/ai-gateway](https://github.com/anishtallapureddy/anish-projects/tree/main/ai/ai-gateway)
 
 ---
 
@@ -115,12 +115,12 @@
 1. **Click Operate → Agents** in the navigation
 
 2. **Show Registered Agents**
-   - Point to the list: "We have Foundry-native agents, a LangChain agent, and an AutoGen agent — all registered"
-   - Highlight the source column: "Foundry, External, Vertex AI"
+   - Point to the list: "We have platform-native agents, a LangChain agent, and an AutoGen agent — all registered"
+   - Highlight the source column: "Platform, External, Vertex AI"
 
 3. **Click "Register External Agent"**
    - Walk through: name, endpoint URL, framework (LangChain), capabilities
-   - "External agents get the same governance as Foundry-native ones"
+   - "External agents get the same governance as platform-native ones"
 
 4. **Show Cross-Cloud Sync**
    - Point to the Vertex AI sync status: "We sync agent registrations from Google Vertex AI"
@@ -200,7 +200,7 @@
 
 > "So what did we just see?
 >
-> **One gateway** for models, tools, and agents — built right into Foundry.
+> **One gateway** for models, tools, and agents — built right into the AI Gateway platform.
 >
 > **Platform engineers** get unified governance: quotas, virtual keys, failover, approval workflows, namespace-based tool organization, agent guardrails, and cross-cloud visibility.
 >
@@ -223,7 +223,7 @@
 
 | Question | Suggested Answer |
 |----------|-----------------|
-| "How does this relate to existing APIM?" | "APIM is the engine under the hood. We're surfacing its AI Gateway capabilities directly in Foundry so customers don't need to learn APIM." |
+| "How does this relate to existing APIM?" | "APIM is the engine under the hood. We're surfacing its AI Gateway capabilities directly in the AI Gateway dashboard so customers don't need to learn APIM." |
 | "What about pricing?" | "We're exploring consumption-based pricing aligned with APIM. Design partners will help us validate the model." |
 | "When does this ship?" | "Private preview with Models governance in Q1–Q2 2025. Tools in Q2–Q3. Full GA with Agents in Q3–Q4." |
 | "Does this work with non-Azure models?" | "Yes — you can register any model endpoint. We showed a self-hosted Llama model alongside Azure OpenAI." |

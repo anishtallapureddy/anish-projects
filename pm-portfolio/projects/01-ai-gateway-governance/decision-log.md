@@ -4,28 +4,28 @@ Each decision is documented as a lightweight Architecture Decision Record (ADR).
 
 ---
 
-## ADR-001: Built-in to Foundry, Not Standalone APIM Product
+## ADR-001: Integrated Dashboard Experience, Not Standalone APIM Product
 
 **Date:** 2024-12  
 **Status:** Accepted  
-**Deciders:** PM (Anish), Foundry Portal Lead, APIM PM Lead
+**Deciders:** PM (Anish), Gateway UX Lead, APIM PM Lead
 
 ### Context
-We had two paths: (a) build AI governance as a standalone APIM feature that customers configure separately, or (b) integrate governance directly into the Foundry portal as a built-in experience.
+We had two paths: (a) build AI governance as a standalone APIM feature that customers configure separately, or (b) integrate governance directly into the AI Gateway dashboard as a built-in experience.
 
 ### Decision
-Integrate as a built-in Foundry experience with APIM as the underlying engine.
+Integrate as a built-in AI Gateway dashboard experience with APIM as the underlying engine.
 
 ### Rationale
-- Target customers are Foundry-first; they expect governance where they build AI
+- Target customers are gateway-first; they expect governance where they build AI
 - Standalone requires context-switching between portals, reducing adoption
-- Foundry portal integration enables a unified "Operate + Build" UX
+- AI Gateway dashboard integration enables a unified "Operate + Build" UX
 - APIM capabilities power the gateway without requiring customers to learn APIM
 
 ### Consequences
-- (+) Seamless UX for Foundry customers
+- (+) Seamless UX for AI Gateway customers
 - (+) Higher projected adoption due to zero-friction enablement
-- (−) Dependency on Foundry portal release cycle
+- (−) Dependency on gateway portal release cycle
 - (−) APIM power users may want deeper APIM-native configuration (address via "advanced settings" escape hatch)
 
 ---
@@ -198,7 +198,7 @@ Phase incrementally: Models (Phase 1) → Tools/MCP (Phase 2) → Agents (Phase 
 **Deciders:** PM (Anish)
 
 ### Context
-The AI Gateway Governance vision spans multiple teams (APIM, Foundry Portal, AI Services, MCP Runtime). Aligning stakeholders on an abstract spec is difficult. Options: detailed spec document, prototype/mock, or design mockups (Figma).
+The AI Gateway Governance vision spans multiple teams (APIM, Gateway UX, AI Services, MCP Runtime). Aligning stakeholders on an abstract spec is difficult. Options: detailed spec document, prototype/mock, or design mockups (Figma).
 
 ### Decision
 Build a working prototype (Node.js + Express + HTML dashboard) that demonstrates the full end-to-end experience before writing detailed specs.
@@ -219,7 +219,7 @@ Build a working prototype (Node.js + Express + HTML dashboard) that demonstrates
 - (−) Risk of stakeholders confusing prototype fidelity with production readiness — mitigated by clear "prototype" labeling
 
 ### Artifacts
-- **Repository:** [github.com/anishtallapureddy/anish-projects/ai/ai-gateway-foundry](https://github.com/anishtallapureddy/anish-projects/tree/main/ai/ai-gateway-foundry)
+- **Repository:** [github.com/anishtallapureddy/anish-projects/ai/ai-gateway](https://github.com/anishtallapureddy/anish-projects/tree/main/ai/ai-gateway)
 - **Tech stack:** Node.js, Express, vanilla HTML/CSS/JS dashboard
 - **Covers:** Operate tab (Models, Tools, Agents), Build tab (Catalog, Toolbox, Playground), Monitor tab (Metrics, Logs)
 
@@ -257,7 +257,7 @@ Implement semantic caching at the gateway layer (APIM policy).
 
 **Date:** 2025-01  
 **Status:** Accepted  
-**Deciders:** PM (Anish), Observability Lead, Foundry Portal Lead
+**Deciders:** PM (Anish), Observability Lead, Gateway UX Lead
 
 ### Context
 Dashboard data can be powered by polling backend APIs for current state or by structured telemetry events that flow into Application Insights and are queried via KQL.
@@ -285,7 +285,7 @@ Event-driven telemetry with Application Insights as the analytics backend.
 
 | ADR | Decision | Key Driver |
 |-----|----------|-----------|
-| ADR-001 | Built-in to Foundry | UX seamlessness drives adoption |
+| ADR-001 | Integrated dashboard experience | UX seamlessness drives adoption |
 | ADR-002 | MCP as tool protocol | Industry convergence on MCP |
 | ADR-003 | Namespace-based tool organization | Intuitive domain-based discovery |
 | ADR-004 | Approval workflow for tools | Enterprise security requirement |

@@ -8,13 +8,13 @@
 
 | Metric | Definition | Target (6 mo post-GA) | Measurement |
 |--------|------------|----------------------|-------------|
-| **Gateway Activation Rate** | % of Foundry projects with AI Gateway enabled | >40% | Foundry telemetry |
-| **Models Registered** | Total models registered through gateway (Foundry + external) | >500 across all tenants | APIM backend count |
+| **Gateway Activation Rate** | % of AI Gateway projects with AI Gateway enabled | >40% | AI Gateway telemetry |
+| **Models Registered** | Total models registered through gateway (platform + external) | >500 across all tenants | APIM backend count |
 | **Tools Registered** | Total MCP tools registered and governed | >200 across all tenants | Gateway tool registry |
-| **Agents Registered** | Total agents registered (Foundry + external + cross-cloud) | >100 across all tenants | Agent registry |
+| **Agents Registered** | Total agents registered (platform + external + cross-cloud) | >100 across all tenants | Agent registry |
 | **Active Consumers** | Unique developer subscriptions making ≥1 request/week | >2,000 | APIM subscription analytics |
 | **Monthly Governed Requests** | Total requests routed through gateway per month | >10M | APIM request metrics |
-| **Non-Foundry Registration Rate** | % of registered resources that are non-Foundry (external models, agents) | >15% | Registry metadata |
+| **Non-Platform Registration Rate** | % of registered resources that are external (external models, agents) | >15% | Registry metadata |
 
 ### 1.2 Governance Metrics
 
@@ -34,11 +34,11 @@
 |--------|------------|--------|-------------|
 | **Time to First API Call** | Minutes from project creation to first governed API call | <10 min | End-to-end telemetry |
 | **Tool Discovery → Usage** | % of developers who browse catalog and then invoke a tool within 7 days | >30% | Funnel analysis |
-| **Playground Usage** | Monthly active playground users (model + tool + agent) | >500 | Portal telemetry |
-| **Toolbox Creation Rate** | % of developers who create ≥1 toolbox | >25% | Portal telemetry |
-| **Catalog Search Success** | % of catalog searches resulting in a resource click within session | >60% | Portal analytics |
+| **Playground Usage** | Monthly active playground users (model + tool + agent) | >500 | Dashboard telemetry |
+| **Toolbox Creation Rate** | % of developers who create ≥1 toolbox | >25% | Dashboard telemetry |
+| **Catalog Search Success** | % of catalog searches resulting in a resource click within session | >60% | Dashboard analytics |
 | **Developer NPS** | Net Promoter Score from developer surveys | >40 | Quarterly survey |
-| **Documentation Engagement** | % of developers visiting docs within first session | >50% | Portal analytics |
+| **Documentation Engagement** | % of developers visiting docs within first session | >50% | Dashboard analytics |
 
 ### 1.4 Reliability Metrics
 
@@ -57,7 +57,7 @@
 | Metric | Definition | Target | Measurement |
 |--------|------------|--------|-------------|
 | **APIM Consumption Revenue** | Incremental APIM consumption revenue from AI Gateway usage | Track quarterly (no target in Y1) | Azure billing |
-| **Customer Retention Impact** | Retention rate for Foundry customers with gateway vs. without | +5% higher retention | Cohort analysis |
+| **Customer Retention Impact** | Retention rate for AI Gateway customers with gateway vs. without | +5% higher retention | Cohort analysis |
 | **Design Partner Satisfaction** | CSAT from private preview design partners | >4.2/5.0 | Partner surveys |
 | **Enterprise Deal Influence** | # of enterprise deals where AI Gateway is a stated factor | Track quarterly | Sales CRM |
 | **Cost Savings (Caching)** | Estimated token cost savings from semantic caching | Report per-customer | Cache + pricing data |
@@ -224,7 +224,7 @@ Emitted when a resource is registered or updated.
     "pillar": "model | tool | agent",
     "resource_id": "ext-model-claude-3",
     "action": "register | update | deregister",
-    "source": "foundry | external | cross_cloud_sync",
+    "source": "platform | external | cross_cloud_sync",
     "cloud_source": "vertex_ai | bedrock | null",
     "admin_id": "admin-user-1",
     "namespace": "engineering"

@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════
-//  api-client.js — Wires the Foundry UI to the live backend
+//  api-client.js — Wires the AI Gateway UI to the live backend
 //  Replaces hardcoded interactions with real API calls
 // ═══════════════════════════════════════════════════════
 

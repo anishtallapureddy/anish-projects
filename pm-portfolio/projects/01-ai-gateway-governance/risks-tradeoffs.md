@@ -12,11 +12,11 @@
 | R4 | **Design partner churn** — Partners drop out of private preview due to competing priorities or insufficient value | Business | Medium | Medium | Over-recruit (7 for 5 slots); assign dedicated partner success contact; bi-weekly check-ins; rapid feedback loops | 🟢 Mitigating |
 | R5 | **Cross-cloud API instability** — Vertex AI and Bedrock APIs change, breaking agent sync | Technical | Medium | Medium | Adapter pattern with per-cloud versioning; sync service with graceful degradation; monitor cloud provider changelogs | 🔲 Not started (Phase 3) |
 | R6 | **Security vulnerability in virtual key mapping** — Virtual key → backend credential mapping is compromised, exposing provider API keys | Security | Low | Critical | Keys encrypted at rest and in transit; credential store uses Azure Key Vault; penetration testing before each phase; no credentials in logs/responses | 🟡 Monitoring |
-| R7 | **Portal performance degradation** — Gateway governance UX adds latency to Foundry portal page loads | UX | Medium | Medium | Lazy-load gateway components; set performance budget (<200ms additional); monitor portal RUM metrics; optimize API payloads | 🟢 Mitigating |
-| R8 | **Pricing model rejection** — Customers resist APIM consumption-based pricing for AI Gateway | Business | Medium | High | Offer free tier during preview; gather willingness-to-pay data from partners; explore bundled pricing with Foundry; benchmark against competitor pricing | 🔲 Not started |
+| R7 | **Dashboard performance degradation** — Gateway governance UX adds latency to AI Gateway dashboard page loads | UX | Medium | Medium | Lazy-load gateway components; set performance budget (<200ms additional); monitor dashboard RUM metrics; optimize API payloads | 🟢 Mitigating |
+| R8 | **Pricing model rejection** — Customers resist APIM consumption-based pricing for AI Gateway | Business | Medium | High | Offer free tier during preview; gather willingness-to-pay data from partners; explore bundled pricing with AI Gateway; benchmark against competitor pricing | 🔲 Not started |
 | R9 | **Namespace proliferation** — Organizations create too many namespaces, making tool discovery harder | UX | Low | Medium | Provide namespace best practices guidance; suggest namespace limits; implement namespace search and hierarchy | 🔲 Not started |
 | R10 | **Approval workflow bottleneck** — Tool onboarding approval queues grow, frustrating developers and slowing adoption | Process | Medium | Medium | Auto-approve for trusted sources; SLA tracking for approvers; escalation policies; dashboard showing queue depth and aging | 🔲 Not started |
-| R11 | **Backward compatibility break** — Existing Foundry projects break when gateway is enabled | Technical | Low | Critical | Gateway is opt-in for existing projects; extensive integration testing; phased rollout with feature flags; instant rollback capability | 🟢 Mitigated (opt-in design) |
+| R11 | **Backward compatibility break** — Existing AI Gateway projects break when gateway is enabled | Technical | Low | Critical | Gateway is opt-in for existing projects; extensive integration testing; phased rollout with feature flags; instant rollback capability | 🟢 Mitigated (opt-in design) |
 | R12 | **Competing internal projects** — Other Microsoft teams build overlapping governance capabilities, fragmenting the experience | Organizational | Medium | Medium | Proactive stakeholder alignment; shared roadmap reviews; clear scope delineation document; executive sponsorship | 🟡 Monitoring |
 | R13 | **Insufficient telemetry coverage** — Key scenarios lack instrumentation, making it hard to measure success or diagnose issues | Observability | Medium | Medium | Define telemetry schema upfront (see metrics.md); mandate telemetry in DoD for every feature; telemetry review in each sprint | 🟢 Mitigating |
 
@@ -40,22 +40,22 @@ Low        │                 │                    │                 │
 
 ## Part 2: Key Tradeoffs
 
-### Tradeoff 1: Built-in vs. Standalone Gateway
+### Tradeoff 1: Integrated Dashboard vs. Standalone Gateway
 
-**Decision:** Built-in (integrated into Foundry portal)
+**Decision:** Integrated dashboard (built into the AI Gateway platform)
 
-| Dimension | Built-in (Chosen) | Standalone APIM Product |
+| Dimension | Integrated (Chosen) | Standalone APIM Product |
 |-----------|--------------------|------------------------|
-| **User experience** | Seamless — admins and devs use one portal | Requires context-switching between Foundry and APIM portal |
-| **Adoption** | Higher — zero friction to enable for Foundry users | Lower — requires separate provisioning and configuration |
-| **Development cost** | Higher — deep portal integration work | Lower — leverage existing APIM portal |
-| **Flexibility** | Lower — tied to Foundry's UX and release cycle | Higher — independent release and customization |
-| **Time to market** | Longer — portal integration adds scope | Shorter — reuse existing APIM UX |
-| **Target user** | Foundry-first customers | APIM-first customers who also use AI |
+| **User experience** | Seamless — admins and devs use one portal | Requires context-switching between AI Gateway and APIM portal |
+| **Adoption** | Higher — zero friction to enable for AI Gateway users | Lower — requires separate provisioning and configuration |
+| **Development cost** | Higher — deep dashboard integration work | Lower — leverage existing APIM portal |
+| **Flexibility** | Lower — tied to the gateway's UX and release cycle | Higher — independent release and customization |
+| **Time to market** | Longer — dashboard integration adds scope | Shorter — reuse existing APIM UX |
+| **Target user** | Gateway-first customers | APIM-first customers who also use AI |
 
-**Rationale:** The target user is a Foundry customer who wants governance embedded in their AI platform experience. Asking them to manage a separate APIM instance fragments the experience and reduces adoption. The built-in approach sacrifices flexibility for a dramatically better user experience.
+**Rationale:** The target user is an AI Gateway customer who wants governance embedded in their AI platform experience. Asking them to manage a separate APIM instance fragments the experience and reduces adoption. The integrated approach sacrifices flexibility for a dramatically better user experience.
 
-**Risk accepted:** Dependency on Foundry portal release cycle and UX constraints.
+**Risk accepted:** Dependency on gateway portal release cycle and UX constraints.
 
 ---
 
@@ -121,7 +121,7 @@ Low        │                 │                    │                 │
 
 | Tradeoff | Decision | Key Reason | Risk Accepted |
 |----------|----------|------------|---------------|
-| Built-in vs. Standalone | Built-in | Better UX drives adoption | Portal dependency |
+| Integrated vs. Standalone | Integrated | Better UX drives adoption | Dashboard dependency |
 | MCP-Native vs. API-First | MCP-Native | Future-proofing for AI ecosystem | Spec instability |
 | Per-Project vs. Global | Hierarchical | Enterprise compliance + team flexibility | Policy complexity |
 | Namespace vs. RBAC | Namespace (initially) | Intuitive tool organization | Coarse granularity |

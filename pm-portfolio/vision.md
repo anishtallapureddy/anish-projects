@@ -38,7 +38,7 @@ insertion point for all of these controls.
 
 ### What We Ship
 
-**AI Gateway Governance in Foundry (Project 01)** is the cornerstone of Year 1:
+**AI Gateway Governance (Project 01)** is the cornerstone of Year 1:
 
 | Capability | Description | Customer Problem Solved |
 |---|---|---|
@@ -76,7 +76,7 @@ by bundling AI-specific capabilities into the upper tiers.
 
 | Quarter | Milestone | Success Metric |
 |---|---|---|
-| Q1 | GA of rate limiting + load balancing in Foundry | 200+ Foundry projects with gateway enabled |
+| Q1 | GA of rate limiting + load balancing in AI Gateway | 200+ AI Gateway projects with gateway enabled |
 | Q2 | Content safety policies + virtual keys | 3 enterprise design partners in preview |
 | Q3 | Pricing tiers launched, observability dashboards live | First self-serve revenue from Standard tier |
 | Q4 | Semantic caching GA, anomaly detection v1 | 15% cost reduction demonstrated for 5+ customers |
@@ -84,7 +84,7 @@ by bundling AI-specific capabilities into the upper tiers.
 ### Year 1 Risks
 
 The main risk is customers solving these problems with homegrown solutions or competing
-products (LiteLLM, Portkey). Mitigation: tight Foundry integration and Azure-native
+products (LiteLLM, Portkey). Mitigation: tight AI Gateway platform integration and Azure-native
 controls. A startup can build rate limiting. They cannot build rate limiting that inherits
 Azure RBAC policies and integrates with Azure Cost Management.
 
@@ -96,7 +96,7 @@ Azure RBAC policies and integrates with Azure Cost Management.
 
 The MCP protocol becomes the standard for AI tool interaction. MCP adoption is accelerating —
 Anthropic open-sourced it, OpenAI adopted it, Microsoft is integrating it into Copilot and
-Foundry. If MCP wins, governing MCP tools becomes as critical as governing model access.
+Azure AI Foundry. If MCP wins, governing MCP tools becomes as critical as governing model access.
 
 Tools are different from models. Models are stateless API calls. Tools have side effects —
 they read databases, write files, call external services. Governing a tool means governing
@@ -216,7 +216,7 @@ Each portfolio project maps to a specific layer and contributes primarily to one
 
 | # | Project | Primary Year | Platform Layer | Dependency |
 |---|---|---|---|---|
-| 01 | AI Gateway Governance in Foundry | Year 1 | Model Governance | None — this is the foundation |
+| 01 | AI Gateway Governance | Year 1 | Model Governance | None — this is the foundation |
 | 05 | API Gateway Pricing Tiers | Year 1 | Commercial Model | Requires Project 01 (governance features inform tier differentiation) |
 | 04 | AI Observability & Cost Controls | Year 1→2 | Data & Intelligence | Requires Project 01 (telemetry pipeline depends on gateway) |
 | 03 | MCP Tool Catalog & Discovery | Year 2 | Tool Governance | Requires Project 01 (catalog hooks into gateway policies) |
@@ -229,7 +229,7 @@ Year 1                    Year 2                      Year 3
 ┌─────────────────┐      ┌──────────────────────┐    ┌─────────────────────────┐
 │ PROJECT 01       │      │ PROJECT 03            │    │ Self-service onboarding  │
 │ Model Governance │─────▶│ Tool Catalog &        │───▶│ Automated compliance    │
-│ in Foundry       │      │ Discovery             │    │ Marketplace dynamics    │
+│                  │      │ Discovery             │    │ Marketplace dynamics    │
 ├─────────────────┤      ├──────────────────────┤    ├─────────────────────────┤
 │ PROJECT 05       │      │ Tool + Agent          │    │ Predictive cost controls│
 │ Pricing Tiers    │─────▶│ Governance Policies   │───▶│ Model rightsizing       │
@@ -341,7 +341,7 @@ This is what happened with Kubernetes before managed services won.
 **Probability:** High (50-60%)
 **Impact:** High — execution risk, not market risk.
 
-**What happens:** AI governance touches Azure AI (Foundry), Azure Security (Defender),
+**What happens:** AI governance touches Azure AI (Azure AI Foundry), Azure Security (Defender),
 Azure Management (Cost Management), and Azure Developer (API Management). Getting four
 orgs to align is the hardest part of this plan.
 
@@ -380,8 +380,8 @@ die in planning reviews.
 
 | Metric | Year 1 Target | Year 2 Target | Year 3 Target |
 |---|---|---|---|
-| Foundry projects with gateway enabled | 500 | 3,000 | 15,000 |
-| % of Foundry projects using gateway | 5% | 20% | 50%+ |
+| AI Gateway projects with gateway enabled | 500 | 3,000 | 15,000 |
+| % of AI Gateway projects using gateway | 5% | 20% | 50%+ |
 | Monthly active gateway requests | 50M | 500M | 5B |
 | ARR from AI Gateway tiers | $2M | $15M | $60M+ |
 | Tools registered in catalog | — | 500 | 5,000+ |
@@ -395,7 +395,7 @@ die in planning reviews.
 
 **Year 3 looks like success if:**
 
-1. **Gateway is the default.** New Foundry projects have the gateway enabled by default.
+1. **Gateway is the default.** New AI Gateway projects have the gateway enabled by default.
    Turning it off is the exception.
 
 2. **Tool catalog has network effects.** Tool authors publish because that's where agent

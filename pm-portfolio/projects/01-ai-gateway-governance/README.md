@@ -1,4 +1,4 @@
-# AI Gateway Governance for Microsoft Foundry
+# AI Gateway Governance
 
 ## Quick Summary
 
@@ -6,15 +6,15 @@
 |-----------|--------|
 | **Role** | Product Manager — AI Platform Governance |
 | **Timeline** | Q1–Q3 2025 (Prototype → Private Preview → GA) |
-| **Team** | Cross-functional: APIM, Foundry Portal, AI Services, MCP Runtime |
-| **Impact** | Unified governance layer for models, tools, and agents across Azure AI Foundry |
-| **Prototype** | [Live demo](https://github.com/anishtallapureddy/anish-projects/tree/main/ai/ai-gateway-foundry) (Node.js + Express + 23-page Foundry dashboard) |
+| **Team** | Cross-functional: APIM, Gateway UX, AI Services, MCP Runtime |
+| **Impact** | Unified governance layer for models, tools, and agents across Azure AI Gateway |
+| **Prototype** | [Live demo](https://github.com/anishtallapureddy/anish-projects/tree/main/ai/ai-gateway) (Node.js + Express + 23-page gateway dashboard) |
 
 ---
 
 ## What Is This?
 
-AI Gateway Governance is the integration of Azure API Management (APIM) as a **built-in AI gateway** within Microsoft Foundry (Azure AI Foundry). It provides enterprises with a single control plane to govern, observe, and secure their entire AI estate — spanning **Models**, **Tools (MCP)**, and **Agents**.
+AI Gateway Governance is the integration of Azure API Management (APIM) as a **built-in AI gateway** within the Azure AI Gateway platform. It provides enterprises with a single control plane to govern, observe, and secure their entire AI estate — spanning **Models**, **Tools (MCP)**, and **Agents**.
 
 ## The Problem
 
@@ -22,13 +22,13 @@ Enterprises adopting AI at scale face a fragmented governance landscape:
 
 - **Models** are deployed across Azure OpenAI, third-party providers, and open-source endpoints — each with separate quota, auth, and safety controls.
 - **Tools** (APIs, MCP servers, data connectors) proliferate without centralized discovery, approval, or runtime governance.
-- **Agents** are built across multiple frameworks and clouds (Foundry, Vertex AI, Amazon Bedrock) with no unified observability or guardrail enforcement.
+- **Agents** are built across multiple frameworks and clouds (Azure AI Foundry, Vertex AI, Amazon Bedrock) with no unified observability or guardrail enforcement.
 
 Platform engineers have no single pane of glass. Developers waste time navigating fragmented tooling. Security teams cannot enforce consistent policies.
 
 ## The Approach
 
-Rather than building governance from scratch, we embed **APIM's proven gateway capabilities** directly into the Foundry portal experience:
+Rather than building governance from scratch, we embed **APIM's proven gateway capabilities** directly into the AI Gateway dashboard:
 
 1. **Operate Tab (Admin)** — Platform engineers register, configure, and govern models, tools, and agents through a unified admin experience.
 2. **Build Tab (Developer)** — Developers and agent builders discover governed resources, build toolboxes, test in playgrounds, and connect via standardized APIs.
@@ -39,7 +39,7 @@ Rather than building governance from scratch, we embed **APIM's proven gateway c
 - **Unified governance** across all three AI pillars (Models, Tools, Agents) in one portal
 - **Developer velocity** — catalog-driven discovery with one-click integration
 - **Enterprise trust** — consistent policy enforcement, audit trails, and approval workflows
-- **Multi-cloud reach** — register and govern non-Foundry models and agents (including cross-cloud sync)
+- **Multi-cloud reach** — register and govern external models and agents (including cross-cloud sync)
 - **Working prototype** that demonstrates the full end-to-end experience
 
 ## Working Prototype
@@ -50,7 +50,7 @@ A fully functional mock was built to demonstrate the vision and align stakeholde
 - The **Build** experience (developer discovery, toolbox building, playground testing)
 - The **Monitor** experience (metrics dashboard, request logs, health indicators)
 
-🔗 **Repository:** [github.com/anishtallapureddy/anish-projects/ai/ai-gateway-foundry](https://github.com/anishtallapureddy/anish-projects/tree/main/ai/ai-gateway-foundry)
+🔗 **Repository:** [github.com/anishtallapureddy/anish-projects/ai/ai-gateway](https://github.com/anishtallapureddy/anish-projects/tree/main/ai/ai-gateway)
 
 ## Documentation
 

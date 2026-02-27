@@ -6,7 +6,7 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                        Foundry Portal                               │
+│                        AI Gateway Dashboard                           │
 │  ┌──────────────────────┐    ┌──────────────────────────────────┐   │
 │  │     Operate Tab      │    │          Build Tab               │   │
 │  │  (Platform Engineers) │    │   (Developers / Agent Builders)  │   │
@@ -31,7 +31,7 @@
     ┌──────────────┐  ┌──────────────┐  ┌───────────────────────┐
     │    Models     │  │    Tools     │  │       Agents          │
     │              │  │   (MCP)      │  │                       │
-    │ • Azure OAI  │  │ • MCP Servers│  │ • Foundry Agents      │
+    │ • Azure OAI  │  │ • MCP Servers│  │ • Azure AI Foundry│
     │ • Third-party│  │ • REST APIs  │  │ • Custom Agents       │
     │ • Self-hosted│  │ • Functions  │  │ • Vertex AI Agents    │
     │ • Open-source│  │ • Connectors │  │ • Bedrock Agents      │
@@ -87,7 +87,7 @@
 ### 3.1 Model Request Flow
 
 ```
-Developer App                Foundry Portal              AI Gateway (APIM)           Model Backend
+Developer App                AI Gateway Dashboard        AI Gateway (APIM)           Model Backend
      │                            │                            │                         │
      │  1. Send prompt            │                            │                         │
      │  (virtual key + payload)   │                            │                         │
@@ -190,14 +190,14 @@ Client / Orchestrator      AI Gateway (APIM)           Agent Registry          A
 
 ## 4. Integration Points
 
-### 4.1 Foundry Portal ↔ AI Gateway
+### 4.1 AI Gateway Dashboard ↔ AI Gateway
 
 | Integration | Direction | Protocol | Purpose |
 |-------------|-----------|----------|---------|
-| Resource Configuration | Portal → APIM | APIM Management REST API | Create/update gateway policies, backends, subscriptions |
-| Telemetry Query | APIM → App Insights → Portal | Kusto (KQL) | Dashboard data for usage, health, and analytics |
-| Catalog Sync | APIM → Portal | Event-driven (webhook/polling) | Keep portal catalog in sync with registered resources |
-| Auth Flow | Portal → Entra ID → APIM | OAuth 2.0 / OIDC | Authenticate admin and developer access |
+| Resource Configuration | Dashboard → APIM | APIM Management REST API | Create/update gateway policies, backends, subscriptions |
+| Telemetry Query | APIM → App Insights → Dashboard | Kusto (KQL) | Dashboard data for usage, health, and analytics |
+| Catalog Sync | APIM → Dashboard | Event-driven (webhook/polling) | Keep dashboard catalog in sync with registered resources |
+| Auth Flow | Dashboard → Entra ID → APIM | OAuth 2.0 / OIDC | Authenticate admin and developer access |
 
 ### 4.2 AI Gateway ↔ Model Providers
 
@@ -222,7 +222,7 @@ Client / Orchestrator      AI Gateway (APIM)           Agent Registry          A
 
 ```
 ┌──────────────┐     ┌──────────────────┐     ┌──────────────────┐
-│  Vertex AI   │     │   AI Gateway     │     │    Foundry       │
+│  Vertex AI   │     │   AI Gateway     │     │    AI Gateway    │
 │  Agent Hub   │────>│  Sync Service    │────>│  Agent Registry  │
 └──────────────┘     │                  │     └──────────────────┘
                      │  • Poll APIs     │
@@ -233,15 +233,15 @@ Client / Orchestrator      AI Gateway (APIM)           Agent Registry          A
 ```
 
 - **Sync frequency:** Configurable (default: every 15 minutes)
-- **Metadata mapping:** Cloud-specific agent metadata → Foundry agent schema
+- **Metadata mapping:** Cloud-specific agent metadata → AI Gateway agent schema
 - **Conflict resolution:** Last-write-wins with manual override capability
 
 ---
 
-## 5. Non-Foundry Model Registration Flow
+## 5. External Model Registration Flow
 
 ```
-Admin                    Foundry Portal            AI Gateway (APIM)         External Model
+Admin                    AI Gateway Dashboard      AI Gateway (APIM)         External Model
   │                           │                          │                        │
   │  1. Click "Register       │                          │                        │
   │     External Model"       │                          │                        │
@@ -335,7 +335,7 @@ AI Gateway (APIM)
 │  Insights        │
 │                  │
 │  • Custom events │───────> ┌──────────────────┐
-│  • Dependencies  │         │  Foundry Portal  │
+│  • Dependencies  │         │  AI Gateway      │
 │  • Requests      │         │  Dashboards      │
 │  • Exceptions    │         │                  │
 └──────────────────┘         │  • Model usage   │

@@ -8,7 +8,7 @@ Key terms used across this portfolio.
 |---|---|
 | APIM | Azure API Management — Microsoft's API gateway and management platform |
 | MCP | Model Context Protocol — open standard for connecting AI models to tools and data sources |
-| Foundry | Microsoft Foundry (Azure AI Foundry) — unified platform for building AI applications |
+| Azure AI Foundry | Microsoft's unified platform for building AI applications — an integration target for the AI Gateway |
 | Cost Segregation | Tax strategy that reclassifies building components into shorter depreciation schedules |
 | MACRS | Modified Accelerated Cost Recovery System — IRS depreciation method |
 | RAI | Responsible AI — Microsoft's framework for ethical AI development |

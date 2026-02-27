@@ -1,5 +1,5 @@
 {
-  "name": "claude-code-foundry-experience",
+  "name": "ai-gateway",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "Azure AI Gateway — governance, observability, and security for AI workloads",
   "dependencies": {
     "express": "^5.2.1",
     "uuid": "^13.0.0"

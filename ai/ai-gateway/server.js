@@ -55,14 +55,14 @@ function generateCompletion(deploymentId, messages) {
 
 // --- MCP Tools Registry ---
 const tools = [
-  { id: 'tool-salesforce', name: 'Salesforce CRM', description: 'CRM data access and operations', type: 'Remote MCP', endpoint: 'https://mcp.salesforce.com/sse', governedEndpoint: 'https://ai-governance.foundry.azure.com/tools/salesforce/mcp/sse', auth: 'oauth', status: 'Connected', calls: 1245, avgLatencyMs: 180, enabled: true, namespace: 'default', createdAt: new Date().toISOString() },
-  { id: 'tool-github', name: 'GitHub', description: 'Code repository operations and CI/CD', type: 'Remote MCP', endpoint: 'https://mcp.github.com/sse', governedEndpoint: 'https://ai-governance.foundry.azure.com/tools/github/mcp/sse', auth: 'key', status: 'Connected', calls: 3420, avgLatencyMs: 120, enabled: true, namespace: 'engineering', createdAt: new Date().toISOString() },
-  { id: 'tool-servicenow', name: 'ServiceNow ITSM', description: 'IT service management', type: 'Remote MCP', endpoint: 'https://mcp.servicenow.com/sse', governedEndpoint: 'https://ai-governance.foundry.azure.com/tools/servicenow/mcp/sse', auth: 'oauth', status: 'Connected', calls: 892, avgLatencyMs: 220, enabled: true, namespace: 'default', createdAt: new Date().toISOString() },
-  { id: 'tool-azure-sql', name: 'Azure SQL', description: 'SQL database queries', type: 'Local MCP', endpoint: 'localhost:5432/mcp', governedEndpoint: 'https://ai-governance.foundry.azure.com/tools/azure-sql/mcp/sse', auth: 'managed-identity', status: 'Connected', calls: 5600, avgLatencyMs: 45, enabled: true, namespace: 'data', createdAt: new Date().toISOString() },
-  { id: 'tool-cosmos', name: 'Azure Cosmos DB', description: 'NoSQL document store', type: 'Local MCP', endpoint: 'localhost:8081/mcp', governedEndpoint: 'https://ai-governance.foundry.azure.com/tools/cosmos/mcp/sse', auth: 'managed-identity', status: 'Connected', calls: 4200, avgLatencyMs: 35, enabled: true, namespace: 'data', createdAt: new Date().toISOString() },
-  { id: 'tool-databricks', name: 'Databricks', description: 'Data analytics and ML pipelines', type: 'Remote MCP', endpoint: 'https://mcp.databricks.com/sse', governedEndpoint: 'https://ai-governance.foundry.azure.com/tools/databricks/mcp/sse', auth: 'oauth', status: 'Pending', calls: 0, avgLatencyMs: 0, enabled: false, namespace: 'data', createdAt: new Date().toISOString() },
-  { id: 'tool-elasticsearch', name: 'Elasticsearch', description: 'Full-text search and analytics', type: 'Remote MCP', endpoint: 'https://mcp.elastic.co/sse', governedEndpoint: 'https://ai-governance.foundry.azure.com/tools/elasticsearch/mcp/sse', auth: 'key', status: 'Connected', calls: 2100, avgLatencyMs: 65, enabled: true, namespace: 'engineering', createdAt: new Date().toISOString() },
-  { id: 'tool-pinecone', name: 'Pinecone', description: 'Vector database for embeddings', type: 'Remote MCP', endpoint: 'https://mcp.pinecone.io/sse', governedEndpoint: 'https://ai-governance.foundry.azure.com/tools/pinecone/mcp/sse', auth: 'key', status: 'Connected', calls: 980, avgLatencyMs: 55, enabled: true, namespace: 'data', createdAt: new Date().toISOString() },
+  { id: 'tool-salesforce', name: 'Salesforce CRM', description: 'CRM data access and operations', type: 'Remote MCP', endpoint: 'https://mcp.salesforce.com/sse', governedEndpoint: 'https://ai-gateway.azure.com/tools/salesforce/mcp/sse', auth: 'oauth', status: 'Connected', calls: 1245, avgLatencyMs: 180, enabled: true, namespace: 'default', createdAt: new Date().toISOString() },
+  { id: 'tool-github', name: 'GitHub', description: 'Code repository operations and CI/CD', type: 'Remote MCP', endpoint: 'https://mcp.github.com/sse', governedEndpoint: 'https://ai-gateway.azure.com/tools/github/mcp/sse', auth: 'key', status: 'Connected', calls: 3420, avgLatencyMs: 120, enabled: true, namespace: 'engineering', createdAt: new Date().toISOString() },
+  { id: 'tool-servicenow', name: 'ServiceNow ITSM', description: 'IT service management', type: 'Remote MCP', endpoint: 'https://mcp.servicenow.com/sse', governedEndpoint: 'https://ai-gateway.azure.com/tools/servicenow/mcp/sse', auth: 'oauth', status: 'Connected', calls: 892, avgLatencyMs: 220, enabled: true, namespace: 'default', createdAt: new Date().toISOString() },
+  { id: 'tool-azure-sql', name: 'Azure SQL', description: 'SQL database queries', type: 'Local MCP', endpoint: 'localhost:5432/mcp', governedEndpoint: 'https://ai-gateway.azure.com/tools/azure-sql/mcp/sse', auth: 'managed-identity', status: 'Connected', calls: 5600, avgLatencyMs: 45, enabled: true, namespace: 'data', createdAt: new Date().toISOString() },
+  { id: 'tool-cosmos', name: 'Azure Cosmos DB', description: 'NoSQL document store', type: 'Local MCP', endpoint: 'localhost:8081/mcp', governedEndpoint: 'https://ai-gateway.azure.com/tools/cosmos/mcp/sse', auth: 'managed-identity', status: 'Connected', calls: 4200, avgLatencyMs: 35, enabled: true, namespace: 'data', createdAt: new Date().toISOString() },
+  { id: 'tool-databricks', name: 'Databricks', description: 'Data analytics and ML pipelines', type: 'Remote MCP', endpoint: 'https://mcp.databricks.com/sse', governedEndpoint: 'https://ai-gateway.azure.com/tools/databricks/mcp/sse', auth: 'oauth', status: 'Pending', calls: 0, avgLatencyMs: 0, enabled: false, namespace: 'data', createdAt: new Date().toISOString() },
+  { id: 'tool-elasticsearch', name: 'Elasticsearch', description: 'Full-text search and analytics', type: 'Remote MCP', endpoint: 'https://mcp.elastic.co/sse', governedEndpoint: 'https://ai-gateway.azure.com/tools/elasticsearch/mcp/sse', auth: 'key', status: 'Connected', calls: 2100, avgLatencyMs: 65, enabled: true, namespace: 'engineering', createdAt: new Date().toISOString() },
+  { id: 'tool-pinecone', name: 'Pinecone', description: 'Vector database for embeddings', type: 'Remote MCP', endpoint: 'https://mcp.pinecone.io/sse', governedEndpoint: 'https://ai-gateway.azure.com/tools/pinecone/mcp/sse', auth: 'key', status: 'Connected', calls: 980, avgLatencyMs: 55, enabled: true, namespace: 'data', createdAt: new Date().toISOString() },
 ];
 
 // --- Agents Registry ---
@@ -425,7 +425,7 @@ app.post('/api/tools', (req, res) => {
     description: req.body.description || '',
     type: req.body.type || 'Remote MCP',
     endpoint: req.body.endpoint || '',
-    governedEndpoint: `https://ai-governance.foundry.azure.com/tools/${(req.body.name || '').toLowerCase().replace(/\s+/g, '-')}/mcp/sse`,
+    governedEndpoint: `https://ai-gateway.azure.com/tools/${(req.body.name || '').toLowerCase().replace(/\s+/g, '-')}/mcp/sse`,
     auth: req.body.auth || 'none',
     status: 'Pending',
     calls: 0, avgLatencyMs: 0, enabled: false,
@@ -490,7 +490,7 @@ app.get('/api/health', (req, res) => res.json({ status: 'healthy', uptime: proce
 app.get('/{*splat}', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
 app.listen(PORT, () => {
-  console.log(`\n🚀 Azure AI Foundry Experience running at http://localhost:${PORT}`);
+  console.log(`\n🚀 Azure AI Gateway running running at http://localhost:${PORT}`);
   console.log(`   Dashboard:    http://localhost:${PORT}`);
   console.log(`   Gateway API:  POST http://localhost:${PORT}/api/chat/completions`);
   console.log(`   Metrics:      GET  http://localhost:${PORT}/api/metrics`);
