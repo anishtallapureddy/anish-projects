@@ -2,7 +2,7 @@
 
 | Field | Detail |
 |-------|--------|
-| **Role** | Product Manager, Azure API Management / AI Gateway |
+| **Role** | Principal PM — Group Product Lead, Azure API Management / AI Gateway |
 | **Company** | Microsoft Azure |
 | **Timeline** | 4-week sprint (pricing design through GTM readiness) |
 | **Type** | Pricing / Packaging / GTM |

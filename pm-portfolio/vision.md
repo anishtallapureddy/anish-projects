@@ -1,7 +1,7 @@
 # AI Governance Platform: 3-Year Strategy
 
 **Author:** Anish Tallapureddy
-**Role:** Product Manager, Azure API Management / AI Gateway — Microsoft
+**Role:** Principal PM — Group Product Lead, Azure API Management / AI Gateway — Microsoft
 **Date:** July 2025
 **Status:** Draft — Strategic Vision Document
 

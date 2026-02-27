@@ -1,6 +1,6 @@
 # Rollout Plan — AI Cost Attribution & Anomaly Detection
 
-**Author:** Anish Tadiparthi · PM, Azure API Management — AI Gateway
+**Author:** Anish Tallapureddy · Principal PM, Azure API Management — AI Gateway
 **Last Updated:** 2025-05-15
 
 ---

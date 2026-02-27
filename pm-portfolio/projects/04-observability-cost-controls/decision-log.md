@@ -1,6 +1,6 @@
 # Decision Log — AI Cost Attribution & Anomaly Detection
 
-**Author:** Anish Tadiparthi · PM, Azure API Management — AI Gateway
+**Author:** Anish Tallapureddy · Principal PM, Azure API Management — AI Gateway
 
 ---
 
@@ -10,7 +10,7 @@
 |-------|-------|
 | **Date** | 2025-02-03 |
 | **Status** | Accepted |
-| **Deciders** | Anish Tadiparthi (PM), Kavitha Rao (Eng Lead), James Chen (Data Eng) |
+| **Deciders** | Anish Tallapureddy (PM), Kavitha Rao (Eng Lead), James Chen (Data Eng) |
 
 **Context:**
 We needed to decide the finest granularity for cost attribution. Options ranged from subscription-level (already available in Azure Cost Management) down to per-request level. Finer granularity means more telemetry, higher storage costs, and more complex pipelines — but also more actionable insights for platform teams.
@@ -38,7 +38,7 @@ Attribute costs at the **per-request level** in the hot path, aggregated to **pe
 |-------|-------|
 | **Date** | 2025-02-17 |
 | **Status** | Accepted |
-| **Deciders** | Anish Tadiparthi (PM), Kavitha Rao (Eng Lead), Priya Sharma (ML Eng) |
+| **Deciders** | Anish Tallapureddy (PM), Kavitha Rao (Eng Lead), Priya Sharma (ML Eng) |
 
 **Context:**
 We evaluated three approaches for detecting cost anomalies: static thresholds, statistical process control (rolling z-score), and ML-based forecasting (Prophet/DeepAR). The algorithm must balance detection sensitivity with false positive rate across diverse traffic patterns — some agents have steady traffic, others are highly bursty.
@@ -66,7 +66,7 @@ We evaluated three approaches for detecting cost anomalies: static thresholds, s
 |-------|-------|
 | **Date** | 2025-03-05 |
 | **Status** | Accepted |
-| **Deciders** | Anish Tadiparthi (PM), Kavitha Rao (Eng Lead), Sarah Kim (Security PM) |
+| **Deciders** | Anish Tallapureddy (PM), Kavitha Rao (Eng Lead), Sarah Kim (Security PM) |
 
 **Context:**
 Budget policies need an enforcement mechanism when spend exceeds limits. We debated three models: alert-only (no enforcement), gateway-level throttling (rate limit at the APIM policy layer), and backend-level blocking (reject requests before they reach the AI model). Each has different latency, reliability, and blast radius characteristics.
@@ -99,7 +99,7 @@ All tiers are opt-in. Alert-only is the default for all new policies. Business-c
 |-------|-------|
 | **Date** | 2025-03-12 |
 | **Status** | Accepted |
-| **Deciders** | Anish Tadiparthi (PM), James Chen (Data Eng), Li Wei (Frontend Lead) |
+| **Deciders** | Anish Tallapureddy (PM), James Chen (Data Eng), Li Wei (Frontend Lead) |
 
 **Context:**
 We needed to decide whether to build a custom dashboard experience in the Azure Portal, use Azure Monitor Workbooks, or integrate with Grafana. Each option has different development cost, customization flexibility, and alignment with existing customer tooling.

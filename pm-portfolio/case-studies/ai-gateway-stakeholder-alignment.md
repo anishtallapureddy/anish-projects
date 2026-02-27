@@ -1,7 +1,7 @@
 # How I Aligned 5 Teams to Ship AI Gateway Governance
 
 **Author:** Anish Tallapureddy
-**Role:** Product Manager, Azure API Management / AI Gateway — Microsoft
+**Role:** Principal PM — Group Product Lead, Azure API Management / AI Gateway — Microsoft
 **Timeline:** ~3 weeks from first conversation to aligned investment commitment
 **Skill Demonstrated:** Cross-organizational influence, stakeholder alignment, prototype-driven product strategy
 
