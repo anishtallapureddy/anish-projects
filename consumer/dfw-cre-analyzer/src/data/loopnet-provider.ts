@@ -7,12 +7,13 @@ import crypto from 'crypto';
 const uid = () => crypto.randomBytes(8).toString('hex');
 
 // ── LoopNet RapidAPI Client ──
+// All endpoints are under the /loopnet/ prefix
 function createClient(): AxiosInstance {
   const key = process.env.RAPIDAPI_KEY;
   if (!key) throw new Error('RAPIDAPI_KEY environment variable is required for live mode');
 
   return axios.create({
-    baseURL: 'https://loopnet-api.p.rapidapi.com',
+    baseURL: 'https://loopnet-api.p.rapidapi.com/loopnet',
     headers: {
       'X-RapidAPI-Key': key,
       'X-RapidAPI-Host': 'loopnet-api.p.rapidapi.com',
@@ -29,21 +30,20 @@ function n(v: any, fallback?: number): number | undefined {
 }
 
 // ── API Call Wrapper with logging ──
-async function apiCall<T>(client: AxiosInstance, method: 'get' | 'post', endpoint: string, data?: any): Promise<T | null> {
+async function apiCall<T>(client: AxiosInstance, endpoint: string, data: any): Promise<T | null> {
   const start = Date.now();
   try {
-    const res = method === 'post'
-      ? await client.post(endpoint, data)
-      : await client.get(endpoint, { params: data });
+    const res = await client.post(endpoint, data);
     logApiCall(`loopnet:${endpoint}`, true, Date.now() - start);
     return res.data;
   } catch (err: any) {
     logApiCall(`loopnet:${endpoint}`, false, Date.now() - start);
     const status = err?.response?.status;
+    const msg = err?.response?.data?.message || err.message;
     if (status === 429) {
       console.warn(`   ⚠️  Rate limited on ${endpoint}`);
     } else {
-      console.warn(`   ⚠️  LoopNet API error on ${endpoint}: ${status || err.message}`);
+      console.warn(`   ⚠️  LoopNet API error on ${endpoint}: ${status || ''} ${msg}`);
     }
     return null;
   }
@@ -65,16 +65,16 @@ function mapPropertyType(raw: string): PropertyType {
 function parsePrice(raw: any): number {
   if (typeof raw === 'number') return raw;
   if (typeof raw !== 'string') return 0;
-  // Handle "$1,200,000", "$1.2M", etc.
-  const cleaned = raw.replace(/[^0-9.MmKk]/g, '');
+  const cleaned = raw.replace(/[^0-9.MmKkBb]/g, '');
   const num = parseFloat(cleaned);
   if (!isFinite(num)) return 0;
+  if (/[Bb]/.test(raw)) return num * 1_000_000_000;
   if (/[Mm]/.test(raw)) return num * 1_000_000;
   if (/[Kk]/.test(raw)) return num * 1_000;
   return num;
 }
 
-// ── Parse sqft string ──
+// ── Parse sqft string ("97,083 SF" → 97083) ──
 function parseSqft(raw: any): number | undefined {
   if (typeof raw === 'number') return raw > 0 ? raw : undefined;
   if (typeof raw !== 'string') return undefined;
@@ -82,185 +82,194 @@ function parseSqft(raw: any): number | undefined {
   return isFinite(num) && num > 0 ? num : undefined;
 }
 
-// ── DFW Search locations ──
-const DFW_SEARCHES = [
-  'Dallas, TX',
-  'Fort Worth, TX',
-  'Arlington, TX',
-  'Plano, TX',
-  'Frisco, TX',
-  'Irving, TX',
-  'McKinney, TX',
-  'Richardson, TX',
-  'Carrollton, TX',
-  'Denton, TX',
-];
-
-const PROPERTY_TYPES = ['Office', 'Retail', 'Industrial', 'Multifamily', 'Land', 'Mixed Use'];
-
-// ── Search listings ──
-async function searchListings(client: AxiosInstance, location: string, propertyType?: string): Promise<any[]> {
-  const body: any = {
-    location,
-    transactionType: 'sale',
-    page: 1,
-    resultsPerPage: 25,
-  };
-  if (propertyType) body.propertyType = propertyType;
-
-  const data = await apiCall<any>(client, 'post', '/SearchListings', body);
-  if (!data) return [];
-
-  // The response structure may vary; handle both array and object forms
-  if (Array.isArray(data)) return data;
-  if (data.listings && Array.isArray(data.listings)) return data.listings;
-  if (data.results && Array.isArray(data.results)) return data.results;
-  if (data.data && Array.isArray(data.data)) return data.data;
-
-  return [];
+// ── Parse year from "1999/2014" or "2006" ──
+function parseYear(raw: any): number | undefined {
+  if (!raw) return undefined;
+  const s = String(raw);
+  const match = s.match(/\d{4}/);
+  return match ? parseInt(match[0]) : undefined;
 }
 
-// ── Get property details ──
-async function getPropertyDetails(client: AxiosInstance, listingId: string): Promise<any | null> {
-  return apiCall<any>(client, 'get', '/GetPropertyDetails', { id: listingId });
+// ── DFW City IDs (discovered via /helper/findCity) ──
+// Dallas cityId=55283 returns 500 listings covering the broader DFW metro
+const DFW_CITY_ID = '55283';
+
+// ── Search listings by city ──
+async function searchByCity(client: AxiosInstance, cityId: string, page: number = 1): Promise<any[]> {
+  const res = await apiCall<any>(client, '/sale/searchByCity', { cityId, page });
+  return res?.data || [];
+}
+
+// ── Search by state (Texas=44) for broader coverage ──
+async function searchByState(client: AxiosInstance, stateId: string, page: number = 1): Promise<any[]> {
+  const res = await apiCall<any>(client, '/sale/searchByState', { stateId, page });
+  return res?.data || [];
+}
+
+// ── Get sale details for a single listing ──
+async function getSaleDetails(client: AxiosInstance, listingId: string): Promise<any | null> {
+  const res = await apiCall<any>(client, '/property/SaleDetails', { listingId });
+  return res?.data?.[0] || null;
+}
+
+// ── Parse subtitle for address info ──
+// Format: "97,083 SF 59% Leased Office Building Online Auction Sale Dallas, TX 75234"
+// Or: "18,121 SF Office Building Plano, TX 75075 $6,500,000 ($358.70/SF)"
+function parseSubtitle(sub: string): { city?: string; zip?: string } {
+  const cityState = sub.match(/([A-Z][a-zA-Z\s]+),\s*TX\s+(\d{5})/);
+  if (cityState) return { city: cityState[1].trim(), zip: cityState[2] };
+  const justCity = sub.match(/([A-Z][a-zA-Z\s]+),\s*TX/);
+  if (justCity) return { city: justCity[1].trim() };
+  return {};
+}
+
+// ── Check if coordinates are in DFW metro area ──
+function isDFW(coords: number[]): boolean {
+  if (!coords || coords.length < 2) return true; // Assume DFW if no coords
+  const [lng, lat] = coords;
+  // DFW bounding box: roughly 32.4-33.4 lat, -97.8 to -96.4 lng
+  return lat >= 32.2 && lat <= 33.5 && lng >= -98.0 && lng <= -96.2;
 }
 
 // ── Full LoopNet Ingestion Pipeline ──
 export async function runLoopNetIngestion(options?: {
-  maxLocations?: number;
-  enrichDetails?: boolean;
+  maxPages?: number;
+  enrichCount?: number;
 }): Promise<{ ingested: number; enriched: number; scored: number }> {
   const client = createClient();
-  const maxLocs = options?.maxLocations || 5;
-  const enrichDetails = options?.enrichDetails !== false;
+  const maxPages = options?.maxPages || 3;
+  const enrichCount = options?.enrichCount || 30;
 
-  console.log(`\n🏢 LoopNet Live Mode: Scanning ${maxLocs} DFW locations...`);
+  console.log(`\n🏢 LoopNet Live Mode: Searching DFW commercial properties...`);
 
   let totalIngested = 0;
   const propertyIds: { loopnetId: string; dbId: string; address: string }[] = [];
+  const seen = new Set<string>();
 
-  // Phase 1: Search across locations
-  for (let i = 0; i < Math.min(maxLocs, DFW_SEARCHES.length); i++) {
-    const location = DFW_SEARCHES[i];
-    console.log(`   📍 Searching: ${location}...`);
+  // Phase 1: Search Dallas city listings (500 per page, covers DFW metro)
+  for (let page = 1; page <= maxPages; page++) {
+    console.log(`   📍 Fetching page ${page}...`);
+    const listings = await searchByCity(client, DFW_CITY_ID, page);
+    console.log(`      → ${listings.length} listings returned`);
+    if (listings.length === 0) break;
 
-    const listings = await searchListings(client, location);
-    console.log(`      → ${listings.length} listings found`);
+    for (const item of listings) {
+      const lid = String(item.listingId);
+      if (seen.has(lid)) continue;
+      seen.add(lid);
 
-    for (const raw of listings) {
-      try {
-        const zpid = `LN-${raw.id || raw.listingId || raw.propertyId || uid()}`;
-        const address = raw.address || raw.streetAddress || raw.name || 'Unknown';
-        const city = raw.city || location.split(',')[0].trim();
-        const price = parsePrice(raw.price || raw.listingPrice || raw.askingPrice);
-        if (price <= 0) continue; // Skip listings without price
+      // Filter to DFW coordinates
+      const coords = item.coordinations?.[0];
+      if (!isDFW(coords || [])) continue;
 
-        const sqft = parseSqft(raw.sqft || raw.size || raw.buildingSize || raw.lotSize);
-        const ppsf = sqft && sqft > 0 ? Math.round(price / sqft * 100) / 100 : undefined;
-        const lat = n(raw.latitude || raw.lat, 32.78)!;
-        const lng = n(raw.longitude || raw.lng || raw.lon, -96.80)!;
-        const zip = raw.zipCode || raw.zip || raw.postalCode || '';
+      const lat = coords ? coords[1] : 32.78;
+      const lng = coords ? coords[0] : -96.80;
 
-        const id = upsertProperty({
-          zpid,
-          address,
-          city,
-          state: 'TX',
-          zipCode: zip,
-          lat,
-          lng,
-          propertyType: mapPropertyType(raw.propertyType || raw.type || raw.category || ''),
-          listingPrice: price,
-          sqft,
-          yearBuilt: n(raw.yearBuilt),
-          lotSize: parseSqft(raw.lotSize),
-          description: (raw.description || raw.highlights || '').slice(0, 500),
-          pricePerSqft: ppsf,
-          listingStatus: 'FOR_SALE',
-          daysOnMarket: n(raw.daysOnMarket || raw.dom),
-          enrichmentStatus: 'PENDING',
-        });
+      propertyIds.push({
+        loopnetId: lid,
+        dbId: '', // Will be set after upsert
+        address: `Listing #${lid}`,
+      });
 
-        propertyIds.push({ loopnetId: raw.id || raw.listingId || '', dbId: id, address });
-        totalIngested++;
-      } catch (err: any) {
-        console.warn(`      ⚠️ Parse error: ${err.message}`);
-      }
+      // Upsert with minimal data (will be enriched in Phase 2)
+      const id = upsertProperty({
+        zpid: `LN-${lid}`,
+        address: `LoopNet #${lid}`,
+        city: 'Dallas',
+        state: 'TX',
+        zipCode: '',
+        lat,
+        lng,
+        propertyType: 'OTHER',
+        listingPrice: 0,
+        listingStatus: 'FOR_SALE',
+        enrichmentStatus: 'PENDING',
+      });
+
+      propertyIds[propertyIds.length - 1].dbId = id;
+      totalIngested++;
     }
 
-    await sleep(500); // Rate limit
+    await sleep(500);
   }
 
-  console.log(`   ✅ Ingested ${totalIngested} properties`);
+  console.log(`   ✅ Found ${totalIngested} DFW listings`);
 
-  // Phase 2: Enrich with property details (if available)
+  // Phase 2: Enrich with full property details via SaleDetails
   let enriched = 0;
-  if (enrichDetails && propertyIds.length > 0) {
-    const toEnrich = propertyIds.slice(0, 20);
-    console.log(`\n🔬 Enriching ${toEnrich.length} properties with details...`);
+  const toEnrich = propertyIds.slice(0, enrichCount);
+  console.log(`\n🔬 Enriching ${toEnrich.length} properties with SaleDetails...`);
 
-    for (const { loopnetId, dbId, address } of toEnrich) {
-      if (!loopnetId) continue;
-
-      const details = await getPropertyDetails(client, loopnetId);
-      if (details) {
-        // Extract enrichment fields from detail response
-        const capRate = parseFloat(String(details.capRate || details.cap_rate || '0').replace('%', ''));
-        const rentEst = capRate > 0 && details.price
-          ? Math.round(parsePrice(details.price) * (capRate / 100) / 12)
-          : n(details.rentEstimate || details.noi);
-
-        // Comps from similar listings if available
-        const comps: Partial<Comp>[] = [];
-        const similarProps = details.comparables || details.similarProperties || details.comps || [];
-        if (Array.isArray(similarProps)) {
-          for (const c of similarProps.slice(0, 8)) {
-            const compPrice = parsePrice(c.price || c.soldPrice);
-            const compSqft = parseSqft(c.sqft || c.size);
-            if (compPrice > 0) {
-              comps.push({
-                address: c.address || 'Comparable Property',
-                soldPrice: compPrice,
-                soldDate: c.soldDate || c.date || new Date().toISOString().slice(0, 10),
-                sqft: compSqft,
-                pricePerSqft: compSqft ? Math.round(compPrice / compSqft * 100) / 100 : undefined,
-                distanceMiles: n(c.distance),
-              });
-            }
-          }
-        }
-
-        const compAvgPpsf = comps.length > 0
-          ? Math.round(comps.filter(c => c.pricePerSqft).reduce((s, c) => s + (c.pricePerSqft || 0), 0) / comps.filter(c => c.pricePerSqft).length * 100) / 100
-          : undefined;
-
-        upsertProperty({
-          zpid: `LN-${loopnetId}`,
-          rentEstimate: rentEst,
-          compAvgPpsf,
-          zestimateConfidence: comps.length >= 5 ? 'HIGH' : comps.length >= 3 ? 'MEDIUM' : 'LOW',
-          walkScore: n(details.walkScore),
-          transitScore: n(details.transitScore),
-          enrichmentStatus: 'COMPLETE',
-        } as any);
-
-        if (comps.length > 0) upsertComps(dbId, comps);
-        enriched++;
-      }
+  for (const entry of toEnrich) {
+    const details = await getSaleDetails(client, entry.loopnetId);
+    if (!details) {
       await sleep(300);
+      continue;
     }
-    console.log(`   ✅ Enriched ${enriched} properties`);
+
+    try {
+      const pf = details.propertyFacts || {};
+      const title = Array.isArray(details.title) ? details.title[0] : (details.title || '');
+      const subtitle = details.subTitle || '';
+      const { city, zip } = parseSubtitle(subtitle);
+
+      const price = parsePrice(details.price || pf.price || 0);
+      const sqft = parseSqft(pf.buildingSize);
+      const ppsf = (sqft && price > 0) ? Math.round(price / sqft * 100) / 100 : parseSqft(details.pricePerSquareFoot?.replace('$', ''));
+      const yearBuilt = parseYear(pf.yearBuiltRenovated);
+
+      // Parse lot size (e.g., "5.44 AC" → sqft)
+      let lotSize: number | undefined;
+      if (pf.landArea) {
+        const acMatch = pf.landArea.match(/([\d.]+)\s*AC/i);
+        if (acMatch) lotSize = Math.round(parseFloat(acMatch[1]) * 43560);
+        else lotSize = parseSqft(pf.landArea);
+      }
+
+      // Category from details or propertyFacts
+      const category = details.category || pf.propertyType || pf.PropertyType || '';
+      const description = (details.highlights || []).join(' ').slice(0, 500);
+
+      // Parse percent leased for occupancy
+      const pctLeased = details.percentLeased ? parseFloat(details.percentLeased) : undefined;
+
+      upsertProperty({
+        zpid: `LN-${entry.loopnetId}`,
+        address: title || entry.address,
+        city: city || 'Dallas',
+        state: 'TX',
+        zipCode: zip || '',
+        propertyType: mapPropertyType(category),
+        listingPrice: price,
+        sqft,
+        yearBuilt,
+        lotSize,
+        description,
+        pricePerSqft: ppsf,
+        listingStatus: 'FOR_SALE',
+        enrichmentStatus: price > 0 ? 'COMPLETE' : 'PARTIAL',
+      } as any);
+
+      entry.address = title || entry.address;
+      if (price > 0) enriched++;
+      console.log(`   ✅ ${entry.loopnetId}: ${title} — ${price > 0 ? '$' + price.toLocaleString() : 'Price TBD'} (${category})`);
+    } catch (err: any) {
+      console.warn(`   ⚠️ Parse error for ${entry.loopnetId}: ${err.message}`);
+    }
+
+    await sleep(400);
   }
 
-  // Phase 3: Score all properties (including un-enriched ones with basic data)
+  console.log(`   ✅ Enriched ${enriched} properties with pricing data`);
+
+  // Phase 3: Score all properties with pricing data
   console.log(`\n📊 Scoring properties...`);
   const { findProperties } = await import('../db/queries');
   const { data: allProps } = findProperties({ sortBy: 'price', sortOrder: 'desc', pageSize: 500 });
 
   let scored = 0;
   for (const prop of allProps) {
-    // Score if we have any valuation data
-    if (!prop.underpricingScore && (prop.compAvgPpsf || prop.rentEstimate || prop.zestimateValue)) {
+    if (prop.listingPrice > 0 && (prop.compAvgPpsf || prop.rentEstimate || prop.zestimateValue || prop.pricePerSqft)) {
       const score = computeScore(prop);
       const flag = assignFlag(score);
       upsertProperty({
