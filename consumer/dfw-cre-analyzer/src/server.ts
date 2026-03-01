@@ -14,15 +14,39 @@ app.use(express.static(path.join(__dirname, '../public')));
 // API routes
 app.use('/api/v1', apiRoutes);
 
+// Live ingestion endpoint
+app.post('/api/v1/ingest', async (req, res) => {
+  try {
+    if (!process.env.RAPIDAPI_KEY) {
+      return res.status(400).json({ error: 'RAPIDAPI_KEY not configured. Set it in environment to enable live mode.' });
+    }
+    const { runLiveIngestion } = await import('./data/live-provider');
+    const maxZips = req.body?.maxZips || 5;
+    const enrichTop = req.body?.enrichTop || 15;
+    console.log(`\n🌐 Live ingestion triggered (${maxZips} ZIPs, enrich top ${enrichTop})...`);
+    const result = await runLiveIngestion({ maxZips, enrichTop });
+    res.json({ success: true, ...result });
+  } catch (err: any) {
+    console.error('Ingestion error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Seed mock data on startup
 console.log('\n🏗️  DFW CRE Investment Analyzer');
 console.log('================================\n');
 const { count } = seedMockData();
 console.log(`📊 Database: ${count} commercial properties loaded`);
+const hasApiKey = !!process.env.RAPIDAPI_KEY;
+console.log(`🔑 Live Mode: ${hasApiKey ? '✅ RAPIDAPI_KEY configured' : '⚠️  Set RAPIDAPI_KEY for live Zillow data'}`);
 
 app.listen(PORT, () => {
   console.log(`\n🎯 Dashboard → http://localhost:${PORT}`);
   console.log(`📡 API       → http://localhost:${PORT}/api/v1/properties`);
   console.log(`🗺️  Map Data  → http://localhost:${PORT}/api/v1/properties/map`);
-  console.log(`📈 Market    → http://localhost:${PORT}/api/v1/market/summary\n`);
+  console.log(`📈 Market    → http://localhost:${PORT}/api/v1/market/summary`);
+  if (hasApiKey) {
+    console.log(`🌐 Live      → POST http://localhost:${PORT}/api/v1/ingest`);
+  }
+  console.log('');
 });
