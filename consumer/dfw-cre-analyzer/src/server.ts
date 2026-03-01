@@ -32,7 +32,7 @@ app.post('/api/v1/ingest', async (req, res) => {
       result = await runLiveIngestion({ maxZips, enrichTop });
     } else {
       const { runLoopNetIngestion } = await import('./data/loopnet-provider');
-      result = await runLoopNetIngestion({ maxLocations: maxZips, enrichDetails: true });
+      result = await runLoopNetIngestion({ maxPages: 2, enrichCount: maxZips || 30 });
     }
     res.json({ success: true, provider, ...result });
   } catch (err: any) {
