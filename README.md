@@ -70,7 +70,6 @@ Each project has full PM documentation — PRDs, decision logs, metrics plans, r
 | **Cost Segregation SaaS** | 0→1 product spec for IRS-compliant tax automation | [PRD](./pm-portfolio/projects/02-cost-segregation-saas/README.md) · [Scenarios](./pm-portfolio/projects/02-cost-segregation-saas/user-scenarios.md) · [Rollout](./pm-portfolio/projects/02-cost-segregation-saas/rollout-plan.md) |
 | **MCP Tool Catalog** | Customer discovery for enterprise AI tool governance | [Interviews](./pm-portfolio/projects/03-tool-catalog-discovery/interview-guide.md) · [Insights](./pm-portfolio/projects/03-tool-catalog-discovery/insights.md) · [PRD](./pm-portfolio/projects/03-tool-catalog-discovery/prd.md) |
 | **AI Observability & Cost Controls** | Experiment-driven approach to AI cost attribution | [Experiment](./pm-portfolio/projects/04-observability-cost-controls/experiment-plan.md) · [Results](./pm-portfolio/projects/04-observability-cost-controls/experiment-results.md) |
-| **Gateway Pricing Tiers** | Usage-based pricing model with competitive analysis | [Pricing Model](./pm-portfolio/projects/05-gateway-pricing-tiers/pricing-model.md) · [GTM Plan](./pm-portfolio/projects/05-gateway-pricing-tiers/gtm-plan.md) |
 | **DFW CRE Analyzer** | Live CRE deal-scoring engine with LoopNet integration | [PRD](./consumer/dfw-cre-analyzer/README.md) |
 
 **More:** [3-Year Platform Vision](./pm-portfolio/vision.md) · [Stakeholder Alignment Case Study](./pm-portfolio/case-studies/ai-gateway-stakeholder-alignment.md) · [PM Templates](./pm-portfolio/templates/)
