@@ -14,18 +14,27 @@ app.use(express.static(path.join(__dirname, '../public')));
 // API routes
 app.use('/api/v1', apiRoutes);
 
-// Live ingestion endpoint
+// Live ingestion endpoint (supports Zillow and LoopNet providers)
 app.post('/api/v1/ingest', async (req, res) => {
   try {
     if (!process.env.RAPIDAPI_KEY) {
       return res.status(400).json({ error: 'RAPIDAPI_KEY not configured. Set it in environment to enable live mode.' });
     }
-    const { runLiveIngestion } = await import('./data/live-provider');
-    const maxZips = req.body?.maxZips || 5;
+    const provider = req.body?.provider || 'loopnet'; // default to LoopNet (CRE-focused)
+    const maxZips = req.body?.maxZips || req.body?.maxLocations || 5;
     const enrichTop = req.body?.enrichTop || 15;
-    console.log(`\n🌐 Live ingestion triggered (${maxZips} ZIPs, enrich top ${enrichTop})...`);
-    const result = await runLiveIngestion({ maxZips, enrichTop });
-    res.json({ success: true, ...result });
+
+    console.log(`\n🌐 Live ingestion triggered — Provider: ${provider.toUpperCase()}`);
+
+    let result;
+    if (provider === 'zillow') {
+      const { runLiveIngestion } = await import('./data/live-provider');
+      result = await runLiveIngestion({ maxZips, enrichTop });
+    } else {
+      const { runLoopNetIngestion } = await import('./data/loopnet-provider');
+      result = await runLoopNetIngestion({ maxLocations: maxZips, enrichDetails: true });
+    }
+    res.json({ success: true, provider, ...result });
   } catch (err: any) {
     console.error('Ingestion error:', err.message);
     res.status(500).json({ error: err.message });

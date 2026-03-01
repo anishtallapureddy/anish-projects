@@ -109,7 +109,8 @@
 <div class="header">
   <h1>🏢 DFW <span>CRE</span> Investment Analyzer</h1>
   <div class="header-actions">
-    <button class="btn" id="live-btn" onclick="runLiveIngestion()" title="Fetch live data from Zillow API (requires RAPIDAPI_KEY)">🌐 Live Ingest</button>
+    <button class="btn" id="live-btn" onclick="runLiveIngestion('loopnet')" title="Fetch live CRE data from LoopNet API">🏢 LoopNet Live</button>
+    <button class="btn" id="zillow-btn" onclick="runLiveIngestion('zillow')" title="Fetch live data from Zillow API">🏠 Zillow Live</button>
     <button class="btn" onclick="exportCSV()">📥 Export CSV</button>
     <button class="btn btn-primary" onclick="loadData()">🔄 Refresh</button>
   </div>
@@ -551,8 +552,8 @@
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
   // ── Live Ingestion ──
-  async function runLiveIngestion() {
-    const btn = document.getElementById('live-btn');
+  async function runLiveIngestion(provider) {
+    const btn = provider === 'zillow' ? document.getElementById('zillow-btn') : document.getElementById('live-btn');
     const origText = btn.textContent;
     btn.textContent = '⏳ Ingesting...';
     btn.disabled = true;
@@ -562,14 +563,14 @@
       const res = await fetch(API + '/ingest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ maxZips: 5, enrichTop: 15 }),
+        body: JSON.stringify({ provider: provider || 'loopnet', maxZips: 5, enrichTop: 15 }),
       });
       const data = await res.json();
       if (data.error) {
         alert('⚠️ ' + data.error);
       } else {
-        alert(`✅ Live ingestion complete!\n\n📥 Ingested: ${data.ingested} properties\n🔬 Enriched: ${data.enriched}\n📊 Scored: ${data.scored}`);
-        loadData(); // Refresh dashboard
+        alert(`✅ ${(data.provider || provider).toUpperCase()} ingestion complete!\n\n📥 Ingested: ${data.ingested} properties\n🔬 Enriched: ${data.enriched}\n📊 Scored: ${data.scored}`);
+        loadData();
       }
     } catch (err) {
       alert('❌ Ingestion failed: ' + err.message);
