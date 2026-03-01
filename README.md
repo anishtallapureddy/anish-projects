@@ -34,6 +34,17 @@ A fintech SaaS that generates IRS-compliant cost segregation reports for residen
 cd consumer/cost-segregation && npm install && npm run dev
 ```
 
+### [DFW CRE Investment Analyzer](./consumer/dfw-cre-analyzer/)
+A data-driven dashboard that ingests live LoopNet listings across the Dallas–Fort Worth metro, scores each property on underpricing signals, and surfaces the best commercial real estate deals — ranked, mapped, and filterable. LoopNet API integration with 500+ live DFW properties.
+
+| Top Deals — Scored & ranked | Map — Color-coded DFW markers |
+|:---:|:---:|
+| ![Top Deals](./consumer/dfw-cre-analyzer/screenshots/01-top-deals-dashboard.png) | ![Map](./consumer/dfw-cre-analyzer/screenshots/03-map-view.png) |
+
+```bash
+cd consumer/dfw-cre-analyzer && npm install && npm start
+```
+
 ### [WheelAlpha — Stock Wheel Strategy Screener](./consumer/stock-wheel-strategy-screener/)
 A multi-agent investing tool that screens stocks for wheel strategy income (cash-secured puts + covered calls), identifies undervalued long-term holds, and recommends ETF core allocations. Produces daily insights and **draft orders only** — human-in-the-loop, no execution. 8 sub-agents with config-driven risk gating.
 
@@ -60,6 +71,7 @@ Each project has full PM documentation — PRDs, decision logs, metrics plans, r
 | **MCP Tool Catalog** | Customer discovery for enterprise AI tool governance | [Interviews](./pm-portfolio/projects/03-tool-catalog-discovery/interview-guide.md) · [Insights](./pm-portfolio/projects/03-tool-catalog-discovery/insights.md) · [PRD](./pm-portfolio/projects/03-tool-catalog-discovery/prd.md) |
 | **AI Observability & Cost Controls** | Experiment-driven approach to AI cost attribution | [Experiment](./pm-portfolio/projects/04-observability-cost-controls/experiment-plan.md) · [Results](./pm-portfolio/projects/04-observability-cost-controls/experiment-results.md) |
 | **Gateway Pricing Tiers** | Usage-based pricing model with competitive analysis | [Pricing Model](./pm-portfolio/projects/05-gateway-pricing-tiers/pricing-model.md) · [GTM Plan](./pm-portfolio/projects/05-gateway-pricing-tiers/gtm-plan.md) |
+| **DFW CRE Analyzer** | Live CRE deal-scoring engine with LoopNet integration | [PRD](./consumer/dfw-cre-analyzer/README.md) |
 
 **More:** [3-Year Platform Vision](./pm-portfolio/vision.md) · [Stakeholder Alignment Case Study](./pm-portfolio/case-studies/ai-gateway-stakeholder-alignment.md) · [PM Templates](./pm-portfolio/templates/)
 
@@ -73,6 +85,7 @@ anish-projects/
 │   └── ai-gateway/                # Live prototype — gateway + dashboard
 ├── consumer/                      # Consumer & fintech projects
 │   ├── cost-segregation/          # Live MVP — tax report generator
+│   ├── dfw-cre-analyzer/         # Live — CRE deal scoring + LoopNet integration
 │   └── stock-wheel-strategy-screener/  # Multi-agent investing tool (WheelAlpha)
 ├── pm-portfolio/
 │   ├── vision.md                  # 3-year strategy
