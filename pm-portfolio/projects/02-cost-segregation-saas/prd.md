@@ -598,4 +598,4 @@ Bonus depreciation applies to the **cost basis** of assets in the 5-year, 7-year
 
 ---
 
-*© 2026 CostSeg Pro. All rights reserved. This document is confidential and intended for internal stakeholders and potential investors.*
+*© 2026 CostSeg Pro. All rights reserved.*

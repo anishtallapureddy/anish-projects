@@ -127,7 +127,7 @@ Every request updates real-time metrics: total requests, blocked count, cache hi
 | `index.html` | ~7,400 | 23-page AI Gateway dashboard |
 | `styles.css` | ~8,200 | Dark theme component styles |
 | `slide-deck.html` | ~2,000 | Presentation deck for stakeholders |
-| `APIM-MCP-Roadmap.md` | ~120 | APIM MCP feature roadmap |
+
 
 ## Related Projects
 
