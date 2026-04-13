@@ -1,0 +1,30 @@
+name: DFW CRE Analyzer CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'consumer/dfw-cre-analyzer/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'consumer/dfw-cre-analyzer/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: consumer/dfw-cre-analyzer
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: consumer/dfw-cre-analyzer/package-lock.json
+
+      - run: npm ci
+      - run: npm run build

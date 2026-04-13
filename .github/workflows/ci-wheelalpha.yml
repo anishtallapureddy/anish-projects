@@ -1,0 +1,30 @@
+name: WheelAlpha CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'consumer/stock-wheel-strategy-screener/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'consumer/stock-wheel-strategy-screener/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: consumer/stock-wheel-strategy-screener
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: consumer/stock-wheel-strategy-screener/package-lock.json
+
+      - run: npm ci
+      - run: npm run build

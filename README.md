@@ -1,5 +1,10 @@
 # anish-projects
 
+![AI Gateway CI](https://github.com/anishtallapureddy/anish-projects/actions/workflows/ci-ai-gateway.yml/badge.svg)
+![Cost Segregation CI](https://github.com/anishtallapureddy/anish-projects/actions/workflows/ci-cost-segregation.yml/badge.svg)
+![DFW CRE CI](https://github.com/anishtallapureddy/anish-projects/actions/workflows/ci-dfw-cre.yml/badge.svg)
+![WheelAlpha CI](https://github.com/anishtallapureddy/anish-projects/actions/workflows/ci-wheelalpha.yml/badge.svg)
+
 A monorepo of things I'm building — AI infrastructure, fintech tools, and the product thinking behind them.
 
 I'm a Product Lead at Microsoft, working on Microsoft AI Gateway to handle orchestratation for tools, models and agents in Microsoft and Azure products. This repo is where I prototype ideas, and ship side projects.
