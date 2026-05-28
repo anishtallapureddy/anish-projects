@@ -6,307 +6,179 @@
 
 ---
 
-## 🎯 Final Locked Recommendation (read this first)
+## 🎯 The Decision (Stack 1-Lite-Final)
 
-**Stack 1-Lite-Final — eCW + Phreesia + Spruce + Availity (free secondary)**
+**eClinicalWorks Cloud (peds module) + Phreesia + Spruce + Availity (free).**
 
-After full landscape research and validation against local-provider behavior, this is the cost-effective + strong launch stack for a solo peds startup.
+| | |
+|---|---|
+| **Total recurring** | **~$1,180–1,550/mo** (4 vendors / 4 BAAs) |
+| **One-time setup** | **~$3–5K** (eCW peds templates + consultant) |
+| **Expected NCR** | **96.5–97.5%** |
+| **Time to launch** | **4 weeks** |
+| **At steady state (~28 visits/day)** | **~$620–640K/yr net to practice** |
 
-| Layer | Vendor | Cost (mo) | Why |
+| Layer | Vendor | Cost/mo | Role |
 |---|---|---|---|
-| EHR + PM + bundled clearinghouse | **eClinicalWorks Cloud** (with Pediatric Module) | $449/provider | Local network effect (shared MAs, billers, denial intel); has peds module + state IIS in 40+ states; bundled clearinghouse covers ~95% of payers |
-| Intake + eligibility + payments | **Phreesia + Phreesia Payments** | $700–1,000 | +3–5 pt NCR uplift from real-time 270/271 at booking + day-of; bundles card-on-file + copay capture (drops Rectangle Health) |
-| Patient comms + fax + voice + team chat | **Spruce** | $30–50 | Replaces Klara at ~$260/mo savings; bundles HIPAA fax (matters for peds: schools, specialists, vaccine records) |
-| Clearinghouse secondary | **Availity Essentials** | Free | Free backup path + manual claim status portal for AR follow-up |
-| Light biller (months 4+) | eCWUG-network or solo CPB contractor | $300–600 | DIY months 1–3, then peds-experienced eCW-trained biller |
-| **Total recurring at launch** | | **~$1,180–1,550/mo** | 4 active vendors / BAAs |
-| **One-time setup** | | **~$3–5K** | eCW peds template build (see playbook §0a) |
+| EHR + PM + bundled clearinghouse | **eCW Cloud + Peds Module** | $449 | Charting, scheduling, billing engine, state IIS, VFC, eRx, bundled clearinghouse |
+| Intake + eligibility + payments | **Phreesia + Phreesia Payments** | $700–1,000 | Mobile intake, real-time 270/271, card-on-file, copay capture |
+| Patient comms + fax + voice + team chat | **Spruce** | $30–50 | 2-way SMS, HIPAA fax, VoIP, internal chat |
+| Clearinghouse secondary | **Availity Essentials** | $0 | Backup eligibility, manual claim status, denial portal |
+| Billing help (month 4+) | eCWUG-network solo CPB | $300–600 | Replaces ~10 hrs/week of staff billing time |
 
-**Expected NCR: 96.5–97.5%.** **Time to launch: 4 weeks.** **Vendors: 4.** **BAAs: 4.**
-
-**Explicitly NOT buying:** Klara (Spruce wins), Waystar (bundled clearinghouse + Phreesia eligibility is enough at solo volume), Rectangle Health (Phreesia Payments is bundled), outsourced full RCM at launch (DIY 90 days).
-
-> **Bottom line:** This stack captures ~97% NCR at ~$1,300/mo, with 4 vendors. It's the right answer when local network effect, eCW community templates, and a one-time peds-template investment are available. See [§0b — Peds Gap → Solution Summary](#0b-peds-gap--solution-summary) for a scannable gap-closure view, [§0a — eCW peds setup playbook](#0a-ecw-peds-setup-playbook-the-7-asset-categories) for the concrete template list, and [§6c — Stack 1-Lite-Plus](#stack-1-lite-plus--nextgen-office-variant-recommended-cost-effective) for the NextGen Office alternative (skipped here per local-provider validation).
+> **Why this stack:** It hits ~97% NCR at ~$1,300/mo with 4 vendors by combining a peds-capable EHR with a strong front-end wrap. The eCW peds gap (vs PCC/Office Practicum) is real but ~80% closable with a one-time $3–5K template investment; Phreesia + Spruce close the remaining parent-UX gap by routing around the Healow portal entirely.
 
 ---
 
-## 0b. Peds Gap → Solution Summary
+## ⚡ Decision in 60 Seconds
 
-The eCW peds gap is real but systematically solvable. This table maps every gap to its specific mitigation, cost, time, and closure %.
-
-### Master gap closure table
-
-| # | eCW peds gap | Severity | Solution | Cost | Time | Closes |
-|---|---|---|---|---|---|---|
-| 1 | Vaccine inventory + state IIS integration | 🔴 High (VFC audit risk, $10–50K reclamation) | eCW Pediatric Module + Immunization Module add-on | $0–100/mo | 1 day | ✅ 95% |
-| 2 | CDC/WHO growth charts | 🟡 Medium | eCW Pediatric Module (native) OR eCWUG template import | $0 (in module) | 1 hr | ✅ 100% |
-| 3 | Bright Futures well-child templates (17 age bands) | 🔴 High (40–50% of visit volume) | eCWUG peds SIG free templates + consultant customization | $1.5–2.5K one-time | 1 week | ✅ 90% |
-| 4 | Peds CPT/ICD-10 favorites (90460 vs 90471, well-child by age, Mod 25) | 🔴 High (drives 30%+ of denials) | Pre-loaded favorites pack + claim-scrubber rules | $500–1K consultant | 2 days | ✅ 95% |
-| 5 | Vaccine workflow (VFC vs private inventory) | 🔴 High (VFC audit risk) | Two separate inventory pools + VFC eligibility prompt at check-in | $0 (config) | 4 hrs | ✅ 100% |
-| 6 | Developmental + behavioral screening tools (M-CHAT, ASQ-3, PHQ-9, Vanderbilt) | 🟡 Medium (missed billable codes + clinical risk) | eCW templates with 96110/96127/96160 auto-coding | $500 consultant | 1 day | ✅ 100% |
-| 7 | School/sports/camp physical forms | 🟡 Medium | State-standard PDF pack + portal forms via Phreesia | $0 (Phreesia handles) | 4 hrs | ✅ 100% |
-| 8 | Parent-friendly portal UX (multi-child management) | 🟡 Medium | Route parent experience through Phreesia (not Healow) | $0 (in stack) | N/A | ✅ 100% |
-| 9 | Modifier 25 misuse (well-child + sick same day) | 🔴 High (#1 peds denial source) | eCW alert + auto-template + claim-scrubber rule | $200 consultant | 4 hrs | ✅ 95% |
-| 10 | Anticipatory guidance text per AAP | 🟢 Low (provider preference) | Bright Futures snippets in age-band templates | $0 (part of #3) | included | ✅ 95% |
-| 11 | Adolescent confidentiality (HPV, contraception, mental health) | 🟡 Medium (compliance + trust) | eCW confidentiality flags + restricted-visit-type config | $300 consultant | 4 hrs | ✅ 90% |
-| 12 | Real-time eligibility at booking + day-of | 🔴 High (drives +3–5 pt NCR) | Phreesia handles this (not eCW's job) | $0 (in stack) | N/A | ✅ 100% |
-| 13 | Card-on-file + copay capture at check-in | 🔴 High (drives patient AR capture) | Phreesia Payments handles this (not eCW's job) | $0 (in stack) | N/A | ✅ 100% |
-| 14 | Patient SMS + HIPAA fax + voice | 🟡 Medium (parent comms friction) | Spruce handles this (not eCW's job) | $0 (in stack) | N/A | ✅ 100% |
-
-### Coverage summary
-
-| Gap dimension | Coverage |
-|---|---|
-| 🔴 High-severity gaps (7 total) | All 7 closed at 95%+ |
-| 🟡 Medium-severity gaps (5 total) | All 5 closed at 90%+ |
-| 🟢 Low-severity gaps (2 total) | All 2 closed at 95%+ |
-| Total one-time setup cost | **~$3–5K** |
-| Total ongoing cost above base eCW | **$0–100/mo** |
-| Expected NCR with full closure | **96.5–97.5%** (matches Stack 1-Plus PCC/OP) |
-
-### Before vs after mitigation
-
-| Before mitigation | After mitigation |
-|---|---|
-| eCW out-of-box is "generalist with peds-friendly hooks" | eCW + module + templates + Phreesia + Spruce = "peds-specialized stack" |
-| 30–50 hrs of provider customization | 5–10 hrs of provider review (consultant does the work) |
-| +1–2 pt denial rate from peds coding errors | Denial rate matches PCC/OP-level practices |
-| Adult-styled parent portal | Parents interact via Phreesia (best-in-class peds UX) |
-| Visit charting ~6 min | Visit charting ~2 min with pre-loaded templates |
-| VFC audit risk if you DIY vaccine workflow | VFC-compliant by design |
-| Net cost vs PCC/OP | **Saves ~$10K/yr after one-time setup** |
-
-### Gap-closure by stack layer
-
-```mermaid
-flowchart TB
-    subgraph eCW[eCW Cloud - EHR + PM]
-        E1[Vaccine inventory + IIS<br/>via Pediatric Module]
-        E2[Growth charts CDC/WHO<br/>native in module]
-        E3[Bright Futures templates<br/>imported from eCWUG]
-        E4[Peds CPT favorites<br/>consultant-built]
-        E5[Mod 25 alert<br/>consultant-built]
-        E6[Confidentiality flags<br/>configured]
-    end
-    subgraph Phreesia[Phreesia - Front Door]
-        P1[Parent-friendly portal UX]
-        P2[Real-time eligibility 270/271]
-        P3[Card-on-file + copay capture]
-        P4[Digital intake forms]
-        P5[School/sports physical forms]
-    end
-    subgraph Spruce[Spruce - Communication]
-        S1[2-way patient SMS]
-        S2[HIPAA fax inbound/outbound]
-        S3[Voice line]
-        S4[Team chat for MA/biller]
-    end
-    eCW --> Done[97% NCR<br/>peds-grade workflow<br/>~$1,300/mo]
-    Phreesia --> Done
-    Spruce --> Done
-    classDef ecw fill:#e1f5ff,stroke:#0288d1
-    classDef phr fill:#f3e5f5,stroke:#7b1fa2
-    classDef spr fill:#fff3e0,stroke:#f57c00
-    classDef done fill:#e8f5e9,stroke:#2e7d32,stroke-width:3px
-    class E1,E2,E3,E4,E5,E6 ecw
-    class P1,P2,P3,P4,P5 phr
-    class S1,S2,S3,S4 spr
-    class Done done
-```
-
-### The 3 mitigation principles
-
-1. **What eCW does poorly natively, the Pediatric Module fixes** (vaccines, growth, IIS).
-2. **What the module doesn't fix, eCWUG community templates + a $2–4K consultant fixes** (Bright Futures, CPT favorites, Mod 25, screenings).
-3. **What templates can't fix is the parent-facing UX — and that's why Phreesia + Spruce route around Healow portal entirely.**
-
-> **Bottom line (§0b):** The eCW peds gap is real but systematically solvable. **~$3–5K one-time + the Phreesia + Spruce wrap = same effective peds workflow as PCC/OP, ~$10K/yr cheaper, with the bonus of local-provider network effect.**
+1. **Pick a peds-native EHR.** PCC and Office Practicum are the only two true peds-native EHRs; they cost $400–700/mo more than eCW and ship better defaults — but **eCW + a $3–5K one-time consult closes ~80% of the gap and saves ~$8–12K/yr forever**. Local network effect (shared MAs, billers, denial intel from neighbor practices) tips the call to eCW.
+2. **Wrap the EHR's weakest surfaces with best-in-class adjuncts.** eCW's intake (Healow) is mediocre; replace with Phreesia. eCW's patient comms are basic; replace with Spruce. Both wraps are <$1,050/mo combined and unlock ~3–5pt of NCR plus the patient-experience floor a modern practice needs.
+3. **Don't buy what the wrap already gives you.** Phreesia bundles eligibility (drop standalone Phreesia eligibility add-ons elsewhere) AND payments (drop Rectangle Health). Spruce bundles fax + VoIP + chat (drop Klara + RingCentral + Slack). The bundled eCW clearinghouse handles ~95% of payers (drop Waystar at launch). **Total redundancy removed: ~$600–900/mo and 3 BAAs.**
 
 ---
 
-## 0a. eCW Peds Setup Playbook — The 7 Asset Categories
+## 🧭 Stacks Considered — One Table
 
-The eCW peds gap (vs PCC/OP) closes ~80% with the right one-time template investment. Build these in weeks 1–3, either yourself, with a $2–4K eCWUG consultant, or by importing from peer practices in the eCWUG peds SIG.
+Each row is a real candidate stack we evaluated end-to-end. **The picked stack is row 4.** Everything above and below it lost on a specific axis.
 
-### 1. CPT/ICD-10 favorites by visit type
-
-| Visit type | Pre-loaded favorites |
-|---|---|
-| Newborn (0–28 days) | 99381 + Z00.110/Z00.111; jaundice + weight gain ICD-10s |
-| Well-child by age band | 99381–99395 with age-appropriate vaccines bundled |
-| Vaccine admin | 90460 (with counsel ≤18yo) vs 90471/90472; per-vaccine CPT codes |
-| Sick + well-child same day | 99213/99214 + 99391–99395 + **Modifier 25 auto-flag** |
-| Sports/school physical | 99211–99213 + Z02.5/Z02.0 |
-| ADHD med follow-up | 99213/99214 + F90.x + prescription template |
-| Developmental screen | 96110 (M-CHAT, ASQ-3, PHQ-9 adolescent) — often-missed billing |
-
-Pre-loaded favorites cut charting from ~6 min to ~2 min per visit.
-
-### 2. Modifier 25 alert + template
-
-The #1 peds denial source. Build:
-- eCW alert when both well-child code + E/M code entered same day
-- Documentation snippet for separately-identifiable problem narrative
-- Claim-scrubber rule ensuring Mod 25 is appended
-
-### 3. Vaccine workflow — VFC vs private inventory
-
-- Two separate inventory pools (VFC vs private-pay)
-- VIS auto-attach by CPT code
-- VFC eligibility prompt at check-in (Medicaid, AI/AN, uninsured, underinsured)
-- State IIS auto-submit per dose
-- Vaccine refusal documentation template (AAP-aligned)
-
-VFC audit risk is real ($10–50K reclamation if you bill private for VFC-eligible kids). Worth getting right day 1.
-
-### 4. Well-child template per age band (Bright Futures-aligned)
-
-Build 17 templates aligned to AAP Bright Futures milestones (0–1mo, 2mo, 4mo, 6mo, 9mo, 12mo, 15mo, 18mo, 24mo, 30mo, 3yr, 4yr, 5yr, 6–10yr, 11–14yr, 15–17yr, 18–21yr).
-
-Each pre-populates: age-appropriate ROS, growth/development milestones, vaccines due, screenings due, anticipatory guidance text.
-
-### 5. Screening tools as templates
-
-| Screening | When | CPT |
-|---|---|---|
-| M-CHAT-R/F (autism) | 18mo, 24mo | 96110 |
-| ASQ-3 (developmental) | 9, 18, 24, 30, 48, 60mo | 96110 |
-| PHQ-9 adolescent | Annually 12+ | 96127 |
-| GAD-7 (anxiety) | Annually 12+ | 96127 |
-| CRAFFT (substance) | Annually 12+ | 96160 |
-| Vanderbilt (ADHD) | As indicated | 96127 |
-| Postpartum depression | Mom 1mo/2mo visit | 96161 |
-| Lead screen reminder | 12mo, 24mo | — |
-
-Each screen is a billable code ($5–15) AND clinical risk-reduction. eCW won't prompt these natively — your templates do.
-
-### 6. Form pack
-
-New patient reg, HIPAA notice, financial responsibility / good-faith estimate, vaccine refusal, ADHD Vanderbilt scales, school physical (state form), sports physical (PPE-5), camp form, ROI in/out, pre-op clearance.
-
-### 7. Letter + macro templates
-
-Vaccine record export (school/camp/sports), referral letter macro, school excuse, work excuse for parent, specialist referral with auto-attached growth chart + recent labs, med refill protocol response, sick-day instructions (fever, cough, rash, ear pain).
-
-### Sourcing the templates — three paths
-
-| Path | Cost | Speed | Quality |
-|---|---|---|---|
-| **eCWUG peds SIG community templates** | Free | 1–2 days | Variable |
-| **eCW peds consultant (via eCWUG)** | $2–4K, 20 hrs | 2 weeks | High |
-| **Build yourself** | ~30–50 hrs provider time | 4–6 weeks | High but slow |
-
-**Recommended:** Pull free eCWUG peds SIG templates as a base, hire a consultant for 10–15 hrs ($1.5–2.5K) to customize for your state's payers and your workflow. Don't reinvent what 50K eCW users have already built.
-
-### eCW pre-sign checklist (ask the eCW rep before signing)
-
-- [ ] "Is the **Pediatric Module** included in this tier or an add-on? What's the price delta?"
-- [ ] "Does it include **vaccine inventory + state IIS connectivity** for [my state]?"
-- [ ] "Are **CDC/WHO growth charts** native or template-based?"
-- [ ] "Are **Bright Futures-aligned well-child templates** included?"
-- [ ] "Bundled clearinghouse — Change Healthcare or proprietary? Any per-claim fees?"
-- [ ] "Do you support **[my state's Medicaid MCOs]** through the bundled clearinghouse?"
-- [ ] "What's typical first-pass acceptance for peds practices on your bundled clearinghouse?" (should be ≥95%)
-- [ ] "What's the upgrade path to Waystar later if I need premium edits?"
-
-### 4-week launch plan (eCW-locked)
-
-**Week 1:** Sign eCW Cloud + Pediatric Module; engage eCWUG peds consultant for setup; reach 1–2 local peds practices for shared template asks.
-
-**Week 2:** Sign Phreesia + Phreesia Payments; sign Spruce (3 seats, HIPAA fax provisioned); create free Availity Essentials account.
-
-**Week 3:** eCW peds consultant delivers 7 asset categories; Phreesia ↔ eCW eligibility integration tested; Spruce ↔ eCW notes sync tested; first 837 test claim through bundled clearinghouse.
-
-**Week 4:** BAAs filed (eCW, Phreesia, Spruce); vaccine inventory loaded (VFC + private separately); privacy/security policies adopted (§9 floor); 5–10 patient soft-launch week.
-
----
-
-## Table of Contents
-
-0. [TL;DR for the Impatient](#0-tldr-for-the-impatient)
-1. [Executive Summary](#1-executive-summary)
-2. [Practice Profile Assumptions](#2-practice-profile-assumptions)
-3. [Decision Criteria & Weighting](#3-decision-criteria--weighting)
-4. [Layer-by-Layer Evaluation](#4-layer-by-layer-evaluation)
-   - [L1 — EHR + Practice Management](#l1--ehr--practice-management)
-   - [L2 — Patient Intake & Onboarding](#l2--patient-intake--onboarding)
-   - [L3 — Scheduling & Self-Service](#l3--scheduling--self-service)
-   - [L4 — Patient Communication](#l4--patient-communication)
-   - [L5 — Eligibility & Benefits Verification](#l5--eligibility--benefits-verification)
-   - [L6 — Payments & Collection Discipline](#l6--payments--collection-discipline)
-   - [L7 — RCM / Clearinghouse / Claims (Two Tracks)](#l7--rcm--clearinghouse--claims)
-   - [L8 — e-Prescribing + Labs](#l8--e-prescribing--labs)
-   - [L9 — Compliance, Security & BAAs](#l9--compliance-security--baas)
-4b. [Redundancy Audit — Where Stack 2 Overlaps Itself](#4b-redundancy-audit)
-5. [RCM Decision — In-House vs. Outsourced vs. Hybrid (with Math)](#5-rcm-decision)
-6. [Three Recommended Packaged Stacks](#6-three-recommended-packaged-stacks)
-6b. [Stack 0 — Startup-Mode (Minimum Viable Stack)](#6b-stack-0--startup-mode)
-7. [Cost Model — Monthly TCO per Stack](#7-cost-model)
-8. [Risk Matrix](#8-risk-matrix)
-9. [Implementation Roadmap](#9-implementation-roadmap)
-10. [Appendix — Glossary, References, Vendor URLs](#10-appendix)
-
----
-
-## 0. TL;DR for the Impatient
-
-If you have 60 seconds, read this section and stop. If you're launching a new solo peds practice and want the leanest defensible stack to clear $650K in annual collections with a 3-person team, here it is.
-
-### The patient journey on Stack 0 (Startup-Mode)
+| # | Stack | Monthly | NCR | Vendors | Why rejected (or why picked) |
+|---|---|---|---|---|---|
+| 1 | **Stack 0 — PCC all-in-one** | $1,500–2,200 | 95–96.5% | 2 | Cleanest ops (1 EHR vendor, 24/7 support). Loses ~$10–25K/yr NCR ceiling; no local network effect; less flexible front-end UX. **Strong fallback if eCW templates underperform.** |
+| 2 | **Stack 0-Lite — PCC + Spruce** | $1,550–2,250 | 95–96.5% | 3 | PCC + Spruce wrap. Same tradeoff as Stack 0 but adds modern comms. Still loses on cost vs eCW. |
+| 3 | **Stack 1-Plus — OP + Phreesia + Spruce** | $1,850–2,250 | 97–98% | 4 | Peds-native EHR + best-in-class wrap. Highest NCR ceiling. **Loses on cost: +$500–700/mo and no local network.** |
+| 4 | **✅ Stack 1-Lite-Final — eCW + Phreesia + Spruce + Availity** | **$1,180–1,550** | **96.5–97.5%** | **4** | **Picked.** Best $/NCR; local network effect; gap closable with $3–5K one-time. |
+| 5 | Stack 1-Lite-Plus — NextGen Office variant | $1,200–1,500 | 96.5–97.5% | 4 | Cheaper than eCW on paper; but user found weak reviews + no local provider footprint. **Rejected.** |
+| 6 | Stack 2 — OP + Phreesia + Klara + Waystar + Rectangle Health | $2,100–2,800 | 97.5–98.5% | 6 | Highest NCR but 6 BAAs, heavy ops load, ~$10K/yr above Stack 1-Lite-Final for ~1pt NCR gain. **Wrong shape for solo.** |
+| 7 | Stack 3 — Modular cloud (Elation + Phreesia + Klara + Waystar) | $2,000–2,600 | 96.5–97.5% | 5+ | No peds-native EHR; Elation peds gap is worse than eCW's and not as closable with templates. **Rejected.** |
 
 ```mermaid
 flowchart LR
-    A["📅 Schedule<br/>PCC native<br/>+ web booking"] --> B["📝 Intake<br/>PCC patient portal<br/>+ eligibility (270/271)"]
-    B --> C["🩺 Visit<br/>PCC EHR<br/>VFC, IIS, growth, screeners"]
-    C --> D["💳 Bill<br/>PCC clearinghouse<br/>837P → 835 ERA"]
-    D --> E["💰 Collect<br/>Rectangle Health<br/>card-on-file + text-to-pay"]
-    C -.-> F["💊 eRx + Labs<br/>DrFirst (bundled)<br/>LabCorp/Quest"]
-    D -.-> G["🧾 Denials<br/>In-house first 6 mo<br/>then 3% outsourced"]
+    A["📅 Schedule<br/>eCW + web booking"] --> B["📝 Intake + eligibility<br/>Phreesia"]
+    B --> C["💬 Confirmations<br/>Spruce SMS"]
+    C --> D["🩺 Visit<br/>eCW (peds module)<br/>VFC, IIS, growth, screeners"]
+    D --> E["💳 Copay capture<br/>Phreesia Payments"]
+    D --> F["💊 eRx + Labs<br/>eCW Surescripts<br/>+ LabCorp/Quest"]
+    E --> G["🧾 Claim<br/>eCW bundled CH<br/>837P → 835 ERA"]
+    G --> H["🔁 Denials<br/>DIY mo 1-3<br/>Availity portal<br/>solo CPB mo 4+"]
     classDef core fill:#1f6feb,stroke:#0a3069,color:#fff
     classDef ext fill:#f6f8fa,stroke:#57606a,color:#24292f
-    class A,B,C,D core
-    class E,F,G ext
+    class A,D,G core
+    class B,C,E,F,H ext
 ```
-
-### Stack 0 — one recommendation per phase
-
-| Phase | Pick | Monthly | Replaces (vs. Stack 2) |
-|---|---|---|---|
-| **Schedule + Intake + EHR + PM + Portal + IIS + eRx + Clearinghouse** | **PCC** (peds-native, flat-fee bundle, 24/7 support included) [[PCC](https://www.pcc.com/)] [[ehrinsider](https://ehrinsider.com/reviews/pcc/)] | **~$1,500–2,200**/mo all-in | Office Practicum + Phreesia + Klara (lite) + Waystar |
-| **Payments (card-on-file, text-to-pay)** | **Rectangle Health** | ~$100 + interchange | (kept — non-negotiable for HIPAA) |
-| **Patient SMS / recall** | **PCC InteliChart portal + EHR-native SMS** (basic) | included | Klara dropped; add later if needed |
-| **Eligibility (270/271)** | **PCC-native + Availity Essentials (free)** [[Availity](https://www.availity.com/eligibility-and-coverage/)] | $0 | Phreesia eligibility automation dropped |
-| **Denial recovery** | **In-house first 6 months**, then outsource @ 3% of recovered if denial rate > 6% | $0 → ~$120 | Outsourced denial vendor deferred |
-| **Total** | **2–3 vendor contracts** | **~$1,600–2,300/mo (~$19–28K/yr)** | vs. Stack 2 ~$23K/yr across 6 vendors |
-
-### Bottom-line numbers
-
-- **Vendor count:** 2 contracts (PCC + Rectangle Health); 3 if you add a denial-recovery shop in month 7.
-- **Expected steady-state economics:** NCR **95–96.5%**, cost-to-collect **3.0–4.0%**, days in AR **≤ 38**.
-- **Net to practice (steady-state):** **~$620–635K/yr** vs. Stack 2 ~$646K. You give up ~$10–25K of NCR ceiling in exchange for **dropping 3–4 vendor relationships** and roughly **$3–5K/yr of vendor spend**.
-- **Headline simplification:** one EHR vendor instead of six BAAs, one support phone number (PCC's 24/7 line), one bill to reconcile.
-
-### When to upgrade Stack 0 → Stack 2
-
-Pick a single trigger; don't try to upgrade everything at once.
-
-| Trigger (sustained 60 days) | Add | Why |
-|---|---|---|
-| No-show rate > 12% | **Klara** ($350/mo) | Automated reminder cascade lifts no-shows by 30–50%. |
-| First-pass denial rate > 8% **or** NCR < 95% | **Waystar clearinghouse + outsourced denial vendor** | PCC's bundled scrubbing is good, not best; Waystar's payer rules engine is. |
-| Eligibility-driven denials > 3% of claims | **Phreesia** ($400/mo) | Eligibility-at-intake catches lapsed coverage before the visit. |
-| Volume > 35 visits/day **or** adding 2nd provider | **Office Practicum migration** | VacLogic + denser partner ecosystem pays back at scale; PCC also scales but Stack 2's modular adjuncts shine. |
-| Patient-balance collection < 88% | **Klara text-to-pay cascade** | Already covered by Rectangle Health; tighten the workflow before adding software. |
-
-### Why this works for a solo launch
-
-PCC is one of two pediatric-native EHR vendors in the U.S. (the other is Office Practicum). Its flat-fee model bundles software, implementation, data conversion, 24/7 support, registry interfaces, and the clearinghouse into a single line item [[PCC](https://www.pcc.com/)] [[ehrinsider](https://ehrinsider.com/reviews/pcc/)]. For a 1-provider practice, that bundle replaces what Stack 2 distributes across OP + Waystar + Klara + Phreesia. You give up Phreesia's eligibility-at-intake polish and Klara's best-in-class SMS UX — both of which are *workflow lifts*, not floor capabilities. The floor (HIPAA, EPCS, EDI 837/835, VFC, IIS, parent-as-guarantor) is fully covered.
-
-> **Take-home:** Launch on Stack 0 (PCC + Rectangle Health). Watch six KPIs (NCR, denial rate, no-show rate, days in AR, eligibility-driven denials, patient-collection rate). Add Stack 2 components one at a time only when a KPI trips for 60+ days. Stack 2 remains the steady-state target — Stack 0 is the on-ramp.
 
 ---
 
+## ⚖️ Tradeoffs You're Accepting
+
+This stack is opinionated. Here's what you're giving up — eyes open.
+
+| You're accepting… | …because |
+|---|---|
+| **eCW's UX is dated.** Healow portal is mediocre; click density is high. | Phreesia + Spruce route around the parent-facing portal entirely. Provider-facing UX is improved by good templates (~$3–5K consult). |
+| **You'll spend ~$3–5K + 2 weeks on one-time peds template build.** | One-time spend closes ~80% of the gap to a peds-native EHR. Payback period: ~3 months in saved $/yr vs PCC/OP. |
+| **NCR ceiling is ~1pt below a Stack 2 build.** | Stack 2 costs ~$10K/yr more and adds 2 vendors. At solo volume the 1pt is worth ~$6K/yr — the spend doesn't pay back. |
+| **You're DIY-billing months 1–3.** | Forces you to learn the denial patterns yourself before outsourcing. Adds ~10 hrs/week of staff time short-term. Hire solo CPB month 4+ once patterns are clear. |
+| **Bundled clearinghouse < Waystar on edits + scrubbing.** | Bundled CH covers ~95% of payers and is "good enough" for a peds practice with a clean coding setup. Waystar is the right upgrade if first-pass denial rate stays > 7% past month 6. |
+
+---
+
+## 🚫 What You're Explicitly NOT Buying — And Why
+
+| Not buying | Replaced by | Saves |
+|---|---|---|
+| **Klara** ($350/mo) | Spruce ($30–50/mo) | ~$300/mo; Spruce also bundles fax + VoIP |
+| **Waystar** ($300–500/mo + per-claim) | eCW bundled clearinghouse | ~$400/mo; revisit only if NCR < 95% sustained |
+| **Rectangle Health** ($100/mo + interchange) | Phreesia Payments (bundled) | ~$100/mo + 1 BAA + reconciliation work |
+| **Standalone eligibility (pVerify, etc.)** | Phreesia 270/271 + Availity free | ~$150/mo + 1 BAA |
+| **Outsourced full-RCM at launch** | DIY months 1–3, solo CPB month 4+ | ~$2–4K/mo (5–8% of collections) until you know your denial mix |
+| **Standalone VoIP (RingCentral) + team chat (Slack)** | Spruce voice + chat | ~$80/mo + 2 BAAs |
+| **PCC / Office Practicum** (peds-native EHRs) | eCW + peds templates + consult | ~$8–12K/yr forever (offsets one-time $3–5K) |
+| **NextGen Office** (alternative low-cost EHR) | eCW (local network effect wins) | Soft — chose eCW on community-template availability, not cost |
+
+---
+
+## 🧩 Peds Gap → Mitigation Map
+
+The eCW peds gap is real but systematically solvable. Each gap below has a named mitigation, a one-time cost, and a closure %.
+
+| # | Gap (vs PCC/OP) | Severity | Mitigation | Cost | Time | % Closed |
+|---|---|---|---|---|---|---|
+| 1 | Bright Futures well-child templates not native | High | eCWUG peds SIG templates + consultant customization | $1.5–2.5K | 1–2wk | 90% |
+| 2 | Vaccine workflow (VFC vs private, IIS, VIS) not preconfigured | **Critical** | Build VFC/private inventory split + IIS auto-submit + VIS auto-attach | $0.5–1K | 1wk | 95% |
+| 3 | Modifier 25 not auto-flagged | **Critical** | eCW alert + claim-scrubber rule + doc snippet | $0–0.5K | 2 days | 100% |
+| 4 | Growth charts (CDC/WHO) template-based | Med | Standard eCW template; one-time setup | $0 | 1 day | 100% |
+| 5 | Screening tools (M-CHAT, ASQ-3, PHQ-A, GAD-7) not native | High | Build as templates with CPT 96110/96127 auto-billing | $0.5–1K | 2–3 days | 100% |
+| 6 | Parent-as-guarantor demographic split | Med | eCW config; standard but needs setup | $0 | 1 day | 100% |
+| 7 | School/sports/camp forms not bundled | Med | Form pack (10 templates) | $0.3–0.5K | 2–3 days | 100% |
+| 8 | Vaccine record export for school | Med | Letter macro from immunization record | $0 | half day | 100% |
+| 9 | Sick + well same-day workflow clunky | Med | Template combo + Mod 25 (see #3) | $0.2K | 1 day | 95% |
+| 10 | Healow patient portal is mediocre | High | **Replace with Phreesia (intake) + Spruce (messaging)** | $730–1,050/mo | 1wk | 100% (routed around) |
+| 11 | No native real-time eligibility at booking | High | **Phreesia 270/271** | (bundled above) | — | 100% |
+| 12 | No card-on-file at booking | High | **Phreesia Payments** | (bundled above) | — | 100% |
+| 13 | Bundled CH less aggressive than Waystar | Low (at solo volume) | DIY denial work mo 1–3, eCWUG-network CPB mo 4+ | $300–600/mo from mo 4 | mo 4 | 80% |
+| 14 | No 24/7 vendor support (vs PCC) | Low | eCWUG community + 9–5 eCW support; escalate denial-mix issues to CPB | $0 | — | 70% |
+
+**Net:** $3–5K one-time + $730–1,050/mo wrap closes the entire critical/high gap set. The ~20% remaining gap (Stack 2 ceiling) costs ~$10K/yr to close and isn't worth it at solo volume.
+
+> **Three mitigation principles to remember:**
+> 1. **What's a billing miss in eCW (Mod 25, 96110 screenings) is solved with claim-scrubber rules and templates, not a new EHR.**
+> 2. **What's a template-build miss is solved by eCWUG community + a one-time consultant, not by ongoing vendor spend.**
+> 3. **What's a parent-UX miss is solved by routing around Healow with Phreesia + Spruce, not by hoping eCW improves.**
+
+---
+
+## 🚀 4-Week Launch Plan
+
+| Week | Goals |
+|---|---|
+| **1** | Sign eCW Cloud + Pediatric Module. Engage eCWUG peds consultant ($1.5–2.5K, 10–15 hrs). Contact 1–2 local peds practices for shared-template intel. |
+| **2** | Sign Phreesia + Phreesia Payments. Sign Spruce (3 seats, HIPAA fax). Create free Availity Essentials account. Begin BAA paperwork (4 vendors). |
+| **3** | Consultant delivers 7 template asset categories (see [§9f — eCW Peds Setup Playbook](#9f-ecw-peds-setup-playbook-detailed-template-catalog) for the full breakdown). Phreesia ↔ eCW eligibility integration tested. Spruce ↔ eCW notes sync tested. First 837 test claim through bundled clearinghouse. |
+| **4** | All BAAs filed. Vaccine inventory loaded (VFC + private separately). Privacy/security policies adopted (see [§9 — Implementation Roadmap](#9-implementation-roadmap)). 5–10 patient soft-launch week. First 270/271 eligibility checks, first 837 claims, first 835 ERA reconciled. |
+
+**Pre-sign checklist (ask the eCW rep before signing):**
+
+- [ ] Is the **Pediatric Module** included in this tier or an add-on? Price delta?
+- [ ] Does it include **vaccine inventory + state IIS connectivity** for [my state]?
+- [ ] Are **CDC/WHO growth charts** native or template-based?
+- [ ] Are **Bright Futures-aligned well-child templates** included?
+- [ ] Bundled clearinghouse — is it Change Healthcare or proprietary? Per-claim fees?
+- [ ] Do you support **[my state's Medicaid MCOs]** through the bundled clearinghouse?
+- [ ] What's typical first-pass acceptance for peds practices on your bundled clearinghouse? (Target ≥95%.)
+- [ ] What's the upgrade path to Waystar later if I need premium edits?
+
+---
+
+## 📖 How to Read the Rest of This Document
+
+Everything above is the **answer**. Everything below is the **research backing**, organized so you can verify or challenge any decision.
+
+| If you want… | Jump to |
+|---|---|
+| One-line stack pick with rationale | [§1 — Executive Summary](#1-executive-summary) |
+| Pediatrics workflow specifics | [§2 — Practice Profile Assumptions](#2-practice-profile-assumptions) |
+| How we scored vendors | [§3 — Decision Criteria & Weighting](#3-decision-criteria--weighting) |
+| Vendor-by-vendor evaluation per layer (L1–L9) | [§4 — Layer-by-Layer Evaluation](#4-layer-by-layer-evaluation) |
+| Where Stack 2 overlaps itself (vendor-redundancy audit) | [§4b — Redundancy Audit](#4b-redundancy-audit) |
+| In-house vs outsourced vs hybrid RCM with the math | [§5 — RCM Decision](#5-rcm-decision) |
+| Detailed compare of all 3 stacks (and Stack 0 variants) | [§6 — Three Recommended Stacks](#6-three-recommended-packaged-stacks) + [§6b — Stack 0 family](#6b-stack-0--startup-mode) |
+| Monthly TCO per stack | [§7 — Cost Model](#7-cost-model) |
+| What can break and what to do | [§8 — Risk Matrix](#8-risk-matrix) |
+| Week-by-week implementation | [§9 — Implementation Roadmap](#9-implementation-roadmap) |
+| **Full eCW peds setup playbook (7 template categories)** | [§9f — eCW Peds Setup Playbook](#9f-ecw-peds-setup-playbook-detailed-template-catalog) |
+| Operational playbooks (steady-state) | [§9b — Operational Playbooks](#9b-operational-playbooks-steady-state) |
+| Where AI fits later | [§9c — AI / Automation Opportunity Map](#9c-ai--automation-opportunity-map-forward-looking) |
+| EDI / FHIR architecture detail | [§9d — EDI / Interoperability](#9d-edi--interoperability-architecture-notes) |
+| Vendor diligence questions + contract terms | [§9e — Vendor Diligence](#9e-vendor-diligence--contract-terms) |
+| Glossary, references, vendor URLs | [§10 — Appendix](#10-appendix) |
+
+---
+
+
 ## 1. Executive Summary
+
+> **Read this as the "NCR-maximizing" analysis** — the ceiling we used to evaluate every other stack. The actual **launch pick is the cheaper, leaner Stack 1-Lite-Final at the top of this document**; this section captures what you'd pick if you optimized for NCR only and ignored cost and vendor count. See [§6](#6-three-recommended-packaged-stacks) for the head-to-head and the rationale for landing on Stack 1-Lite-Final instead.
 
 This is a high-volume, low-margin specialty: pediatrics runs on **Medicaid mix, VFC vaccine economics, and parent-as-guarantor cash flow**. The stack must do three things very well: (1) bill cleanly the first time, (2) collect at the desk, and (3) keep a 3-person staff out of phone tag. Everything else is secondary.
 
@@ -2203,6 +2075,107 @@ Reading this report does not substitute for diligence. Use these checklists on e
 - "Vendor's liability for damages of any kind shall not be limited to less than the greater of (i) $100,000, or (ii) the total fees paid by Customer in the preceding 12 months."
 - "Vendor shall notify Customer of any actual or reasonably suspected breach of unsecured PHI within 24 hours of discovery."
 - "Vendor shall not assign this Agreement, including by change of control, without Customer's prior written consent, not to be unreasonably withheld."
+
+---
+
+
+---
+
+## 9f. eCW Peds Setup Playbook — Detailed Template Catalog
+
+The eCW peds gap (vs PCC/OP) closes ~80% with the right one-time template investment. Build these in weeks 1–3, either yourself, with a $2–4K eCWUG consultant, or by importing from peer practices in the eCWUG peds SIG.
+
+### 1. CPT/ICD-10 favorites by visit type
+
+| Visit type | Pre-loaded favorites |
+|---|---|
+| Newborn (0–28 days) | 99381 + Z00.110/Z00.111; jaundice + weight gain ICD-10s |
+| Well-child by age band | 99381–99395 with age-appropriate vaccines bundled |
+| Vaccine admin | 90460 (with counsel ≤18yo) vs 90471/90472; per-vaccine CPT codes |
+| Sick + well-child same day | 99213/99214 + 99391–99395 + **Modifier 25 auto-flag** |
+| Sports/school physical | 99211–99213 + Z02.5/Z02.0 |
+| ADHD med follow-up | 99213/99214 + F90.x + prescription template |
+| Developmental screen | 96110 (M-CHAT, ASQ-3, PHQ-9 adolescent) — often-missed billing |
+
+Pre-loaded favorites cut charting from ~6 min to ~2 min per visit.
+
+### 2. Modifier 25 alert + template
+
+The #1 peds denial source. Build:
+- eCW alert when both well-child code + E/M code entered same day
+- Documentation snippet for separately-identifiable problem narrative
+- Claim-scrubber rule ensuring Mod 25 is appended
+
+### 3. Vaccine workflow — VFC vs private inventory
+
+- Two separate inventory pools (VFC vs private-pay)
+- VIS auto-attach by CPT code
+- VFC eligibility prompt at check-in (Medicaid, AI/AN, uninsured, underinsured)
+- State IIS auto-submit per dose
+- Vaccine refusal documentation template (AAP-aligned)
+
+VFC audit risk is real ($10–50K reclamation if you bill private for VFC-eligible kids). Worth getting right day 1.
+
+### 4. Well-child template per age band (Bright Futures-aligned)
+
+Build 17 templates aligned to AAP Bright Futures milestones (0–1mo, 2mo, 4mo, 6mo, 9mo, 12mo, 15mo, 18mo, 24mo, 30mo, 3yr, 4yr, 5yr, 6–10yr, 11–14yr, 15–17yr, 18–21yr).
+
+Each pre-populates: age-appropriate ROS, growth/development milestones, vaccines due, screenings due, anticipatory guidance text.
+
+### 5. Screening tools as templates
+
+| Screening | When | CPT |
+|---|---|---|
+| M-CHAT-R/F (autism) | 18mo, 24mo | 96110 |
+| ASQ-3 (developmental) | 9, 18, 24, 30, 48, 60mo | 96110 |
+| PHQ-9 adolescent | Annually 12+ | 96127 |
+| GAD-7 (anxiety) | Annually 12+ | 96127 |
+| CRAFFT (substance) | Annually 12+ | 96160 |
+| Vanderbilt (ADHD) | As indicated | 96127 |
+| Postpartum depression | Mom 1mo/2mo visit | 96161 |
+| Lead screen reminder | 12mo, 24mo | — |
+
+Each screen is a billable code ($5–15) AND clinical risk-reduction. eCW won't prompt these natively — your templates do.
+
+### 6. Form pack
+
+New patient reg, HIPAA notice, financial responsibility / good-faith estimate, vaccine refusal, ADHD Vanderbilt scales, school physical (state form), sports physical (PPE-5), camp form, ROI in/out, pre-op clearance.
+
+### 7. Letter + macro templates
+
+Vaccine record export (school/camp/sports), referral letter macro, school excuse, work excuse for parent, specialist referral with auto-attached growth chart + recent labs, med refill protocol response, sick-day instructions (fever, cough, rash, ear pain).
+
+### Sourcing the templates — three paths
+
+| Path | Cost | Speed | Quality |
+|---|---|---|---|
+| **eCWUG peds SIG community templates** | Free | 1–2 days | Variable |
+| **eCW peds consultant (via eCWUG)** | $2–4K, 20 hrs | 2 weeks | High |
+| **Build yourself** | ~30–50 hrs provider time | 4–6 weeks | High but slow |
+
+**Recommended:** Pull free eCWUG peds SIG templates as a base, hire a consultant for 10–15 hrs ($1.5–2.5K) to customize for your state's payers and your workflow. Don't reinvent what 50K eCW users have already built.
+
+### eCW pre-sign checklist (ask the eCW rep before signing)
+
+- [ ] "Is the **Pediatric Module** included in this tier or an add-on? What's the price delta?"
+- [ ] "Does it include **vaccine inventory + state IIS connectivity** for [my state]?"
+- [ ] "Are **CDC/WHO growth charts** native or template-based?"
+- [ ] "Are **Bright Futures-aligned well-child templates** included?"
+- [ ] "Bundled clearinghouse — Change Healthcare or proprietary? Any per-claim fees?"
+- [ ] "Do you support **[my state's Medicaid MCOs]** through the bundled clearinghouse?"
+- [ ] "What's typical first-pass acceptance for peds practices on your bundled clearinghouse?" (should be ≥95%)
+- [ ] "What's the upgrade path to Waystar later if I need premium edits?"
+
+### 4-week launch plan (eCW-locked)
+
+**Week 1:** Sign eCW Cloud + Pediatric Module; engage eCWUG peds consultant for setup; reach 1–2 local peds practices for shared template asks.
+
+**Week 2:** Sign Phreesia + Phreesia Payments; sign Spruce (3 seats, HIPAA fax provisioned); create free Availity Essentials account.
+
+**Week 3:** eCW peds consultant delivers 7 asset categories; Phreesia ↔ eCW eligibility integration tested; Spruce ↔ eCW notes sync tested; first 837 test claim through bundled clearinghouse.
+
+**Week 4:** BAAs filed (eCW, Phreesia, Spruce); vaccine inventory loaded (VFC + private separately); privacy/security policies adopted (§9 floor); 5–10 patient soft-launch week.
+
 
 ---
 
