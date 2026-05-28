@@ -1194,6 +1194,207 @@ flowchart LR
 
 ---
 
+### Stack 1-Plus — EHR + Phreesia + Spruce (RECOMMENDED LAUNCH STACK)
+
+This is the **highest-ROI startup-stage stack in the report**. It captures Phreesia's eligibility uplift (+3–5 pt NCR) and Spruce's comms savings (~$3.6K/yr vs Klara), while dropping Waystar (~$2.4K/yr) and deferring a paid biller (~$5–7K/yr for first 3 months).
+
+#### Composition
+
+| Layer | Vendor | Cost (mo) | Replaces |
+|---|---|---|---|
+| L1–L3 EHR + PM + bundled clearinghouse | **PCC or Office Practicum** | $1,500–2,200 | — |
+| L4 Patient comms + HIPAA fax + voice + team chat | **Spruce** | $30–50 | Klara, standalone fax line |
+| Intake + eligibility (270/271) + payments | **Phreesia + Phreesia Payments** | $700–1,000 | Phreesia portion of Stack 2 + Rectangle Health |
+| eRx / EPCS | DrFirst (usually EHR-bundled) | $0–50 | — |
+| L7 Clearinghouse | **EHR-bundled** (Change Healthcare for PCC, TriZetto for OP) | **$0 — included** | **Waystar** |
+| Light biller (months 4+) | PCC RCM or OP RCM or solo contractor | $300–600 | Outsourced full RCM |
+| **Total active vendors at launch** | **4** | **~$2,230–3,300/mo** (months 1–3, no biller) | |
+| **Total at steady state** | **5** | **~$2,530–3,900/mo** (months 4+, with light biller) | |
+
+#### Clearinghouse clarification — "if I drop Waystar, who clears my claims?"
+
+**Your EHR does — via its bundled clearinghouse partner.** You always have a clearinghouse; the question is only whether it's the free bundled one or a paid premium one on top.
+
+| EHR | Bundled clearinghouse partner | Extra cost? |
+|---|---|---|
+| **PCC** | **Change Healthcare** (now part of Optum) + TriZetto options | $0 — included |
+| **Office Practicum** | **TriZetto Provider Solutions** | $0 — included |
+| **athenaOne** | Athena's proprietary clearinghouse | $0 (part of % of collections) |
+| **Elation** | **Change Healthcare** (default) + Waystar partner option | $0 base; per-claim fees apply |
+| **eClinicalWorks** | eCW's own clearinghouse | $0 — included |
+
+When this report says "drop Waystar," it means drop the **premium standalone Waystar contract** — not "stop using a clearinghouse." Your 837 claims still flow through Change Healthcare or TriZetto under the EHR contract; you just don't pay extra for premium edits and AI denial-prevention on top.
+
+##### Claims flow with Stack 1-Plus
+
+```mermaid
+flowchart LR
+    Patient[Patient / Parent] -->|Intake + eligibility + copay| P[Phreesia]
+    Patient -->|SMS, fax, voice| S[Spruce]
+    P -->|271 eligibility response| E[EHR<br/>PCC or OP]
+    P -->|Card payment| Proc[Phreesia Payments processor]
+    S <-->|Chart notes sync| E
+    E -->|837 claim| CH[Bundled Clearinghouse<br/>Change Healthcare or TriZetto<br/>included with EHR]
+    CH -->|837 forward| Payers[(Insurance Payers)]
+    Payers -->|835 ERA| CH
+    CH -->|835 posting| E
+    classDef bundled fill:#e8f5e9,stroke:#2e7d32
+    classDef vendor fill:#e1f5ff,stroke:#0288d1
+    classDef external fill:#fff3e0,stroke:#f57c00
+    class CH bundled
+    class P,S,E vendor
+    class Patient,Payers,Proc external
+```
+
+##### EHR-bundled clearinghouse vs Waystar — capability delta
+
+| Capability | EHR-bundled (Change Healthcare / TriZetto) | Waystar premium |
+|---|---|---|
+| 837 claim submission to ~95% of payers | ✅ | ✅ |
+| 835 ERA auto-post | ✅ | ✅ |
+| Basic claim scrubbing (NPI, missing fields, NCCI edits) | ✅ | ✅ |
+| Premium payer-specific edits (state BCBS variants, Medicaid MCO quirks) | ⚠️ generic | ✅ deep |
+| AI denial prediction (flag before submit) | ❌ | ✅ |
+| Real-time eligibility (270/271) for 800+ payers | ✅ basic (Phreesia handles eligibility anyway in this stack) | ✅ deeper |
+| Real-time claim status (276/277) | ⚠️ batch | ✅ real-time |
+| Dashboard / analytics | Basic | Premium |
+| **Cost** | **$0** (in EHR) | **~$100–300/mo + $0.10–0.50/claim** |
+
+At solo peds volume (<400 claims/mo), the bundled clearinghouse covers ~95% of what Waystar does. Phreesia is already killing eligibility denials at the source, so the premium AI-denial layer doesn't pay for itself yet.
+
+##### Pre-commit verification checklist (ask your EHR sales rep)
+
+- [ ] "What clearinghouse do you ship with, and is there a per-claim fee?"
+- [ ] "Do you support **[my state's specific Medicaid MCOs]** through the bundled clearinghouse?" (name them)
+- [ ] "What's the typical first-pass acceptance rate your peds practices see with the bundled clearinghouse?" (should be ≥95%)
+- [ ] "What's the upgrade path if I want to add Waystar later?" (should be 30–60 days notice, no penalty)
+- [ ] "Are there per-payer fees for any specific Medicaid plans in my market?"
+
+#### Biller decision — do you need one?
+
+**Yes, but a cheap one, and not until month 4.** Even with Phreesia killing eligibility denials, you'll have ~12–24 denials/mo from coding/auth/bundling at solo volume — manageable in-house for the first 90 days.
+
+| Stage | Recommendation | Cost |
+|---|---|---|
+| **Months 1–3 (launch)** | DIY — provider spouse or front desk @ 4–6 hrs/wk. Learn your denial patterns yourself. | $0 |
+| **Months 4–12 (steady)** | Light outsourced billing (peds-specialized) — PCC RCM, OP RCM, or solo CPB contractor | $300–600/mo OR 3–4% of collections |
+| **Month 12+ (scale or pain)** | Decide: full RCM outsource (5–7%) OR hire 0.5 FTE in-house biller | varies |
+
+**Triggers to outsource sooner than month 4:** provider doing billing after clinic hours, AR >40 days, denial backlog growing weekly, front-desk burnout.
+
+#### When to add Waystar back
+
+- Denial rate stays >8% for 60 days despite Phreesia eligibility
+- Claim volume crosses ~800/mo
+- You contract with a Medicaid MCO that the bundled clearinghouse doesn't cover well
+- AR >35 days for 2 consecutive months
+
+#### Stack comparison summary
+
+| Stack | Vendors | Monthly | Expected NCR | When to choose |
+|---|---|---|---|---|
+| Stack 0 / 0-Lite | 2–3 | ~$1,750 | 95.0–96.0% | Absolute minimum viable launch |
+| **Stack 1-Plus (EHR + Phreesia + Spruce)** | **4–5** | **~$2,230–3,900** | **97.5–98.5%** | **Recommended launch — best ROI** |
+| Stack 2 as-published | 6 | ~$2,500+ biller | 97.5–98.0% | Stack 1-Plus + Klara + Waystar; usually has redundancy |
+| Stack 3 (Elation modular) | 7+ | ~$2,800+ | 96.5–97.5% | Most flexible, most assembly required |
+
+> **Bottom line (Stack 1-Plus):** **EHR + Phreesia + Spruce is the strongest startup launch stack.** Skip Waystar (use the EHR-bundled clearinghouse — Change Healthcare or TriZetto), DIY billing for 90 days, then add a cheap peds-native RCM at ~4% of collections. You capture +3–5 pt NCR uplift from Phreesia eligibility, save ~$3.6K/yr on comms (Spruce vs Klara), save ~$2.4K/yr on Waystar, and defer ~$5–7K of biller cost in the first quarter.
+
+---
+
+### Stack 1-Lite — eCW + Phreesia + Spruce + Availity (CHEAPEST SERIOUS STACK)
+
+A common cost-driven variant: swap the peds-native EHR (PCC/OP, $1,500–2,200/mo) for **eClinicalWorks** (~$449/provider/mo cloud), and use **Availity Essentials** (free) as either primary or secondary clearinghouse.
+
+#### Composition
+
+| Layer | Vendor | Cost (mo) | Notes |
+|---|---|---|---|
+| L1–L3 EHR + PM | **eClinicalWorks (cloud)** | ~$449/provider | Includes eCW's own bundled clearinghouse |
+| L7 Clearinghouse (primary) | **eCW-bundled** | $0 | Default; good first-pass rate ~93–95% |
+| L7 Clearinghouse (secondary/backup) | **Availity Essentials** | **Free** ([Availity Essentials](https://www.availity.com/essentials/)) | Use for manual claim status checks + as backup path |
+| Intake + eligibility + payments | **Phreesia + Phreesia Payments** | $700–1,000 | |
+| Patient comms + fax + voice | **Spruce** | $30–50 | |
+| eRx / EPCS | DrFirst (eCW-bundled) | $0–50 | |
+| **Total active vendors** | **4** | **~$1,180–1,550/mo** | **~$650/mo cheaper than Stack 1-Plus** |
+
+#### Why this combo can work
+
+| Reason | Detail |
+|---|---|
+| eCW is the cheapest serious cloud EHR | ~$449/provider/mo vs PCC/OP $1,500–2,200/mo |
+| Availity is genuinely free for ~75% of commercial payers | Anthem, BCBS, Aetna, Cigna, Humana, UHC fund Availity to lower their own admin costs |
+| Phreesia handles eligibility regardless of clearinghouse | So you don't depend on the clearinghouse's 270/271 quality |
+| Availity as secondary = free resilience | Backup path if eCW's clearinghouse has an outage |
+
+#### The central tradeoff — eCW is NOT peds-native
+
+This is the strategic problem. eCW is a generalist EHR; it does NOT ship with peds scaffolding that PCC and OP include out of the box.
+
+| What peds-native EHRs (PCC, OP) include | What you'd need to bolt onto eCW |
+|---|---|
+| Vaccine inventory + state IIS integration | Manual VFC tracking + separate IIS workflow |
+| CDC/WHO growth charts native | Available but less polished; some manual chart selection |
+| Bright Futures templates (AAP well-child guidance) | Build templates yourself or buy add-on |
+| Peds-specific CPT/ICD-10 coding favorites | Build yourself; learning curve on vaccine admin codes, modifier 25, well-child bundling |
+| School/sports physical forms | Custom forms; not pre-built |
+| Developmental screening tools (M-CHAT, ASQ, PHQ-9) | Add-ons or manual |
+| Peds-friendly parent portal (multi-child management) | Generic adult portal |
+
+**What that costs you in real terms:**
+- ~30–50 hrs of upfront eCW customization to build peds workflows
+- +1–2 pts higher denial rate from peds coding errors (vaccine admin, well-child bundling, modifier 25 misuse)
+- ~10–15 min more per visit in the first 6 months as you learn workarounds
+- VFC compliance audit risk if vaccine inventory isn't bulletproof
+
+#### Should you use Availity instead of eCW's bundled clearinghouse?
+
+**Probably no — use eCW's bundled as primary, Availity as free secondary.** eCW already ships with its own clearinghouse integrated.
+
+| Reason to use Availity over eCW-bundled | Real or hype? |
+|---|---|
+| "Free for major payers" | Both are $0 incremental at your eCW tier |
+| "Better real-time eligibility" | Moot — Phreesia is your eligibility layer |
+| "Easier portal for manual claim status checks" | ✅ Genuinely useful for AR follow-up |
+| "Backup if eCW's clearinghouse has an outage" | ✅ Real — free secondary path is smart |
+
+#### Honest cost accounting — the $650/mo savings has a tail
+
+The eCW stack saves ~$650/mo vs PCC/OP Stack 1-Plus, but:
+- +1–2 pts denial rate × ~$50K monthly billed = **+$500–1,000/mo in denied revenue**
+- Provider workflow friction ~4 hrs/day × first 6 months
+- VFC audit risk if vaccine inventory isn't airtight
+
+**Net true savings:** maybe $0–300/mo after compensating for the peds gap — and you take on real operational risk and provider-time burden.
+
+#### When this combo is right
+
+- Cost is the binding constraint AND the $650/mo savings materially changes runway
+- You (or clinical lead) have **prior eCW experience**
+- Your patient mix skews **adolescent / older peds** (less vaccine-heavy)
+- You plan to expand to **family medicine** within 12 months (eCW handles adults better than PCC/OP)
+- You're willing to invest **30–50 hrs upfront** building peds templates in eCW
+
+#### When it's the wrong call
+
+- Standard 0–18 peds with heavy vaccine schedule
+- You want a peds-native experience for parents (portal, scheduling, intake)
+- No time for 30–50 hrs of EHR customization at launch
+- Billing person isn't peds-experienced
+
+#### Stack comparison — final scoreboard
+
+| Stack | Monthly | Vendors | Expected NCR | Peds-native | Best for |
+|---|---|---|---|---|---|
+| Stack 0 / 0-Lite | ~$1,750 | 2–3 | 95.0–96.0% | ✅ | Absolute minimum viable |
+| **Stack 1-Lite (eCW + Phreesia + Spruce + Availity)** | **~$1,180–1,550** | **4** | **96.0–97.0%** | **❌** | **Cheapest serious stack; accept peds gap** |
+| **Stack 1-Plus (PCC/OP + Phreesia + Spruce)** | **~$2,230–3,300** | **4** | **97.5–98.5%** | **✅** | **Recommended launch (best ROI)** |
+| Stack 2 as-published | ~$2,500+ | 6 | 97.5–98.0% | ✅ | Steady state; usually has redundancy |
+
+> **Bottom line (Stack 1-Lite):** **Use eCW + Phreesia + Spruce + Availity (as free secondary) if cost is the binding constraint AND you can absorb 30–50 hrs of eCW peds customization.** Otherwise, pay the extra ~$650/mo for Stack 1-Plus — the peds-native scaffolding (vaccine inventory, growth charts, AAP templates, peds coding favorites) is worth more than the savings for a clinical-time-constrained solo startup. The eCW route is legitimate but transfers value from vendor cost into provider time and denial risk.
+
+---
+
 ## 7. Cost Model
 
 Monthly TCO per stack, per provider. Numbers are mid-range estimates from cited sources where available; mark all custom pricing with † and validate at contracting.
