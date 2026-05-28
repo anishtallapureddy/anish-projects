@@ -744,6 +744,43 @@ The $430/mo number is *allocated* — you don't see it as a separate line. It's 
 
 The headline: **Stack 2 has roughly $430/mo of allocated redundancy, of which $300–700/mo is recoverable without crashing the NCR target.** The remaining redundancy (eligibility belt-and-suspenders, scrubbing two-pass) is intentional resilience and worth keeping at steady-state.
 
+### Sub-audit: Phreesia Payments vs Rectangle Health (the payments overlap)
+
+Phreesia includes a native payments module ([Phreesia Payments](https://www.phreesia.com/solutions/payments/)) covering card-on-file, copay-at-check-in, text-to-pay, payment plans, and eligibility-driven price quoting. If Phreesia is in your stack, **Rectangle Health is redundant**.
+
+| | Phreesia Payments | Rectangle Health |
+|---|---|---|
+| Cost | Bundled in Phreesia base | ~$100/mo + interchange |
+| Interchange | ~2.9–3.2% + $0.30 | ~2.6–2.9% + $0.10 |
+| Card-on-file at intake | ✅ (best-in-class) | ✅ |
+| Standalone (no intake vendor needed) | ❌ | ✅ |
+
+**Decision rule:** If Phreesia is in the stack (Stack 2, Stack 3), **drop Rectangle Health, use Phreesia Payments** — saves ~$100/mo, eliminates a BAA, kills the reconciliation work between two processors. The higher interchange rate (~0.3 pts) costs ~$1.5–2K/yr on $600K revenue but is offset by Rectangle's $1.2K/yr base fee and ~$3K/yr in saved staff reconciliation time. If Phreesia is NOT in the stack (Stack 0, Stack 0-Lite), keep Rectangle.
+
+### Sub-audit: Eligibility-as-velocity-lever
+
+Real-time eligibility (270/271) is the **single biggest lever for both NCR and cash velocity**. About 25–30% of denials are eligibility/coverage related ([CAQH Index 2023](https://www.caqh.org/sites/default/files/explorations/CAQH-index-2023-report.pdf)) — and they're 100% preventable with a 270 run at booking + day-of.
+
+| | Without real-time eligibility | With automated eligibility at booking + day-of |
+|---|---|---|
+| When you discover coverage issues | 30–60 days post-service (835 denial) | Before the patient walks in |
+| Patient-responsibility capture rate | ~60% (post-visit statementing) | ~95% (collected at check-in) |
+| Days in AR | 45–55 | 25–35 |
+| NCR uplift | baseline | **+3–5 points** |
+| Cash velocity | baseline | ~70% faster on patient portion |
+
+**Where each stack lands on eligibility:**
+
+| Stack | Booking eligibility | Day-of eligibility | NCR uplift from eligibility |
+|---|---|---|---|
+| Stack 0 / Stack 0-Lite (PCC bare) | PCC native (manual trigger) | PCC native (manual) | +1–2 pts |
+| **Stack 2 (Phreesia)** | **Phreesia auto** | **Phreesia auto** | **+3–5 pts** |
+| Stack 3 (Elation + Phreesia) | Phreesia auto | Phreesia auto | +3–5 pts |
+
+**This is why Phreesia + Phreesia Payments is so strong:** the 270 runs at booking → intake form quotes exact copay + deductible → patient enters card → check-in collects the quoted amount. One vendor, one flow, one number that's accurate before the visit. Splitting eligibility (EHR) from payments (Rectangle) forces front-desk staff to manually translate the 271 into a POS amount — 3–5 min × 25–30 visits/day = **~2 hrs/day of staff time** plus a meaningful error rate.
+
+> **Revised payments + eligibility rule:** If you can afford one upgrade past Stack 0-Lite, make it **Phreesia (intake + eligibility + payments bundled)** — and at that point drop Rectangle Health. The 3–5 pt NCR uplift = **$18–30K/yr extra revenue** on $600K base, which easily covers Phreesia's ~$700–1,000/mo.
+
 ---
 
 ## 5. RCM Decision
@@ -1080,6 +1117,80 @@ Track these monthly. When a metric trips for **60 sustained days**, add the name
 **Migration path heuristic:** add Klara first (cheapest, highest UX lift), then Waystar (if NCR plateaus), then Phreesia (if eligibility denials persist). Full OP migration is rare — most Stack 0 practices stay on PCC indefinitely and only "upgrade to Stack 2" by adding adjuncts to PCC.
 
 > **Bottom line (§6b):** Launch on **PCC + Rectangle Health (2 vendors, ~$1,950/mo)**. Watch six KPIs. Add adjuncts one at a time when triggers fire. You give up ~$10–25K/yr of NCR ceiling and ~1–2 pts of UX polish in exchange for **dropping 3–4 vendor contracts on day 1** and **postponing every payment-or-software decision you don't need to make to launch**.
+
+---
+
+### Stack 0-Lite — Spruce variant (drop Klara AND Waystar)
+
+A common question: *"Can I use Spruce instead of Klara and Waystar?"*
+
+**Short answer: Spruce replaces Klara. Spruce cannot replace Waystar — they're at different layers.**
+
+#### What each tool actually does
+
+| | Klara | Waystar | Spruce |
+|---|---|---|---|
+| **Layer** | L4 Patient comms | L7 Clearinghouse | L4 Patient comms |
+| **Does** | 2-way SMS, secure messaging, broadcasts, video | EDI 837 claim submission to payers, 835 ERA posting | 2-way SMS, voice, **HIPAA fax**, team chat, video |
+| **Talks to payers?** | No | **Yes (the whole point)** | No |
+| **Pricing** | ~$250–400/practice/mo | ~$100–300/mo + per-claim | **~$24–49/user/mo** ([Spruce Pricing](https://www.sprucehealth.com/pricing)) |
+
+Spruce is a **HIPAA-compliant team + patient communication platform**. It has no connection to insurance payers. Without a clearinghouse, you can't file 837 claims electronically — you'd be stuck with paper or per-payer portals, which crushes your collection rate and burns front-desk hours.
+
+#### What you SHOULD do for solo peds
+
+**Replace Klara with Spruce — net win.** Spruce fits a 1-provider startup better than Klara because it:
+- Bundles **HIPAA fax** (matters for peds: school physicals, specialist referrals, vaccine records to schools) — Klara requires a separate fax line
+- Bundles **team chat + voice** — replaces the "text the MA on personal phone" workflow ([Spruce features](https://www.sprucehealth.com/features))
+- Costs ~$30–50/mo for a 3-person practice vs Klara's $250–400/mo
+
+**Tradeoffs:**
+- Klara's patient-facing UX is slightly more polished
+- Klara has tighter native integrations with some EHRs (Office Practicum has a Klara connector; check your EHR before swapping)
+- Spruce's analytics are lighter than Klara's
+
+**Replace Waystar with your EHR's bundled clearinghouse — or Availity Essentials (free).** For a solo peds startup, you do NOT need a standalone premium clearinghouse:
+
+| Option | Cost | When it fits |
+|---|---|---|
+| **PCC's bundled clearinghouse** | $0 extra — included | If PCC is your EHR (Stack 0 default) — **best choice** |
+| **Office Practicum's bundled (Trizetto/CHC)** | Included in OP fees | If OP is your EHR |
+| **Availity Essentials** | **Free** for most payers ([Availity Essentials](https://www.availity.com/essentials/)) | Any EHR; DIY claim entry; works but adds clicks |
+| **Waystar** | ~$100–300/mo + per-claim | Add **only when** denial rate stays >8% for 60 days OR claim volume >800/mo |
+
+#### Stack 0-Lite vendor map
+
+```mermaid
+flowchart LR
+    P[Patient / Parent] -->|SMS, fax, voice| S[Spruce<br/>~$40/mo]
+    P -->|Self-schedule, intake| E[PCC EHR/PM<br/>~$1,500-2,200/mo<br/>incl. clearinghouse]
+    P -->|Copay capture| R[Rectangle Health<br/>~$100/mo + interchange]
+    S <-->|Bi-directional sync| E
+    R -->|Posting| E
+    E -->|837 claims via bundled CH| Payers[(Insurance Payers)]
+    Payers -->|835 ERA| E
+    classDef vendor fill:#e1f5ff,stroke:#0288d1
+    classDef external fill:#fff3e0,stroke:#f57c00
+    class S,E,R vendor
+    class P,Payers external
+```
+
+#### Stack 0-Lite economics
+
+| Line item | Stack 0 (Klara+Waystar) | Stack 0-Lite (Spruce, bundled CH) | Delta |
+|---|---|---|---|
+| L4 Patient comms | Klara ~$300/mo | Spruce ~$40/mo | **−$260/mo** |
+| L7 Clearinghouse | Waystar ~$200/mo | PCC-bundled $0 | **−$200/mo** |
+| Net savings | — | — | **−$460/mo (~$5,520/yr)** |
+| Vendors / BAAs | 6 | **4** (PCC + Rectangle + Spruce + outsourced denials) | −2 |
+| Expected NCR impact | 95.5–96.5% | 95.0–96.0% | −0.5 pt (noise at solo volume) |
+
+#### When to add Klara back, when to add Waystar
+
+- **Add Klara** when: patient SMS engagement matters more than fax (e.g., 90%+ commercial peds, no school-form burden) AND you want richer patient-facing analytics. Trigger: Spruce patient response rate < 60%.
+- **Add Waystar** when: denial rate stays >8% for 60 days, OR claim volume exceeds ~800/mo, OR you start contracting with payers PCC's bundled clearinghouse doesn't cover well (check your state's Medicaid MCO list).
+
+> **Bottom line (Stack 0-Lite):** **Yes, drop both Klara and Waystar. Use Spruce for comms (~$40/mo) and your EHR's bundled clearinghouse for claims ($0).** Saves ~$5.5K/yr and 2 vendor contracts with negligible NCR impact at solo-provider volume. This is the leanest defensible launch stack.
 
 ---
 
