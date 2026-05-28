@@ -12,9 +12,9 @@
 
 | | |
 |---|---|
-| **Total recurring at launch (mo 1–3)** | **~$880–1,150/mo** (4 vendors / 4 BAAs) |
+| **Total recurring at launch (mo 1–3)** | **~$880–1,150/mo** (list price); **~$730–1,050** with standard new-practice eCW discount (see [§ Year-1 Pricing Scenarios](#-year-1-pricing-scenarios--negotiate-the-ecw-discount)) |
 | **Steady state (mo 4+, with solo CPB)** | **~$1,180–1,750/mo** |
-| **One-time setup** | **~$3–5K** (eCW peds templates + consultant) |
+| **One-time setup** | **~$3–5K** (eCW peds templates + consultant); **eCW impl fee is typically waivable for new practices** |
 | **Expected NCR** | **96.5–97.5%** |
 | **Time to launch** | **4 weeks** |
 | **At steady state (~28 visits/day)** | **~$620–640K/yr net to practice** |
@@ -39,6 +39,58 @@
 1. **Pick a peds-native EHR.** PCC and Office Practicum are the only two true peds-native EHRs; they cost $400–700/mo more than eCW and ship better defaults — but **eCW + a $3–5K one-time consult closes ~80% of the gap and saves ~$8–12K/yr forever**. Local network effect (shared MAs, billers, denial intel from neighbor practices) tips the call to eCW.
 2. **Wrap the EHR's weakest surfaces with best-in-class adjuncts.** eCW's intake (Healow) is mediocre; replace with Phreesia. eCW's patient comms are basic; replace with Spruce. Both wraps are **~$450–700/mo combined** (Phreesia base + ~2.75% on patient payments + Spruce) and unlock ~3–5pt of NCR plus the patient-experience floor a modern practice needs.
 3. **Don't buy what the wrap already gives you.** Phreesia bundles eligibility (drop standalone Phreesia eligibility add-ons elsewhere) AND payments (drop Rectangle Health). Spruce bundles fax + VoIP + chat (drop Klara + RingCentral + Slack). The bundled eCW clearinghouse handles ~95% of payers (drop Waystar at launch). **Total redundancy removed: ~$600–900/mo and 3 BAAs.**
+
+---
+
+## 💰 Year-1 Pricing Scenarios — Negotiate the eCW Discount
+
+eCW commonly discounts new solo practices to win the logo. Below is the realistic negotiation ladder. **Plan for "Standard Discount", push for "Aggressive", walk away once if they refuse the basics.**
+
+| Scenario | eCW Yr-1 base | One-time impl | Other concessions | Stack 1-Lite-Final yr-1 total/mo | Yr-1 savings vs no discount |
+|---|---|---|---|---|---|
+| **A. No discount (worst case)** | $449/mo | $3–5K | none | $880–1,150 (launch) | — |
+| **B. Standard new-practice discount (~90% likelihood)** | **~$299–349/mo** for 12 mo | **Waived** | Free training (5–10 hrs) | **~$730–1,050** (launch) | **~$1.2–1.8K/yr + $3–5K one-time** |
+| **C. Aggressive (achievable if you walk away once)** | **~$249–299/mo** for 12 mo | **Waived** | Free peds module Q1, free clearinghouse fees yr-1, 10 hrs free template-build | **~$680–1,000** (launch) | **~$1.8–2.4K/yr + $4–6K one-time** |
+| **D. Multi-year lock (3-yr contract)** | **~$329–379/mo flat for 36 mo** | **Waived** | Price-protection vs annual increases (~3–5%/yr) | **~$760–1,080** (launch) | **~$0.8K/yr yr-1, but $4–6K total across 3 yrs** |
+
+### What's commonly negotiable (and what isn't)
+
+| Lever | Negotiable? | How much |
+|---|---|---|
+| Year-1 base rate | **Yes** | 25–40% off list ($449 → $269–336) |
+| Implementation fee | **Yes** | Typically fully waivable for new practices |
+| Pediatric module add-on fee | **Yes** | Free for first 3–6 mo, then standard |
+| Clearinghouse per-claim fees | **Sometimes** | Free yr-1 is achievable |
+| Training hours | **Yes** | 5–10 free hours standard, can push to 15–20 |
+| Data migration (from prior EHR) | **N/A** | New practice — no migration needed |
+| Multi-year lock pricing | **Yes** | Flat for 3 yrs in exchange for the term |
+| Per-user fees for MA/biller | **Sometimes** | Push to bundle 2–3 staff users in provider fee |
+| Healow patient portal fees | **Not really** | Standard inclusion in any tier |
+| SaaS hosting / uptime SLA | **No** | Standard contract terms |
+
+### Negotiation playbook — the 6 asks
+
+1. **"What's your new-practice incentive program for year 1?"** (Forces the discount conversation; doesn't tip your hand.)
+2. **"Waive implementation, training, and data setup as a goodwill gesture for the multi-year customer relationship."** ($3–5K saved.)
+3. **"Bundle the Pediatric Module free for the first 90 days while we ramp."** ($150–300 saved + signals you'll need it.)
+4. **"Lock pricing for 24 months — I'll commit if you'll cap year 2 at year 1 + 3%."** (Inflation insurance.)
+5. **"What's the price difference if I sign by end of quarter?"** (eCW reps have quota pressure; this can extract 5–10% more.)
+6. **"What do you offer to practices coming from [PCC / OP / Athena / Epic]?"** (Even if you're brand-new — implying you have alternatives strengthens leverage.)
+
+> **Realistic target:** Aim for Scenario B as a floor and Scenario C as a stretch goal. **Worst-case Scenario A is still cheaper than PCC/OP at list price**, so the picked stack survives even with zero negotiation success. Walk away from the deal at least once before signing — discounts almost always improve after the first "no."
+
+### Three-year TCO under each scenario
+
+Assumes year 2+ reverts to standard $449/mo (except Scenario D which holds flat).
+
+| Scenario | Yr-1 eCW spend | Yr-2 eCW spend | Yr-3 eCW spend | 3-yr eCW total | 3-yr stack total (eCW+Phreesia+Spruce) |
+|---|---|---|---|---|---|
+| A. No discount | $5,388 + $4K impl | $5,388 | $5,388 | **~$20.2K** | **~$46–62K** |
+| B. Standard discount | $3,888 (impl waived) | $5,388 | $5,388 | **~$14.7K** | **~$40–56K** |
+| C. Aggressive | $3,288 (impl waived + module free Q1) | $5,388 | $5,388 | **~$14.1K** | **~$39–55K** |
+| D. Multi-year lock @ $349 | $4,188 | $4,188 | $4,188 | **~$12.6K** | **~$38–54K** |
+
+> **Bottom line:** Scenarios B–D save **$5–8K over 3 years** on eCW alone vs walk-up pricing. **Scenario D (multi-year lock) is the cheapest over 3 years but trades flexibility** — only sign it if you're confident you won't outgrow the stack into Stack 1-Plus before year 3.
 
 ---
 
@@ -143,6 +195,7 @@ The eCW peds gap is real but systematically solvable. Each gap below has a named
 
 **Pre-sign checklist (ask the eCW rep before signing):**
 
+*Capability / fit questions:*
 - [ ] Is the **Pediatric Module** included in this tier or an add-on? Price delta?
 - [ ] Does it include **vaccine inventory + state IIS connectivity** for [my state]?
 - [ ] Are **CDC/WHO growth charts** native or template-based?
@@ -152,6 +205,16 @@ The eCW peds gap is real but systematically solvable. Each gap below has a named
 - [ ] What's typical first-pass acceptance for peds practices on your bundled clearinghouse? (Target ≥95%.)
 - [ ] What's the upgrade path to Waystar later if I need premium edits?
 
+*Pricing / discount questions (target Scenario B–C — see [§ Year-1 Pricing Scenarios](#-year-1-pricing-scenarios--negotiate-the-ecw-discount)):*
+- [ ] What's your **new-practice incentive program** for year 1? (Target: 25–40% off list.)
+- [ ] Can implementation, training, and data-setup fees be **waived**? (Target: yes for new practices.)
+- [ ] Will you bundle the **Peds Module free for the first 90 days**?
+- [ ] Will you **lock pricing for 24–36 months** with a cap (e.g., yr 2 ≤ yr 1 + 3%)?
+- [ ] What's the **end-of-quarter discount**? (Reps have quota pressure.)
+- [ ] Are **clearinghouse per-claim fees waivable** for year 1?
+- [ ] How many **free training hours** are bundled? (Target: 10–20.)
+- [ ] Are MA/biller per-user fees **bundled into the provider fee** or extra?
+
 ---
 
 ## 📖 How to Read the Rest of This Document
@@ -160,6 +223,7 @@ Everything above is the **answer**. Everything below is the **research backing**
 
 | If you want… | Jump to |
 |---|---|
+| **eCW year-1 discount scenarios + negotiation playbook** | [§ Year-1 Pricing Scenarios](#-year-1-pricing-scenarios--negotiate-the-ecw-discount) |
 | One-line stack pick with rationale | [§1 — Executive Summary](#1-executive-summary) |
 | Pediatrics workflow specifics | [§2 — Practice Profile Assumptions](#2-practice-profile-assumptions) |
 | How we scored vendors | [§3 — Decision Criteria & Weighting](#3-decision-criteria--weighting) |
