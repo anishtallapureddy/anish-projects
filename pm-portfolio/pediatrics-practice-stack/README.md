@@ -12,7 +12,8 @@
 
 | | |
 |---|---|
-| **Total recurring** | **~$1,180–1,550/mo** (4 vendors / 4 BAAs) |
+| **Total recurring at launch (mo 1–3)** | **~$880–1,150/mo** (4 vendors / 4 BAAs) |
+| **Steady state (mo 4+, with solo CPB)** | **~$1,180–1,750/mo** |
 | **One-time setup** | **~$3–5K** (eCW peds templates + consultant) |
 | **Expected NCR** | **96.5–97.5%** |
 | **Time to launch** | **4 weeks** |
@@ -21,19 +22,22 @@
 | Layer | Vendor | Cost/mo | Role |
 |---|---|---|---|
 | EHR + PM + bundled clearinghouse | **eCW Cloud + Peds Module** | $449 | Charting, scheduling, billing engine, state IIS, VFC, eRx, bundled clearinghouse |
-| Intake + eligibility + payments | **Phreesia + Phreesia Payments** | $700–1,000 | Mobile intake, real-time 270/271, card-on-file, copay capture |
+| Intake + eligibility | **Phreesia (base)** | $250–300 | Mobile intake, real-time 270/271, copay flag at booking |
+| Card-on-file + patient payments | **Phreesia Payments** | ~2.75% of processed (≈$150–350/mo at solo volume) | Replaces Rectangle Health; bundled into one Phreesia BAA |
 | Patient comms + fax + voice + team chat | **Spruce** | $30–50 | 2-way SMS, HIPAA fax, VoIP, internal chat |
 | Clearinghouse secondary | **Availity Essentials** | $0 | Backup eligibility, manual claim status, denial portal |
 | Billing help (month 4+) | eCWUG-network solo CPB | $300–600 | Replaces ~10 hrs/week of staff billing time |
 
-> **Why this stack:** It hits ~97% NCR at ~$1,300/mo with 4 vendors by combining a peds-capable EHR with a strong front-end wrap. The eCW peds gap (vs PCC/Office Practicum) is real but ~80% closable with a one-time $3–5K template investment; Phreesia + Spruce close the remaining parent-UX gap by routing around the Healow portal entirely.
+> **Why this stack:** It hits ~97% NCR at ~$1,000–1,200/mo (during launch) with 4 vendors by combining a peds-capable EHR with a strong front-end wrap. The eCW peds gap (vs PCC/Office Practicum) is real but ~80% closable with a one-time $3–5K template investment; Phreesia + Spruce close the remaining parent-UX gap by routing around the Healow portal entirely.
+
+> **Phreesia pricing note:** Phreesia is not transparently published. The published estimate is **$250–300/provider/mo base** + **~2.75% transaction fee** on payments processed through Phreesia Payments. Add-ons (advanced reminders, custom reporting, post-visit surveys) push the base toward $400+. At solo volume (~$10–13K/mo in patient pay through Phreesia), expect **~$400–650/mo all-in**. **Always insist on a written quote with every add-on line-itemed before signing**; multiple independent reviews flag opaque pricing as Phreesia's #1 frustration [[itqlick](https://www.itqlick.com/phreesia/pricing)] [[emitrr](https://emitrr.com/blog/phreesia-pricing/)].
 
 ---
 
 ## ⚡ Decision in 60 Seconds
 
 1. **Pick a peds-native EHR.** PCC and Office Practicum are the only two true peds-native EHRs; they cost $400–700/mo more than eCW and ship better defaults — but **eCW + a $3–5K one-time consult closes ~80% of the gap and saves ~$8–12K/yr forever**. Local network effect (shared MAs, billers, denial intel from neighbor practices) tips the call to eCW.
-2. **Wrap the EHR's weakest surfaces with best-in-class adjuncts.** eCW's intake (Healow) is mediocre; replace with Phreesia. eCW's patient comms are basic; replace with Spruce. Both wraps are <$1,050/mo combined and unlock ~3–5pt of NCR plus the patient-experience floor a modern practice needs.
+2. **Wrap the EHR's weakest surfaces with best-in-class adjuncts.** eCW's intake (Healow) is mediocre; replace with Phreesia. eCW's patient comms are basic; replace with Spruce. Both wraps are **~$450–700/mo combined** (Phreesia base + ~2.75% on patient payments + Spruce) and unlock ~3–5pt of NCR plus the patient-experience floor a modern practice needs.
 3. **Don't buy what the wrap already gives you.** Phreesia bundles eligibility (drop standalone Phreesia eligibility add-ons elsewhere) AND payments (drop Rectangle Health). Spruce bundles fax + VoIP + chat (drop Klara + RingCentral + Slack). The bundled eCW clearinghouse handles ~95% of payers (drop Waystar at launch). **Total redundancy removed: ~$600–900/mo and 3 BAAs.**
 
 ---
@@ -46,8 +50,8 @@ Each row is a real candidate stack we evaluated end-to-end. **The picked stack i
 |---|---|---|---|---|---|
 | 1 | **Stack 0 — PCC all-in-one** | $1,500–2,200 | 95–96.5% | 2 | Cleanest ops (1 EHR vendor, 24/7 support). Loses ~$10–25K/yr NCR ceiling; no local network effect; less flexible front-end UX. **Strong fallback if eCW templates underperform.** |
 | 2 | **Stack 0-Lite — PCC + Spruce** | $1,550–2,250 | 95–96.5% | 3 | PCC + Spruce wrap. Same tradeoff as Stack 0 but adds modern comms. Still loses on cost vs eCW. |
-| 3 | **Stack 1-Plus — OP + Phreesia + Spruce** | $1,850–2,250 | 97–98% | 4 | Peds-native EHR + best-in-class wrap. Highest NCR ceiling. **Loses on cost: +$500–700/mo and no local network.** |
-| 4 | **✅ Stack 1-Lite-Final — eCW + Phreesia + Spruce + Availity** | **$1,180–1,550** | **96.5–97.5%** | **4** | **Picked.** Best $/NCR; local network effect; gap closable with $3–5K one-time. |
+| 3 | **Stack 1-Plus — OP + Phreesia + Spruce** | $1,550–1,950 | 97–98% | 4 | Peds-native EHR + best-in-class wrap. Highest NCR ceiling. **Loses on cost: +$500–700/mo and no local network.** |
+| 4 | **✅ Stack 1-Lite-Final — eCW + Phreesia + Spruce + Availity** | **$880–1,150** (launch); $1,180–1,750 (mo 4+) | **96.5–97.5%** | **4** | **Picked.** Best $/NCR; local network effect; gap closable with $3–5K one-time. |
 | 5 | Stack 1-Lite-Plus — NextGen Office variant | $1,200–1,500 | 96.5–97.5% | 4 | Cheaper than eCW on paper; but user found weak reviews + no local provider footprint. **Rejected.** |
 | 6 | Stack 2 — OP + Phreesia + Klara + Waystar + Rectangle Health | $2,100–2,800 | 97.5–98.5% | 6 | Highest NCR but 6 BAAs, heavy ops load, ~$10K/yr above Stack 1-Lite-Final for ~1pt NCR gain. **Wrong shape for solo.** |
 | 7 | Stack 3 — Modular cloud (Elation + Phreesia + Klara + Waystar) | $2,000–2,600 | 96.5–97.5% | 5+ | No peds-native EHR; Elation peds gap is worse than eCW's and not as closable with templates. **Rejected.** |
@@ -113,7 +117,7 @@ The eCW peds gap is real but systematically solvable. Each gap below has a named
 | 7 | School/sports/camp forms not bundled | Med | Form pack (10 templates) | $0.3–0.5K | 2–3 days | 100% |
 | 8 | Vaccine record export for school | Med | Letter macro from immunization record | $0 | half day | 100% |
 | 9 | Sick + well same-day workflow clunky | Med | Template combo + Mod 25 (see #3) | $0.2K | 1 day | 95% |
-| 10 | Healow patient portal is mediocre | High | **Replace with Phreesia (intake) + Spruce (messaging)** | $730–1,050/mo | 1wk | 100% (routed around) |
+| 10 | Healow patient portal is mediocre | High | **Replace with Phreesia (intake) + Spruce (messaging)** | $430–700/mo | 1wk | 100% (routed around) |
 | 11 | No native real-time eligibility at booking | High | **Phreesia 270/271** | (bundled above) | — | 100% |
 | 12 | No card-on-file at booking | High | **Phreesia Payments** | (bundled above) | — | 100% |
 | 13 | Bundled CH less aggressive than Waystar | Low (at solo volume) | DIY denial work mo 1–3, eCWUG-network CPB mo 4+ | $300–600/mo from mo 4 | mo 4 | 80% |
@@ -866,7 +870,7 @@ Real-time eligibility (270/271) is the **single biggest lever for both NCR and c
 
 **This is why Phreesia + Phreesia Payments is so strong:** the 270 runs at booking → intake form quotes exact copay + deductible → patient enters card → check-in collects the quoted amount. One vendor, one flow, one number that's accurate before the visit. Splitting eligibility (EHR) from payments (Rectangle) forces front-desk staff to manually translate the 271 into a POS amount — 3–5 min × 25–30 visits/day = **~2 hrs/day of staff time** plus a meaningful error rate.
 
-> **Revised payments + eligibility rule:** If you can afford one upgrade past Stack 0-Lite, make it **Phreesia (intake + eligibility + payments bundled)** — and at that point drop Rectangle Health. The 3–5 pt NCR uplift = **$18–30K/yr extra revenue** on $600K base, which easily covers Phreesia's ~$700–1,000/mo.
+> **Revised payments + eligibility rule:** If you can afford one upgrade past Stack 0-Lite, make it **Phreesia (intake + eligibility + payments bundled)** — and at that point drop Rectangle Health. The 3–5 pt NCR uplift = **$18–30K/yr extra revenue** on $600K base, which easily covers Phreesia's ~$400–650/mo (~$250–300 base + ~2.75% on patient pay).
 
 ---
 
@@ -1291,7 +1295,7 @@ This is the **highest-ROI startup-stage stack in the report**. It captures Phree
 |---|---|---|---|
 | L1–L3 EHR + PM + bundled clearinghouse | **PCC or Office Practicum** | $1,500–2,200 | — |
 | L4 Patient comms + HIPAA fax + voice + team chat | **Spruce** | $30–50 | Klara, standalone fax line |
-| Intake + eligibility (270/271) + payments | **Phreesia + Phreesia Payments** | $700–1,000 | Phreesia portion of Stack 2 + Rectangle Health |
+| Intake + eligibility (270/271) + payments | **Phreesia + Phreesia Payments** | $400–650 | Phreesia portion of Stack 2 + Rectangle Health |
 | eRx / EPCS | DrFirst (usually EHR-bundled) | $0–50 | — |
 | L7 Clearinghouse | **EHR-bundled** (Change Healthcare for PCC, TriZetto for OP) | **$0 — included** | **Waystar** |
 | Light biller (months 4+) | PCC RCM or OP RCM or solo contractor | $300–600 | Outsourced full RCM |
@@ -1400,10 +1404,11 @@ A common cost-driven variant: swap the peds-native EHR (PCC/OP, $1,500–2,200/m
 | L1–L3 EHR + PM | **eClinicalWorks (cloud)** | ~$449/provider | Includes eCW's own bundled clearinghouse |
 | L7 Clearinghouse (primary) | **eCW-bundled** | $0 | Default; good first-pass rate ~93–95% |
 | L7 Clearinghouse (secondary/backup) | **Availity Essentials** | **Free** ([Availity Essentials](https://www.availity.com/essentials/)) | Use for manual claim status checks + as backup path |
-| Intake + eligibility + payments | **Phreesia + Phreesia Payments** | $700–1,000 | |
+| Intake + eligibility | **Phreesia (base)** | $250–300 | Per-provider subscription |
+| Card-on-file + patient payments | **Phreesia Payments** | ~2.75% of processed (~$150–350/mo) | Bundled BAA; replaces Rectangle Health |
 | Patient comms + fax + voice | **Spruce** | $30–50 | |
 | eRx / EPCS | DrFirst (eCW-bundled) | $0–50 | |
-| **Total active vendors** | **4** | **~$1,180–1,550/mo** | **~$650/mo cheaper than Stack 1-Plus** |
+| **Total active vendors** | **4** | **~$880–1,150/mo** (launch); $1,180–1,750/mo (mo 4+ with solo CPB) | **~$650/mo cheaper than Stack 1-Plus** |
 
 #### Why this combo can work
 
@@ -1474,7 +1479,7 @@ The eCW stack saves ~$650/mo vs PCC/OP Stack 1-Plus, but:
 | Stack | Monthly | Vendors | Expected NCR | Peds-native | Best for |
 |---|---|---|---|---|---|
 | Stack 0 / 0-Lite | ~$1,750 | 2–3 | 95.0–96.0% | ✅ | Absolute minimum viable |
-| **Stack 1-Lite (eCW + Phreesia + Spruce + Availity)** | **~$1,180–1,550** | **4** | **96.0–97.0%** | **❌** | **Cheapest serious stack; accept peds gap** |
+| **Stack 1-Lite (eCW + Phreesia + Spruce + Availity)** | **~$880–1,150** (launch); $1,180–1,750 (mo 4+) | **4** | **96.0–97.0%** | **❌** | **Cheapest serious stack; accept peds gap** |
 | **Stack 1-Plus (PCC/OP + Phreesia + Spruce)** | **~$2,230–3,300** | **4** | **97.5–98.5%** | **✅** | **Recommended launch (best ROI)** |
 | Stack 2 as-published | ~$2,500+ | 6 | 97.5–98.0% | ✅ | Steady state; usually has redundancy |
 
@@ -1522,7 +1527,7 @@ If you want cheaper than PCC/OP but better peds support than eCW, **NextGen Offi
 | L1–L3 EHR + PM + peds module | **NextGen Office** | $299–549/provider |
 | L7 Clearinghouse (primary) | NextGen-bundled (Change Healthcare) | $0 |
 | L7 Clearinghouse (secondary) | Availity Essentials | Free |
-| Intake + eligibility + payments | Phreesia + Phreesia Payments | $700–1,000 |
+| Intake + eligibility + payments | Phreesia + Phreesia Payments | $400–650 |
 | Patient comms + fax + voice | Spruce | $30–50 |
 | **Total** | **4 vendors** | **~$1,050–1,650/mo** |
 
@@ -1541,7 +1546,7 @@ If you want cheaper than PCC/OP but better peds support than eCW, **NextGen Offi
 |---|---|---|---|---|---|
 | PF + Phreesia + Spruce + Availity | $149 | ~$900–1,250 | ❌ | 95.5–96.5% | Cheapest viable; bridge stack |
 | DrChrono + Phreesia + Spruce | $199–499 | ~$950–1,600 | ⚠️ | 96.0–97.0% | iPad-forward solo |
-| Stack 1-Lite (eCW + Phreesia + Spruce + Availity) | $449 | ~$1,180–1,550 | ❌ | 96.0–97.0% | eCW experience already |
+| Stack 1-Lite (eCW + Phreesia + Spruce + Availity) | $449 | ~$880–1,150 (launch) / $1,180–1,750 (mo 4+) | ❌ | 96.0–97.0% | eCW experience already |
 | **Stack 1-Lite-Plus (NextGen Office + Phreesia + Spruce)** | **$299–549** | **~$1,050–1,650** | **✅ partial** | **96.5–97.5%** | **Best peds-aware cost-effective option** |
 | athenaOne + Phreesia + Spruce | ~$2,750–3,500 effective | ~$3,500–4,550 | ⚠️ | 97.5–98.5% | Cash-starved launch (% tax grows with you) |
 | **Stack 1-Plus (PCC/OP + Phreesia + Spruce)** | **$1,500–2,200** | **~$2,230–3,300** | **✅✅** | **97.5–98.5%** | **Recommended overall launch** |
