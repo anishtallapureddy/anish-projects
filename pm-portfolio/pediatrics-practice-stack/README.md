@@ -2250,6 +2250,61 @@ Vaccine record export (school/camp/sports), referral letter macro, school excuse
 
 ---
 
+## 9g. Communications Layer — Future Paths (Spruce alternatives + DIY integration)
+
+> **Why this section exists:** Spruce has no native eCW integration — staff manually copy Spruce thread summaries into eCW telephone encounters. At solo volume (~28 visits/day) this is ~5–10 min/day, acceptable. As you scale, three paths open up.
+
+### Path A — Swap Spruce for a natively-integrated comms tool (BUY)
+
+| Tool | eCW integration | Spruce-comparable? | Cost (solo) | When to swap |
+|---|---|---|---|---|
+| **Klara** | ✅ Native (eCW Marketplace; HL7 + API) — schedule sync, write-back | ✅ Closest UX match; modern shared inbox, web chat, video, automated reminders | **~$249–399/mo** | Month 9+ if no-show rate or staff comm time becomes the bottleneck |
+| **OhMD** | ✅ Native (eCW Marketplace) | ✅ Clean modern UX; simpler than Klara | **~$199–349/mo** | Month 9+ as the **value swap** |
+| **Updox** | ✅✅ Deepest native (eCW's longest-running partner) | ⚠️ Functional but dated UX | ~$50–150/mo | Only if UX doesn't matter |
+| eCW Messenger | ✅✅ Built-in | ❌ Dated, no shared inbox, weak texting | $50–100/mo | Skip |
+
+**Swap trigger:** track manual eCW copy-over time monthly. If it crosses **~30 min/day** (≈ 1 patient slot/wk lost), swap. Both Klara and OhMD are month-to-month.
+
+### Path B — Vibe-code a paste-assistant (BUILD, no eCW write access)
+
+**Scope:** Spruce webhook → LLM summary → Gmail draft / Slack triage / Airtable log. Staff still pastes into eCW, but the summary is pre-written and patient-matched.
+
+| Component | Choice | Cost |
+|---|---|---|
+| Spruce side | Public REST API + webhooks (OAuth) | Free |
+| Runtime | Cloudflare Worker / Vercel function | Free tier |
+| LLM | **Azure OpenAI or AWS Bedrock Anthropic** (BAA-signed — never raw OpenAI for PHI) | ~$5–15/mo |
+| Output | Gmail draft (one-click paste) + Slack `#triage` + Airtable audit log | $0 |
+
+**Build time:** 1–3 weekends with Cursor/Copilot. ~500–1,500 LOC.
+**Guardrails:** human-in-the-loop (paste, not auto-write); show original thread alongside summary to catch LLM hallucinations; sign BAA with the LLM provider; log every PHI-touching call.
+
+### Path C — Hire a consultant for true eCW chart-write integration (BUILD+BUY)
+
+**The honest cost ladder:**
+
+| Scope | Real cost | What you get |
+|---|---|---|
+| Paste-assistant only (same as Path B, professionally built + BAA) | **$2–5K one-time** | No eCW write. Cleaner infra than DIY. |
+| **SMART-on-FHIR app** (eCW developer portal registration; `Communication.write` / `DocumentReference.write` scopes) | **$8–15K one-time + ~$50–200/mo hosting** | Real chart writes via FHIR R4. 6–12 wk timeline. Requires eCW security review. |
+| **HL7 v2 interface (Mirth Connect → eCW Interface Engine)** | **$10–20K one-time + $500–1,500/mo eCW interface fee** | Deepest integration. 8–16 wk. Monthly eCW fee never goes away. |
+| White-glove "consultant handles eCW negotiations" | **$15–30K** | Consultant manages app approval + security review + tenant config |
+
+**Avoid:** RPA / browser automation into eCW UI. Violates eCW ToS, breaks on every UI update, audit-trail nightmare.
+
+**Where to find consultants:** eCWUG (eClinicalWorks User Group) integrator directory, Mirth Connect consultants on Upwork/Toptal, SMART-on-FHIR developers via HL7 Confluence. Redox sells eCW connectivity as a service (~$300–800/mo + dev work) but it's typically overkill for solo.
+
+### Sequenced recommendation
+
+1. **Month 0–9:** Keep Spruce as-is. Manual copy-over is fine at solo volume.
+2. **Month 3–6 (optional):** Vibe-code Path B if you'd enjoy it and have ~40 hrs to spare. Validates the workflow; encodes peds-specific triage logic; ~$10/mo running cost.
+3. **Month 9–12:** If comm overhead crosses ~30 min/day OR no-show rate stays elevated → **either** swap to **OhMD** (~$250/mo, fastest, BAA-signed, battle-tested) **or** invest **$8–15K** with a consultant for FHIR-write integration (better 3-yr TCO at high message volume).
+4. **Skip HL7 path** unless you grow to 3+ providers.
+
+**Decision rule:** if maintaining the integration would feel like a chore at month 18, BUY (OhMD/Klara). If it'd be a portfolio piece you enjoy, BUILD.
+
+---
+
 ## 10. Appendix
 
 ### Glossary
