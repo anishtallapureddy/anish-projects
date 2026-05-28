@@ -1395,6 +1395,87 @@ The eCW stack saves ~$650/mo vs PCC/OP Stack 1-Plus, but:
 
 ---
 
+### Cost-effective EHR landscape — alternatives to eCW
+
+Before locking eCW, here's the broader sub-$600/provider/mo generalist cloud EHR market with peds-fit assessments.
+
+#### Tier 1 — Ultra-low-cost (<$300/provider/mo)
+
+| EHR | Price | Strengths | Peds fit |
+|---|---|---|---|
+| **Practice Fusion** (Veradigm) | **~$149/provider/mo** ([Practice Fusion](https://www.practicefusion.com/pricing/)) | OG cheap cloud EHR; ~30K provider users; ONC certified | ⚠️ Generalist; basic growth charts, no native IIS; dated UI |
+| **CharmHealth** | **Free tier (≤50 enc/mo) → ~$25–350/mo** ([CharmHealth](https://www.charmhealth.com/pricing/)) | Modern UI, integrated TM, real free tier | ⚠️ Generalist; light peds tooling |
+| **RXNT** | **~$110–300/provider/mo** ([RXNT Pricing](https://www.rxnt.com/pricing/)) | Modular (EHR/PM/eRx separable); strong eRx | ⚠️ Generalist |
+| **OpenEMR** | **Free (open source)** ([OpenEMR](https://www.open-emr.org/)) | $0 software; ONC certified | ❌ Self-hosting overhead = real $ in DevOps + HIPAA risk |
+
+#### Tier 2 — Mid-budget cloud generalist ($300–600/provider/mo)
+
+| EHR | Price | Strengths | Peds fit |
+|---|---|---|---|
+| **DrChrono** (EverHealth) | **~$199–499/provider/mo** ([DrChrono](https://www.drchrono.com/pricing/)) | Native iPad app; integrated payments; modern UX; peds template marketplace | ⚠️ Generalist with better peds templates |
+| **Tebra** (Kareo + PatientPop) | **~$160–700/mo** ([Tebra](https://www.tebra.com/pricing/)) | Strong PM/billing heritage; built-in marketing | ⚠️ Generalist; serviceable with custom forms |
+| **NextGen Office** | **~$299–549/provider/mo** ([NextGen Office](https://www.nextgen.com/products/electronic-health-records/nextgen-office)) | **Has a peds-specific module** (growth charts, immunizations, AAP screening) — the key differentiator at this price | **✅ Best generalist for peds** |
+| **CareCloud** | **~$349–599/provider/mo** ([CareCloud](https://www.carecloud.com/pricing/)) | Integrated PM/EHR/RCM; good analytics | ⚠️ Generalist |
+| **AdvancedMD** | **~$429–729/provider/mo** ([AdvancedMD](https://www.advancedmd.com/pricing/)) | Strong PM/billing; mature integrations | ⚠️ Generalist |
+| **eClinicalWorks** | ~$449/provider/mo | Massive feature set; ~150K provider users | ⚠️ Generalist (Stack 1-Lite baseline) |
+
+#### Tier 3 — % of collections / no-software-fee models
+
+| EHR | Price | Strengths | Peds fit |
+|---|---|---|---|
+| **athenaOne** | **$0 software + ~5.5–7% of collections** ([athenahealth](https://www.athenahealth.com/solutions/athenaone)) | Industry-best clearinghouse + payer intelligence; zero upfront | ⚠️ Reasonable peds; %-of-collections taxes every NCR improvement |
+| **Veradigm Practice Management** | Custom (Allscripts heritage) | Strong RCM | ⚠️ Generalist |
+
+#### Stack 1-Lite-Plus — NextGen Office variant (RECOMMENDED COST-EFFECTIVE)
+
+If you want cheaper than PCC/OP but better peds support than eCW, **NextGen Office is the sweet spot.**
+
+| Layer | Vendor | Cost (mo) |
+|---|---|---|
+| L1–L3 EHR + PM + peds module | **NextGen Office** | $299–549/provider |
+| L7 Clearinghouse (primary) | NextGen-bundled (Change Healthcare) | $0 |
+| L7 Clearinghouse (secondary) | Availity Essentials | Free |
+| Intake + eligibility + payments | Phreesia + Phreesia Payments | $700–1,000 |
+| Patient comms + fax + voice | Spruce | $30–50 |
+| **Total** | **4 vendors** | **~$1,050–1,650/mo** |
+
+**Why this is better than the eCW variant for peds:**
+- Native growth charts (CDC/WHO)
+- Immunization tracking + IIS connectivity in many states (verify yours)
+- AAP-aligned screening templates (M-CHAT, ASQ-3)
+- ~30 hrs less customization than eCW
+- Comparable price (~$50–100/mo cheaper than eCW on the low end)
+
+**Verify before signing:** state IIS integration coverage, VFC inventory depth, peds-specific CPT favorites availability.
+
+#### Updated stack scoreboard (with all cost-effective options)
+
+| Stack | EHR cost (mo) | Total stack (mo) | Peds-native | NCR ceiling | Best for |
+|---|---|---|---|---|---|
+| PF + Phreesia + Spruce + Availity | $149 | ~$900–1,250 | ❌ | 95.5–96.5% | Cheapest viable; bridge stack |
+| DrChrono + Phreesia + Spruce | $199–499 | ~$950–1,600 | ⚠️ | 96.0–97.0% | iPad-forward solo |
+| Stack 1-Lite (eCW + Phreesia + Spruce + Availity) | $449 | ~$1,180–1,550 | ❌ | 96.0–97.0% | eCW experience already |
+| **Stack 1-Lite-Plus (NextGen Office + Phreesia + Spruce)** | **$299–549** | **~$1,050–1,650** | **✅ partial** | **96.5–97.5%** | **Best peds-aware cost-effective option** |
+| athenaOne + Phreesia + Spruce | ~$2,750–3,500 effective | ~$3,500–4,550 | ⚠️ | 97.5–98.5% | Cash-starved launch (% tax grows with you) |
+| **Stack 1-Plus (PCC/OP + Phreesia + Spruce)** | **$1,500–2,200** | **~$2,230–3,300** | **✅✅** | **97.5–98.5%** | **Recommended overall launch** |
+
+#### EHR migration warning
+
+**Switching EHRs after 12+ months is painful.** Data migration is rarely clean, staff retraining costs ~40–80 hours, and you'll lose ~2–4 weeks of productivity. The "cheap EHR now, upgrade later" plan often costs more than starting with the right one. **Pick once with a 5-year horizon.**
+
+#### Honest recommendation matrix
+
+| Binding constraint | Pick |
+|---|---|
+| Pure cost + you have eCW/PF experience | Practice Fusion or DrChrono — pay in template-build time |
+| Cost BUT want peds-aware features | **NextGen Office (Stack 1-Lite-Plus)** — best generalist for peds at this price |
+| Zero software fee at launch | athenaOne — accept the %-of-collections tax, plan to migrate by month 18 |
+| Clinical productivity + peds workflows | **PCC or OP (Stack 1-Plus)** — pays back in provider time |
+
+> **Bottom line (EHR landscape):** The eCW-class alternatives worth knowing are **Practice Fusion (~$149)**, **DrChrono (~$199–499)**, **NextGen Office (~$299–549, has peds module)**, **Tebra (~$160–700)**, and **athenaOne (% of collections)**. For cost-effective peds, **NextGen Office is the sweet spot** — it ships with a pediatrics module that closes most of the peds-native gap that hurts you in eCW. Final ranking for solo peds startup: **Stack 1-Plus (PCC/OP) > Stack 1-Lite-Plus (NextGen Office) > Stack 1-Lite (eCW) > Practice Fusion variant.**
+
+---
+
 ## 7. Cost Model
 
 Monthly TCO per stack, per provider. Numbers are mid-range estimates from cited sources where available; mark all custom pricing with † and validate at contracting.
