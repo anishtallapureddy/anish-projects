@@ -10,11 +10,11 @@
 
 **eClinicalWorks Cloud (peds module) + Phreesia + Spruce + Availity (free).**
 
-| | |
+| Metric | Value |
 |---|---|
-| **Total recurring at launch (mo 1–3)** | **~$880–1,150/mo** (list price); **~$730–1,050** with standard new-practice eCW discount (see [§ Year-1 Pricing Scenarios](#-year-1-pricing-scenarios--negotiate-the-ecw-discount)) |
+| **Total recurring at launch (mo 1–3)** | **~$880–1,150/mo** list price · **~$730–1,050/mo** with standard new-practice eCW discount (see [§ Year-1 Pricing Scenarios](#-year-1-pricing-scenarios--negotiate-the-ecw-discount)) |
 | **Steady state (mo 4+, with solo CPB)** | **~$1,180–1,750/mo** |
-| **One-time setup** | **~$3–5K** (eCW peds templates + consultant); **eCW impl fee is typically waivable for new practices** |
+| **One-time setup** | **~$3–5K** (eCW peds templates + consultant) · **eCW impl fee is typically waivable for new practices** |
 | **Expected NCR** | **96.5–97.5%** |
 | **Time to launch** | **4 weeks** |
 | **At steady state (~28 visits/day)** | **~$620–640K/yr net to practice** |
@@ -103,7 +103,7 @@ Each row is a real candidate stack we evaluated end-to-end. **The picked stack i
 | 1 | **Stack 0 — PCC all-in-one** | $1,500–2,200 | 95–96.5% | 2 | Cleanest ops (1 EHR vendor, 24/7 support). Loses ~$10–25K/yr NCR ceiling; no local network effect; less flexible front-end UX. **Strong fallback if eCW templates underperform.** |
 | 2 | **Stack 0-Lite — PCC + Spruce** | $1,550–2,250 | 95–96.5% | 3 | PCC + Spruce wrap. Same tradeoff as Stack 0 but adds modern comms. Still loses on cost vs eCW. |
 | 3 | **Stack 1-Plus — OP + Phreesia + Spruce** | $1,550–1,950 | 97–98% | 4 | Peds-native EHR + best-in-class wrap. Highest NCR ceiling. **Loses on cost: +$500–700/mo and no local network.** |
-| 4 | **✅ Stack 1-Lite-Final — eCW + Phreesia + Spruce + Availity** | **$880–1,150** (launch); $1,180–1,750 (mo 4+) | **96.5–97.5%** | **4** | **Picked.** Best $/NCR; local network effect; gap closable with $3–5K one-time. |
+| 4 | **✅ Stack 1-Lite-Final — eCW + Phreesia + Spruce + Availity** | **$880–1,150** (launch) · $1,180–1,750 (mo 4+) | **96.5–97.5%** | **4** | **Picked.** Best $/NCR; local network effect; gap closable with $3–5K one-time. |
 | 5 | Stack 1-Lite-Plus — NextGen Office variant | $1,200–1,500 | 96.5–97.5% | 4 | Cheaper than eCW on paper; but user found weak reviews + no local provider footprint. **Rejected.** |
 | 6 | Stack 2 — OP + Phreesia + Klara + Waystar + Rectangle Health | $2,100–2,800 | 97.5–98.5% | 6 | Highest NCR but 6 BAAs, heavy ops load, ~$10K/yr above Stack 1-Lite-Final for ~1pt NCR gain. **Wrong shape for solo.** |
 | 7 | Stack 3 — Modular cloud (Elation + Phreesia + Klara + Waystar) | $2,000–2,600 | 96.5–97.5% | 5+ | No peds-native EHR; Elation peds gap is worse than eCW's and not as closable with templates. **Rejected.** |
@@ -1449,7 +1449,7 @@ At solo peds volume (<400 claims/mo), the bundled clearinghouse covers ~95% of w
 | Stack | Vendors | Monthly | Expected NCR | When to choose |
 |---|---|---|---|---|
 | Stack 0 / 0-Lite | 2–3 | ~$1,750 | 95.0–96.0% | Absolute minimum viable launch |
-| **Stack 1-Plus (EHR + Phreesia + Spruce)** | **4–5** | **~$2,230–3,900** | **97.5–98.5%** | **Recommended launch — best ROI** |
+| **Stack 1-Plus (EHR + Phreesia + Spruce)** | **4–5** | **~$2,230–3,900** | **97.5–98.5%** | **NCR ceiling reference** — rejected on cost vs picked Stack 1-Lite-Final |
 | Stack 2 as-published | 6 | ~$2,500+ biller | 97.5–98.0% | Stack 1-Plus + Klara + Waystar; usually has redundancy |
 | Stack 3 (Elation modular) | 7+ | ~$2,800+ | 96.5–97.5% | Most flexible, most assembly required |
 
@@ -1457,7 +1457,9 @@ At solo peds volume (<400 claims/mo), the bundled clearinghouse covers ~95% of w
 
 ---
 
-### Stack 1-Lite — eCW + Phreesia + Spruce + Availity (CHEAPEST SERIOUS STACK)
+### Stack 1-Lite-Final — eCW + Phreesia + Spruce + Availity (PICKED — CHEAPEST SERIOUS STACK)
+
+> **Note on naming:** Earlier drafts of this section called this "Stack 1-Lite." It is the same stack; the **`-Final`** suffix marks the addition of **Availity as the free secondary clearinghouse** (used for payer fallback and free real-time eligibility). All references to "Stack 1-Lite" elsewhere in this deep dive refer to this same picked stack.
 
 A common cost-driven variant: swap the peds-native EHR (PCC/OP, $1,500–2,200/mo) for **eClinicalWorks** (~$449/provider/mo cloud), and use **Availity Essentials** (free) as either primary or secondary clearinghouse.
 
@@ -1543,11 +1545,11 @@ The eCW stack saves ~$650/mo vs PCC/OP Stack 1-Plus, but:
 | Stack | Monthly | Vendors | Expected NCR | Peds-native | Best for |
 |---|---|---|---|---|---|
 | Stack 0 / 0-Lite | ~$1,750 | 2–3 | 95.0–96.0% | ✅ | Absolute minimum viable |
-| **Stack 1-Lite (eCW + Phreesia + Spruce + Availity)** | **~$880–1,150** (launch); $1,180–1,750 (mo 4+) | **4** | **96.0–97.0%** | **❌** | **Cheapest serious stack; accept peds gap** |
-| **Stack 1-Plus (PCC/OP + Phreesia + Spruce)** | **~$2,230–3,300** | **4** | **97.5–98.5%** | **✅** | **Recommended launch (best ROI)** |
+| **Stack 1-Lite-Final (eCW + Phreesia + Spruce + Availity)** | **~$880–1,150** (launch) · $1,180–1,750 (mo 4+) | **4** | **96.5–97.5%** | **❌** | **Cheapest serious stack; accept peds gap (closable via $3–5K templates)** |
+| **Stack 1-Plus (PCC/OP + Phreesia + Spruce)** | **~$2,230–3,300** | **4** | **97.5–98.5%** | **✅** | **NCR ceiling reference** — rejected on cost |
 | Stack 2 as-published | ~$2,500+ | 6 | 97.5–98.0% | ✅ | Steady state; usually has redundancy |
 
-> **Bottom line (Stack 1-Lite):** **Use eCW + Phreesia + Spruce + Availity (as free secondary) if cost is the binding constraint AND you can absorb 30–50 hrs of eCW peds customization.** Otherwise, pay the extra ~$650/mo for Stack 1-Plus — the peds-native scaffolding (vaccine inventory, growth charts, AAP templates, peds coding favorites) is worth more than the savings for a clinical-time-constrained solo startup. The eCW route is legitimate but transfers value from vendor cost into provider time and denial risk.
+> **Bottom line (Stack 1-Lite-Final):** **Use eCW + Phreesia + Spruce + Availity (as free secondary) if cost is the binding constraint AND you can absorb 30–50 hrs of eCW peds customization (or pay $1.5–2.5K for an eCWUG consultant to do it).** Otherwise, pay the extra ~$650/mo for Stack 1-Plus — the peds-native scaffolding (vaccine inventory, growth charts, AAP templates, peds coding favorites) is worth more than the savings for a clinical-time-constrained solo startup. The eCW route is legitimate but transfers value from vendor cost into provider time and denial risk. **This is the picked stack — see [§0 Decision](#-the-decision-stack-1-lite-final).**
 
 ---
 
@@ -1573,7 +1575,7 @@ Before locking eCW, here's the broader sub-$600/provider/mo generalist cloud EHR
 | **NextGen Office** | **~$299–549/provider/mo** ([NextGen Office](https://www.nextgen.com/products/electronic-health-records/nextgen-office)) | **Has a peds-specific module** (growth charts, immunizations, AAP screening) — the key differentiator at this price | **✅ Best generalist for peds** |
 | **CareCloud** | **~$349–599/provider/mo** ([CareCloud](https://www.carecloud.com/pricing/)) | Integrated PM/EHR/RCM; good analytics | ⚠️ Generalist |
 | **AdvancedMD** | **~$429–729/provider/mo** ([AdvancedMD](https://www.advancedmd.com/pricing/)) | Strong PM/billing; mature integrations | ⚠️ Generalist |
-| **eClinicalWorks** | ~$449/provider/mo | Massive feature set; ~150K provider users | ⚠️ Generalist (Stack 1-Lite baseline) |
+| **eClinicalWorks** | ~$449/provider/mo | Massive feature set; ~150K provider users | ⚠️ Generalist (Stack 1-Lite-Final baseline) |
 
 #### Tier 3 — % of collections / no-software-fee models
 
@@ -1610,10 +1612,10 @@ If you want cheaper than PCC/OP but better peds support than eCW, **NextGen Offi
 |---|---|---|---|---|---|
 | PF + Phreesia + Spruce + Availity | $149 | ~$900–1,250 | ❌ | 95.5–96.5% | Cheapest viable; bridge stack |
 | DrChrono + Phreesia + Spruce | $199–499 | ~$950–1,600 | ⚠️ | 96.0–97.0% | iPad-forward solo |
-| Stack 1-Lite (eCW + Phreesia + Spruce + Availity) | $449 | ~$880–1,150 (launch) / $1,180–1,750 (mo 4+) | ❌ | 96.0–97.0% | eCW experience already |
+| **✅ Stack 1-Lite-Final (eCW + Phreesia + Spruce + Availity)** — *picked* | $449 | ~$880–1,150 (launch) · $1,180–1,750 (mo 4+) | ❌ | **96.5–97.5%** | **Picked.** Local network + closable peds gap |
 | **Stack 1-Lite-Plus (NextGen Office + Phreesia + Spruce)** | **$299–549** | **~$1,050–1,650** | **✅ partial** | **96.5–97.5%** | **Best peds-aware cost-effective option** |
 | athenaOne + Phreesia + Spruce | ~$2,750–3,500 effective | ~$3,500–4,550 | ⚠️ | 97.5–98.5% | Cash-starved launch (% tax grows with you) |
-| **Stack 1-Plus (PCC/OP + Phreesia + Spruce)** | **$1,500–2,200** | **~$2,230–3,300** | **✅✅** | **97.5–98.5%** | **Recommended overall launch** |
+| **Stack 1-Plus (PCC/OP + Phreesia + Spruce)** | **$1,500–2,200** | **~$2,230–3,300** | **✅✅** | **97.5–98.5%** | **NCR ceiling reference** — rejected on cost vs Stack 1-Lite-Final |
 
 #### EHR migration warning
 
@@ -1628,7 +1630,7 @@ If you want cheaper than PCC/OP but better peds support than eCW, **NextGen Offi
 | Zero software fee at launch | athenaOne — accept the %-of-collections tax, plan to migrate by month 18 |
 | Clinical productivity + peds workflows | **PCC or OP (Stack 1-Plus)** — pays back in provider time |
 
-> **Bottom line (EHR landscape):** The eCW-class alternatives worth knowing are **Practice Fusion (~$149)**, **DrChrono (~$199–499)**, **NextGen Office (~$299–549, has peds module)**, **Tebra (~$160–700)**, and **athenaOne (% of collections)**. For cost-effective peds, **NextGen Office is the sweet spot** — it ships with a pediatrics module that closes most of the peds-native gap that hurts you in eCW. Final ranking for solo peds startup: **Stack 1-Plus (PCC/OP) > Stack 1-Lite-Plus (NextGen Office) > Stack 1-Lite (eCW) > Practice Fusion variant.**
+> **Bottom line (EHR landscape):** The eCW-class alternatives worth knowing are **Practice Fusion (~$149)**, **DrChrono (~$199–499)**, **NextGen Office (~$299–549, has peds module)**, **Tebra (~$160–700)**, and **athenaOne (% of collections)**. For cost-effective peds, **NextGen Office is the sweet spot** — it ships with a pediatrics module that closes most of the peds-native gap that hurts you in eCW. Final ranking for solo peds startup: **Stack 1-Plus (PCC/OP) > Stack 1-Lite-Plus (NextGen Office) > Stack 1-Lite-Final (eCW) [picked — best $/NCR] > Practice Fusion variant.**
 
 ---
 
