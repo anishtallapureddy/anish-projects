@@ -1,0 +1,33 @@
+name: EdgeDesk CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'consumer/edgedesk/**'
+      - '.github/workflows/ci-edgedesk.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'consumer/edgedesk/**'
+      - '.github/workflows/ci-edgedesk.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: consumer/edgedesk
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: consumer/edgedesk/package-lock.json
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm run lint

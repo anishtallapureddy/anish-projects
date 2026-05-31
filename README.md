@@ -4,6 +4,7 @@
 ![Cost Segregation CI](https://github.com/anishtallapureddy/anish-projects/actions/workflows/ci-cost-segregation.yml/badge.svg)
 ![DFW CRE CI](https://github.com/anishtallapureddy/anish-projects/actions/workflows/ci-dfw-cre.yml/badge.svg)
 ![WheelAlpha CI](https://github.com/anishtallapureddy/anish-projects/actions/workflows/ci-wheelalpha.yml/badge.svg)
+![EdgeDesk CI](https://github.com/anishtallapureddy/anish-projects/actions/workflows/ci-edgedesk.yml/badge.svg)
 
 A monorepo of things I'm building — AI infrastructure, fintech tools, and the product thinking behind them.
 
@@ -63,6 +64,13 @@ cd consumer/stock-wheel-strategy-screener && npm install && npm start
 
 → [Agent specs](./consumer/stock-wheel-strategy-screener/agents/) · [Orchestrator design](./consumer/stock-wheel-strategy-screener/agents/orchestrator.md) · [Risk limits](./consumer/stock-wheel-strategy-screener/agents/configs/risk_limits.yaml)
 
+### [EdgeDesk — Trading & Research](./consumer/edgedesk/)
+A personal trading-intelligence dashboard for US equities & options. Enter a ticker, get a structured trade setup (entry zone, targets, stop, R:R, conviction, options structures) plus a downloadable Markdown research note. Numeric levels are computed deterministically from price + ATR + recent swing structure; an LLM (default OpenAI `gpt-4o-mini`, with deterministic mock fallback) writes the thesis and triggers. Next.js 14 + TypeScript + Tailwind, `yahoo-finance2` for market data, `lightweight-charts` for candles.
+
+```bash
+cd consumer/edgedesk && npm install && npm run dev
+```
+
 ---
 
 ## 📋 Product Work
@@ -90,7 +98,8 @@ anish-projects/
 ├── consumer/                      # Consumer & fintech projects
 │   ├── cost-segregation/          # Live MVP — tax report generator
 │   ├── dfw-cre-analyzer/         # Live — CRE deal scoring + LoopNet integration
-│   └── stock-wheel-strategy-screener/  # Multi-agent investing tool (WheelAlpha)
+│   ├── stock-wheel-strategy-screener/  # Multi-agent investing tool (WheelAlpha)
+│   └── edgedesk/                  # Trading & research dashboard — setups, options, research notes
 ├── pm-portfolio/
 │   ├── vision.md                  # 3-year strategy
 │   ├── about/                     # Bio, resume, principles
