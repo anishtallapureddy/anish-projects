@@ -59,6 +59,21 @@ interface Snapshot {
       geography: string;
     }>;
   };
+  communityVirusWatch?: {
+    geography?: string;
+    providerNote?: string;
+    entries: Array<{
+      name: string;
+      category: 'respiratory' | 'gastrointestinal' | 'other-pediatric';
+      level: SignalLevel;
+      trend: TrendDirection;
+      positivityPct?: number;
+      parentNote?: string;
+      providerNote?: string;
+    }>;
+    stale?: boolean;
+    lastUpdated?: string;
+  };
 }
 
 async function loadSnapshot(): Promise<Snapshot | null> {
@@ -177,6 +192,24 @@ const pollen = data ? pollenSummary(data.pollen) : null;
 const respiratory = data ? respiratorySummary(data.respiratoryIllness) : null;
 const vpd = data ? vpdSummary(data.vaccinePreventable) : null;
 
+const virusEntries = data?.communityVirusWatch?.entries ?? [];
+const virusByCategory = {
+  respiratory: virusEntries.filter((v) => v.category === 'respiratory'),
+  gastrointestinal: virusEntries.filter((v) => v.category === 'gastrointestinal'),
+  'other-pediatric': virusEntries.filter((v) => v.category === 'other-pediatric'),
+};
+const VIRUS_CATEGORY_LABEL: Record<string, string> = {
+  respiratory: 'Respiratory viruses',
+  gastrointestinal: 'Stomach bugs',
+  'other-pediatric': 'Other common pediatric viruses',
+};
+const virusLevelDot = (lvl: SignalLevel): string => {
+  if (lvl === 'Very High' || lvl === 'High') return 'bg-[var(--color-coral)]';
+  if (lvl === 'Moderate') return 'bg-[var(--color-sun)]';
+  if (lvl === 'Low') return 'bg-[var(--color-sage)]';
+  return 'bg-[var(--color-muted-foreground)]/50';
+};
+
 const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string; icon: string; text: string }> = {
   ok: {
     bg: 'bg-[rgba(111,128,100,0.10)]',
@@ -201,7 +234,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
 <BaseLayout
   title="Local Health Watch | Luma Pediatrics McKinney"
   path="/health-watch"
-  description="A morning snapshot for North DFW parents — pollen, air quality, cough & cold activity, and vaccine-preventable disease watch around McKinney, Melissa, Anna, Prosper, and Frisco. From your pediatricians at Luma Pediatrics."
+  description="A morning snapshot for North Dallas parents — pollen, air quality, cough & cold activity, and vaccine-preventable disease watch around McKinney, Melissa, Anna, Prosper, and Frisco. From your pediatricians at Luma Pediatrics."
   breadcrumbs={[
     { name: 'Home', path: '/' },
     { name: 'Local Health Watch', path: '/health-watch' },
@@ -210,7 +243,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
   <section class="page-hero py-14 md:py-20 overflow-hidden">
     <PageDecor />
     <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
-      <span class="eyebrow">For McKinney parents</span>
+      <span class="eyebrow">For North Dallas parents</span>
       <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">
         Local Health Watch
       </h1>
@@ -341,6 +374,51 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                     )}
                     <p class="mt-3 text-xs text-[var(--color-muted-foreground)]">
                       Statewide activity from CDC NNDSS — neighborhood-level cases aren't reported publicly.
+                    </p>
+                  </div>
+                </div>
+              </article>
+            )}
+
+            {/* Community virus watch (full 12-virus grid) */}
+            {virusEntries.length > 0 && (
+              <article class="rounded-[var(--radius-card)] border bg-[var(--color-card)] border-[var(--color-border-soft)] p-6 sm:col-span-2">
+                <div class="flex items-start gap-4">
+                  <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl text-[var(--color-primary)] bg-[rgba(60,90,160,0.10)]">
+                    <Icon name="lucide:activity" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
+                  </span>
+                  <div class="min-w-0 flex-1">
+                    <p class="text-[11px] uppercase tracking-[0.16em] font-semibold text-[var(--color-muted-foreground)]">What's going around</p>
+                    <h2 class="mt-1 text-xl tracking-tight">Community virus watch</h2>
+                    <p class="mt-2 text-sm text-[var(--color-foreground)]/85 leading-relaxed">
+                      Common bugs we're seeing in the North Dallas area right now. Green = quiet, yellow = some around, red = lots going around.
+                    </p>
+
+                    {(['respiratory', 'gastrointestinal', 'other-pediatric'] as const).map((cat) => (
+                      virusByCategory[cat].length > 0 && (
+                        <div class="mt-5">
+                          <p class="text-[11px] uppercase tracking-[0.16em] font-semibold text-[var(--color-muted-foreground)]">{VIRUS_CATEGORY_LABEL[cat]}</p>
+                          <ul class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            {virusByCategory[cat].map((v) => (
+                              <li class="flex items-start gap-2.5 rounded-xl bg-[var(--color-background)] px-3 py-2.5 ring-1 ring-inset ring-[var(--color-border-soft)]">
+                                <span class={`inline-block w-2.5 h-2.5 rounded-full mt-1.5 shrink-0 ${virusLevelDot(v.level)}`} aria-hidden="true"></span>
+                                <div class="min-w-0 flex-1">
+                                  <p class="text-sm font-medium text-[var(--color-foreground)]">
+                                    {v.name}
+                                    <span class="text-[var(--color-muted-foreground)] font-normal"> — {v.level === 'Unknown' ? 'data unavailable' : v.level.toLowerCase()}{v.level !== 'Unknown' && v.trend === 'Rising' ? ', rising' : v.level !== 'Unknown' && v.trend === 'Decreasing' ? ', easing' : ''}{typeof v.positivityPct === 'number' ? ` · ${v.positivityPct.toFixed(1)}% positive` : ''}</span>
+                                  </p>
+                                  {v.parentNote && (
+                                    <p class="mt-0.5 text-xs text-[var(--color-muted-foreground)] leading-relaxed">{v.parentNote}</p>
+                                  )}
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )
+                    ))}
+                    <p class="mt-4 text-xs text-[var(--color-muted-foreground)]">
+                      Sources: CDC NREVSS, NoroSTAT, and Texas DSHS regional surveillance. Updated daily.{data.communityVirusWatch?.stale ? ' (Showing the most recent available data.)' : ''}
                     </p>
                   </div>
                 </div>

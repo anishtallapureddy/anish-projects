@@ -10,7 +10,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
 
 const description =
-  'Pediatric guidance for parents in McKinney and North Collin County — from newborn care to fevers, sleep, vaccines, and more. Written by Dr. Praveena Tallapureddy.';
+  'Pediatric guidance for parents across North Dallas and Collin County — from newborn care to fevers, sleep, vaccines, and more. Written by the Luma Pediatrics clinical team.';
 ---
 <BaseLayout
   title="Parent Resources & Blog"
@@ -31,9 +31,35 @@ const description =
       Calm, practical pediatric guidance
     </h1>
     <p class="mt-4 max-w-2xl text-lg text-[var(--color-muted-foreground)] leading-relaxed">
-      Straightforward articles from Dr. Tallapureddy on the questions parents
+      Straightforward articles from our pediatric team on the questions parents
       ask us most — fevers, sleep, newborn care, vaccines, and when to call.
     </p>
+  </section>
+
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+    <a
+      href="/dosing-charts/"
+      class="block rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)]/5 p-6 sm:p-7 no-underline hover:bg-[var(--color-accent)]/10 transition-colors"
+    >
+      <div class="flex items-start gap-4">
+        <div class="shrink-0 w-12 h-12 rounded-xl bg-[var(--color-accent)]/15 flex items-center justify-center">
+          <Icon name="lucide:pill" class="w-6 h-6 text-[var(--color-accent)]" stroke-width="2" aria-hidden="true" />
+        </div>
+        <div class="flex-1">
+          <p class="text-xs font-semibold uppercase tracking-wider text-[var(--color-accent)]">
+            Quick reference
+          </p>
+          <h2 class="mt-1 font-display text-2xl text-[var(--color-primary)] leading-snug">
+            Pediatric OTC dosing charts
+          </h2>
+          <p class="mt-1 text-[var(--color-muted-foreground)]">
+            Weight-based dosing for Tylenol, Motrin/Advil, and Benadryl —
+            printable, mobile-friendly, AAP-sourced.
+          </p>
+        </div>
+        <Icon name="lucide:arrow-right" class="w-5 h-5 text-[var(--color-accent)] mt-2 shrink-0" stroke-width="2" aria-hidden="true" />
+      </div>
+    </a>
   </section>
 
   <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">

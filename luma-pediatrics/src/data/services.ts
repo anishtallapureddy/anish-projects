@@ -18,6 +18,16 @@ export interface ServiceItem {
 
 export const services: ServiceItem[] = [
   {
+    icon: 'lucide:handshake',
+    title: 'Free Meet & Greet',
+    badge: 'New families',
+    short:
+      'Complimentary in-office visit to tour the practice and meet your pediatrician before you commit.',
+    full:
+      'Choosing a pediatrician is a big decision. Schedule a free, no-pressure Meet & Greet session to tour the practice, meet your pediatrician, and ask the questions that matter to your family — before your first appointment. Especially helpful for expectant parents and families new to the area.',
+    featured: true,
+  },
+  {
     icon: 'lucide:baby',
     title: 'Newborn Care',
     short:
@@ -27,13 +37,12 @@ export const services: ServiceItem[] = [
     featured: true,
   },
   {
-    icon: 'lucide:home',
-    title: 'Newborn Home Visit',
-    badge: 'Included',
+    icon: 'lucide:hospital',
+    title: 'Newborn Rounds at BSW McKinney',
     short:
-      'A complimentary in-home visit within your baby\'s first two weeks — feeding check, weight, jaundice screen.',
+      'In-hospital newborn visits at Baylor Scott & White McKinney — so your baby meets their pediatrician on day one.',
     full:
-      'Every Luma newborn family receives one complimentary in-home visit within the first two weeks. We check feeding, weight gain, jaundice, and how you\'re settling in — all without packing up baby for a clinic trip. It\'s our way of making the fourth trimester feel a little easier.',
+      'We provide newborn rounding at Baylor Scott & White Medical Center – McKinney. If you deliver at BSW McKinney and choose Luma, your baby meets their pediatrician right at the bedside — for the first exam, feeding support, and a smooth handoff from hospital to home.',
     featured: true,
   },
   {
@@ -48,7 +57,6 @@ export const services: ServiceItem[] = [
   {
     icon: 'lucide:heart',
     title: 'Sick Visits',
-    badge: 'Same-day',
     short:
       'Same-day appointments for fevers, infections, injuries, and the unexpected.',
     full:
@@ -67,9 +75,9 @@ export const services: ServiceItem[] = [
   {
     icon: 'lucide:graduation-cap',
     title: 'School, Sports & Camp Physicals',
-    short: 'Forms-ready exams for school, camp, and athletic clearance.',
+    short: 'Physical exams for school, camp, and athletic clearance.',
     full:
-      'Forms-ready physical exams for school, summer camp, and athletic clearance. Bring the forms; we will take care of the rest.',
+      'Physical exams for school, summer camp, and athletic clearance. Bring the forms with you and we will take care of the rest during the visit.',
     featured: true,
   },
   {
@@ -113,5 +121,4 @@ export const insurancePlans = [
   'UnitedHealthcare',
   'Cigna',
   'Humana',
-  'Texas Medicaid (STAR & CHIP)',
 ];

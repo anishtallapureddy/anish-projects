@@ -74,11 +74,24 @@ const businessSchema = {
   url: SITE.domain,
   logo: new URL('/favicon.png', SITE.domain).toString(),
   image: new URL('/og-default.png', SITE.domain).toString(),
+  slogan: SITE.tagline,
   telephone,
   email: SITE.contact.email,
   priceRange: '$$',
   currenciesAccepted: 'USD',
-  paymentAccepted: 'Cash, Credit Card, Insurance, Medicaid',
+  paymentAccepted: 'Cash, Credit Card, Insurance',
+  keywords: [
+    'pediatrician',
+    'pediatric clinic',
+    'newborn care',
+    'well child visit',
+    'sick visit',
+    'McKinney pediatrician',
+    'Frisco pediatrician',
+    'Allen pediatrician',
+    'Prosper pediatrician',
+    'North Collin County pediatrics',
+  ].join(', '),
   address: {
     '@type': 'PostalAddress',
     streetAddress: SITE.address.street,
@@ -101,18 +114,24 @@ const businessSchema = {
     name: city,
     containedInPlace: { '@type': 'AdministrativeArea', name: 'Collin County, Texas' },
   })),
-  knowsLanguage: ['English', ...SITE.provider.languages],
+  knowsLanguage: SITE.showProviderProfile
+    ? ['English', ...SITE.provider.languages]
+    : ['English'],
   openingHoursSpecification,
   ...(sameAs.length ? { sameAs } : {}),
-  employee: {
-    '@type': 'Physician',
-    '@id': `${SITE.domain}/about#physician`,
-    name: SITE.provider.name,
-    medicalSpecialty: 'Pediatrics',
-    jobTitle: SITE.provider.role,
-    knowsLanguage: ['English', ...SITE.provider.languages],
-    alumniOf: SITE.provider.education.map((e) => ({ '@type': 'EducationalOrganization', name: e })),
-  },
+  ...(SITE.showProviderProfile
+    ? {
+        employee: {
+          '@type': 'Physician',
+          '@id': `${SITE.domain}/about#physician`,
+          name: SITE.provider.name,
+          medicalSpecialty: 'Pediatrics',
+          jobTitle: SITE.provider.role,
+          knowsLanguage: ['English', ...SITE.provider.languages],
+          alumniOf: SITE.provider.education.map((e) => ({ '@type': 'EducationalOrganization', name: e })),
+        },
+      }
+    : {}),
 };
 
 const breadcrumbSchema = breadcrumbs && breadcrumbs.length
@@ -157,12 +176,17 @@ const breadcrumbSchema = breadcrumbs && breadcrumbs.length
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${SITE.name} — ${SITE.tagline}`} />
+    <meta property="og:locale" content="en_US" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={siteTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={`${SITE.name} — ${SITE.tagline}`} />
 
     <!-- JSON-LD: enriched MedicalBusiness + Physician schema for local & AI search -->
     <script type="application/ld+json" set:html={JSON.stringify(businessSchema)} />
